@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Alert,Button } from 'react-native';
-import SignUpForm from './SignUpForm';
+import { Alert,Button,StyleSheet } from 'react-native';
+import UserForm from './UserForm';
 import {useNavigation} from '@react-navigation/native'
 
 function AuthContent({ isLogin, onAuthenticate }) {
@@ -10,7 +10,6 @@ function AuthContent({ isLogin, onAuthenticate }) {
     const [credentialsInvalid, setCredentialsInvalid] = useState({
       email: false,
       password: false,
-      confirmEmail: false,
       confirmPassword: false,
     });
  
@@ -25,25 +24,23 @@ function AuthContent({ isLogin, onAuthenticate }) {
     }
   
     function submitHandler(credentials) {
-      let { email, confirmEmail, password, confirmPassword } = credentials;
+      let { email, password, confirmPassword } = credentials;
   
       email = email.trim();
       password = password.trim();
   
       const emailIsValid = email.includes('@');
       const passwordIsValid = password.length > 6;
-      const emailsAreEqual = email === confirmEmail;
       const passwordsAreEqual = password === confirmPassword;
   
       if (
         !emailIsValid ||
         !passwordIsValid ||
-        (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
-      ) {
+        (!isLogin && !passwordsAreEqual))
+      {
         Alert.alert('Invalid input', 'Please check your entered credentials.');
         setCredentialsInvalid({
           email: !emailIsValid,
-          confirmEmail: !emailIsValid || !emailsAreEqual,
           password: !passwordIsValid,
           confirmPassword: !passwordIsValid || !passwordsAreEqual,
         });
@@ -54,12 +51,12 @@ function AuthContent({ isLogin, onAuthenticate }) {
   
     return (
         <>
-        <SignUpForm
+        <UserForm
           isLogin={isLogin}
           onSubmit={submitHandler}
           credentialsInvalid={credentialsInvalid}/>
 
-          <Button
+          <Button style={styles.button}
             title={isLogin ? 'Create a new user' : 'Log in instead'}
             onPress={switchAuthModeHandler}/>
         </>
@@ -69,3 +66,12 @@ function AuthContent({ isLogin, onAuthenticate }) {
   
   export default AuthContent;
   
+  const styles = StyleSheet.create({
+    button: {
+        marginBottom: 4,
+        textAlign: 'center',
+        color: 'red',
+        fontSize: 16,
+        fontWeight: 'bold'
+      }  
+  });
