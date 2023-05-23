@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Alert,Button,StyleSheet } from 'react-native';
+import { Alert,StyleSheet,View,Text,Pressable } from 'react-native';
 import UserForm from './UserForm';
 import {useNavigation} from '@react-navigation/native'
+import {Colours} from '../../variables/colours.js';
+
 
 function AuthContent({ isLogin, onAuthenticate }) {
 
@@ -50,15 +52,20 @@ function AuthContent({ isLogin, onAuthenticate }) {
     }
   
     return (
-        <>
-        <UserForm
-          isLogin={isLogin}
-          onSubmit={submitHandler}
-          credentialsInvalid={credentialsInvalid}/>
+        <> 
+          <View style={styles.form}>
+            <UserForm
+              isLogin={isLogin}
+              onSubmit={submitHandler}
+              credentialsInvalid={credentialsInvalid}/>
 
-          <Button style={styles.button}
-            title={isLogin ? 'Create a new user' : 'Log in instead'}
-            onPress={switchAuthModeHandler}/>
+            <View style={styles.button}>
+                <Pressable  onPress={switchAuthModeHandler}>
+                  <Text style={styles.textButton}>{isLogin ? 'Create a new user' : 'Log in instead'}</Text>
+                </Pressable>
+            </View>
+          </View>
+          
         </>
         
     );
@@ -68,10 +75,25 @@ function AuthContent({ isLogin, onAuthenticate }) {
   
   const styles = StyleSheet.create({
     button: {
-        marginBottom: 4,
-        textAlign: 'center',
-        color: 'red',
-        fontSize: 16,
-        fontWeight: 'bold'
-      }  
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 20,
+      width: 200,
+      height: 50,
+      borderRadius: 7,
+      backgroundColor: Colours.secondaryColor,
+    },
+    textButton: {
+      alignSelf: 'center',
+      paddingVertical:10,
+      fontSize: 16,
+      lineHeight: 21,
+      fontWeight: 'bold',
+      letterSpacing: 0.25,
+      color: 'white',
+    },
+    form:{
+      alignItems: 'center',
+      justifyContent: 'center',
+    } 
   });

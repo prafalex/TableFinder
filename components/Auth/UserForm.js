@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Button,StyleSheet, TextInput,Text,View } from 'react-native';
+import { Pressable,StyleSheet, TextInput,Text,View } from 'react-native';
+import {Colours} from '../../variables/colours.js';
 
 
 function UserForm({isLogin, onSubmit, credentialsInvalid}){
@@ -35,6 +36,7 @@ function UserForm({isLogin, onSubmit, credentialsInvalid}){
 
     return (
         <>  
+        <View style={styles.form}>
             <View style={styles.inputContainer}>
                 <Text style={[styles.label, emailIsInvalid && styles.labelInvalid]}>
                     Email
@@ -68,12 +70,16 @@ function UserForm({isLogin, onSubmit, credentialsInvalid}){
                 onChangeText={UpdateInputHandler.bind(this, 'confirmPassword')}
                 value={inputConfirmPassword} />     
             </View>
-            
             )}
+            
+            <View style={styles.button}>
+                <Pressable  onPress={submitHandler}>
+                    <Text style={styles.textButton}>{isLogin ? 'Log In' : 'Sign Up'}</Text>
+                </Pressable>
+            </View>
 
-            <Button style={styles.button}
-            title={isLogin ? 'Log In' : 'Sign Up'}
-            onPress={submitHandler}/>
+        </View>
+        
         </>
     );
 }
@@ -81,11 +87,13 @@ function UserForm({isLogin, onSubmit, credentialsInvalid}){
 
     const styles = StyleSheet.create({
         inputInvalid: {
-            backgroundColor: '#fcdcbf',
+            backgroundColor: Colours.errorMain,
           },
         input: {
+            width:350,
             paddingVertical: 8,
             paddingHorizontal: 6,
+            backgroundColor: 'white',
             borderRadius: 4,
             fontSize: 16,
           },
@@ -93,20 +101,33 @@ function UserForm({isLogin, onSubmit, credentialsInvalid}){
             color: 'black',
             marginBottom: 4,
           },
-          labelInvalid: {
-            color: 'red',
+        labelInvalid: {
+            color: Colours.errorSecondary,
           },  
         inputContainer: {
             marginVertical: 8,
           },
         button: {
-            borderRadius: 6,
-            paddingVertical: 6,
-            paddingHorizontal: 12,
-            elevation: 2,
-            shadowColor: 'black',
-            shadowOffset: { width: 1, height: 1 },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-          }
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 20,
+            width: 200,
+            height: 50,
+            borderRadius: 7,
+            backgroundColor: Colours.primaryColor,
+          },
+        textButton: {
+            alignSelf: 'center',
+            paddingHorizontal:70,
+            paddingVertical:10,
+            fontSize: 16,
+            lineHeight: 21,
+            fontWeight: 'bold',
+            letterSpacing: 0.25,
+            color: 'white',
+          },
+        form:{
+            alignItems: 'center',
+            justifyContent: 'center',
+        }
       });

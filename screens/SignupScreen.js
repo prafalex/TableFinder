@@ -1,16 +1,23 @@
 import AuthContent from '../components/Auth/AuthContent';
 import {UserCreate} from '../util/firebaseAuth';
-import { StyleSheet, Text, View,ActivityIndicator } from 'react-native';
-import { useState } from 'react';
+import { StyleSheet, Text, View,ActivityIndicator,Alert } from 'react-native';
+import { useState,useContext } from 'react';
+import { AuthContext } from '../context/auth-context';
 
 function SignupScreen(){
 
     const [isSigning,setIsSigning] = useState(false);
 
+    const authContext = useContext(AuthContext)
     async function signupFirebase({email,password}){
         setIsSigning(true);
-        await UserCreate(email,password);
-        setIsSigning(false);
+        try{
+          const token = await UserCreate(email,password);
+          authContext.authenticate(token);
+        }catch(error){
+          Alert.alert('Signing up failed!','Error while creating a new user, possible errror: mail already in use!');
+          setIsSigning(false);
+        }
     }
 
     if(isSigning){
