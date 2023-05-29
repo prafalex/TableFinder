@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_KEY:string=***;
+const API_KEY:string=***REMOVED***;
 
 
 async function authFunc(mode:string, email:string, password:string):Promise<string>{
@@ -15,6 +15,7 @@ async function authFunc(mode:string, email:string, password:string):Promise<stri
     });
 
     const token = response.data.idToken; 
+    console.log(token);
     return token; 
 }
 

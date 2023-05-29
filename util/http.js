@@ -13,9 +13,12 @@ export function addRestaurant(restaurantData){
 export async function getAllRestaurants(){
     const response = await axios.get(BACKEND_URL + '/restaurants.json');
 
+    //console.log(response);
+
     const restaurants = [];
 
     //console.log(response.data);
+
 
     for(const key in response.data){
         const restaurantObj = {

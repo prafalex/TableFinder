@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen.js';
+import Restaurants from './screens/Restaurants.js';
 import AuthContextProvider, { AuthContext } from './context/auth-context';
 import {useContext,useEffect, useState} from 'react';
 import {Colours} from './variables/colours.js';
@@ -45,7 +46,7 @@ function LoggedStack(){
         contentStyle: { backgroundColor: Colours.backgroundColor },
       }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} options={{
+      <Stack.Screen name="Restaurants" component={Restaurants} options={{
         headerRight: renderHeaderRight as any
       }}/>
     </Stack.Navigator>
