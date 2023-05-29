@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_KEY:string=***REMOVED***;
+const API_KEY:string='AIzaSyAY9Y2wYuCXRC52CcxrQ5c7gWJX7XSqI68';
 
 
 async function authFunc(mode:string, email:string, password:string):Promise<string>{
@@ -26,4 +26,3 @@ export  function UserCreate(email: string,password: string):Promise<string>{
 export function UserLogin(email: string,password: string):Promise<string>{
     return authFunc('signInWithPassword',email,password);
 }
-
