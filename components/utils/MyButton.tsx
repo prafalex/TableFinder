@@ -1,16 +1,24 @@
 import { Pressable, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import React, { ReactNode } from 'react';
 
-function MyButton({ icon, color, size, onPress }) {
+interface MyButtonProps {
+  icon: string;
+  color: string;
+  size: number;
+  onPress: () => void;
+}
+
+const MyButton: React.FC<MyButtonProps> = ({ icon, color, size, onPress }) => {
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
       onPress={onPress}
     >
-      <Ionicons name={icon} color={color} size={size} />
+      <Ionicons name={icon as any} color={color} size={size} />
     </Pressable>
   );
-}
+};
 
 export default MyButton;
 

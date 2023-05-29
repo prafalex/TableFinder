@@ -1,6 +1,6 @@
 import { useState,useContext } from 'react';
 import AuthContent from '../components/Auth/AuthContent';
-import {login} from '../util/firebaseAuth';
+import {UserLogin} from '../util/firebaseAuth';
 import { StyleSheet, Text, View,ActivityIndicator,Alert } from 'react-native';
 import { AuthContext } from '../context/auth-context';
 
@@ -12,10 +12,11 @@ function LoginScreen(){
     async function loginFirebase({email,password}){
         setIsSigning(true);
         try{
-            const token = await login(email,password);
+            const token = await UserLogin(email,password);
             authContext.authenticate(token);
         }catch(error){
             Alert.alert('Log in failed!','Could not authenticate you, maybe check your credentials!');
+            console.log(error);
             setIsSigning(false);
         }
     }

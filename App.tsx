@@ -1,15 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import SignupScreen from './screens/SignupScreen';
-import { Button } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen.js';
 import AuthContextProvider, { AuthContext } from './context/auth-context';
-import {useContext} from 'react';
+import {useContext,useEffect, useState} from 'react';
 import {Colours} from './variables/colours.js';
 import MyButton from './components/utils/MyButton';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AppLoading from 'expo-app-loading';
+
+
 const Stack = createNativeStackNavigator();
 
 
@@ -30,6 +33,10 @@ function AuthStack(){
 
 function LoggedStack(){
   const authContext = useContext(AuthContext);
+
+  const renderHeaderRight = ({ tintColor }: { tintColor: string }): JSX.Element => (
+    <MyButton icon="exit" color={tintColor} size={24} onPress={authContext.logout} />
+  );
   return(
   <Stack.Navigator
       screenOptions={{
@@ -39,7 +46,7 @@ function LoggedStack(){
       }}
     >
       <Stack.Screen name="Home" component={HomeScreen} options={{
-        headerRight: ({tintColor}) => (<MyButton icon="exit" color={tintColor} size={24} onPress={authContext.logout} />)
+        headerRight: renderHeaderRight as any
       }}/>
     </Stack.Navigator>
   )
@@ -55,12 +62,36 @@ function Nav(){
       </NavigationContainer>
   );
 }
+
+function Root(){
+  const [isLoading,setIsLoading] = useState(true);
+
+  const authContext = useContext(AuthContext);
+
+  useEffect(()=>{
+    async function getToken(){
+        const storedToken = await AsyncStorage.getItem('token');
+        console.log("getting token: " + storedToken);
+        if(storedToken){
+            authContext.authenticate(storedToken);
+        }
+        setIsLoading(false);
+    }
+    getToken();
+  },[]);
+
+  if(isLoading){
+    return <AppLoading/>;
+  }
+
+  return <Nav />
+}
+
 export default function App() {
  return( <>
     <StatusBar style="light" />
-
     <AuthContextProvider>
-      <Nav/>
+      <Root/>
     </AuthContextProvider>
   </>
  )
