@@ -1,12 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import RestaurantsScreen from './screens/RestaurantsScreen';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Test!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <RestaurantsScreen/>
   );
 }
 
