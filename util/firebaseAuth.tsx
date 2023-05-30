@@ -25,4 +25,3 @@ export function UserLogin(email: string,password: string):Promise<string>{
     return authFunc('signInWithPassword',email,password);
 }
 
-
