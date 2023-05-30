@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useState,useEffect,useContext } from 'react';
 import { Alert,StyleSheet,View,Text,Pressable } from 'react-native';
 import UserForm from './UserForm';
 import {useNavigation} from '@react-navigation/native'
 import {Colours} from '../../variables/colours.js';
+import 'firebase/auth';
+import React from 'react';
 
 
-function AuthContent({ isLogin, onAuthenticate }) {
+
+function AuthContent({ isLogin, onAuthenticate, facebookLogin }) {
+
 
     const navigation = useNavigation();
 
@@ -50,6 +54,10 @@ function AuthContent({ isLogin, onAuthenticate }) {
       }
       onAuthenticate({ email, password });
     }
+
+    // function submitHandlerFacebook(token){
+    //   facebookLogin(token);
+    // }
   
     return (
         <> 
@@ -58,10 +66,14 @@ function AuthContent({ isLogin, onAuthenticate }) {
               isLogin={isLogin}
               onSubmit={submitHandler}
               credentialsInvalid={credentialsInvalid}/>
-
             <View style={styles.button}>
                 <Pressable  onPress={switchAuthModeHandler}>
                   <Text style={styles.textButton}>{isLogin ? 'Create a new user' : 'Log in instead'}</Text>
+                </Pressable>
+            </View>
+            <View style={styles.button}>
+                <Pressable  onPress={facebookLogin}>
+                  <Text style={styles.textButton}>Sign in with Facebook</Text>
                 </Pressable>
             </View>
           </View>

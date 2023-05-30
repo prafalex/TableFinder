@@ -29,9 +29,11 @@ export async function getAllRestaurants(){
             category: response.data[key].category,
             phone_number: response.data[key].phone_number,
             program: response.data[key].program,
+            restaurant_img: response.data[key].program,
             menu_img: response.data[key].menu_img   
         }
         restaurants.push(restaurantObj);
     }
+    //console.log(restaurants);
     return restaurants;
 }

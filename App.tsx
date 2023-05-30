@@ -12,7 +12,7 @@ import {Colours} from './variables/colours.js';
 import MyButton from './components/utils/MyButton';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppLoading from 'expo-app-loading';
-
+import RestaurantsScreen from './screens/RestaurantsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,7 +46,7 @@ function LoggedStack(){
         contentStyle: { backgroundColor: Colours.backgroundColor },
       }}
     >
-      <Stack.Screen name="Restaurants" component={Restaurants} options={{
+      <Stack.Screen name="Restaurants" component={RestaurantsScreen} options={{
         headerRight: renderHeaderRight as any
       }}/>
     </Stack.Navigator>
@@ -72,7 +72,7 @@ function Root(){
   useEffect(()=>{
     async function getToken(){
         const storedToken = await AsyncStorage.getItem('token');
-        console.log("getting token: " + storedToken);
+        //console.log("getting token: " + storedToken);
         if(storedToken){
             authContext.authenticate(storedToken);
         }
@@ -94,8 +94,9 @@ export default function App() {
     <AuthContextProvider>
       <Root/>
     </AuthContextProvider>
+
   </>
- )
+ );
 }
 
 const styles = StyleSheet.create({
