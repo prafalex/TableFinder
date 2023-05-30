@@ -89,14 +89,14 @@ function Root() {
 
   const authContext = useContext(AuthContext);
 
-  useEffect(() => {
-    async function getToken() {
-      const storedToken = await AsyncStorage.getItem("token");
-      console.log("getting token: " + storedToken);
-      if (storedToken) {
-        authContext.authenticate(storedToken);
-      }
-      setIsLoading(false);
+  useEffect(()=>{
+    async function getToken(){
+        const storedToken = await AsyncStorage.getItem('token');
+        //console.log("getting token: " + storedToken);
+        if(storedToken){
+            authContext.authenticate(storedToken);
+        }
+        setIsLoading(false);
     }
     getToken();
   }, []);
