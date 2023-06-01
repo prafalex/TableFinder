@@ -10,10 +10,16 @@ function RestaurantsScreen({ navigation }) {
         restaurantId: itemData.item.id,
       });
     }
+    const item = itemData.item;
+    const restaurantProps = {
+      name: item.name,
+      imgUrl: item.restaurant_img,
+      category: item.category,
+      price: item.price
+    }
     return (
       <Restaurant
-        name={itemData.item.name}
-        imgUrl={itemData.item.restaurant_img}
+        {...restaurantProps}
         onPress={pressHandler}
       />
     );

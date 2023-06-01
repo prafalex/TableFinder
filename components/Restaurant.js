@@ -1,16 +1,20 @@
-import { Pressable, View, Text, StyleSheet, Image} from "react-native";
+import { Pressable, View, Text, StyleSheet, Image } from "react-native";
 import { Colours } from "../variables/colours.js";
-function Restaurant({ name, imgUrl, onPress }) {
+function Restaurant({ name, imgUrl, category, price, program, onPress }) {
   return (
-    <View style={styles.outerItem}>
+    <View style={styles.outerContainer}>
       <Pressable
         android_ripple={{ color: "#ccc" }}
         style={styles.button}
         onPress={onPress}
       >
-        <Image source={{uri: imgUrl}} style={styles.image}></Image>
-        <View style={styles.innerItem}>
-          <Text style={styles.title}>{name}</Text>
+        <View style={styles.innerContainer}>
+          <Image source={{ uri: imgUrl }} style={styles.image}></Image>
+          <Text style={styles.name}>{name} ($$$)</Text>
+        </View>
+        <View style={styles.detailContainer}>
+          <Text style={styles.detail}>Category: {category}</Text>
+          <Text style={styles.detail}>Score</Text>
         </View>
       </Pressable>
     </View>
@@ -20,7 +24,7 @@ function Restaurant({ name, imgUrl, onPress }) {
 export default Restaurant;
 
 const styles = StyleSheet.create({
-  outerItem: {
+  outerContainer: {
     flex: 1,
     margin: 16,
     height: 150,
@@ -32,19 +36,30 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
   },
-  innerItem: {
+  innerContainer: {
     flex: 1,
-    padding: 16,
+    paddingBottom: 8,
     justifyContent: "center",
     alignItems: "center",
   },
-  title: {
+  name: {
     fontWeight: "bold",
-    textAlign: 'center',
-    fontSize: 18,
+    textAlign: "center",
+    flexDirection: "row",
+    fontSize: 16,
   },
   image: {
-    width: '100%',
-    height: 200,
+    width: "100%",
+    height: "100%",
+  },
+  detailContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 8,
+  },
+  detail: {
+    marginHorizontal: 4,
+    fontSize: 12,
   },
 });
