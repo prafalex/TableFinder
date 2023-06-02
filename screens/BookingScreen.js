@@ -4,7 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Modal from 'react-native-modal';
 
-const BookingPage = () => {
+const BookingPage = ({route}) => {
+
+  const {restaurantId} = route.params;
+
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedPeople, setSelectedPeople] = useState(1); // Default value is 1 person
@@ -68,7 +71,7 @@ const BookingPage = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Book a Table</Text>
+      <Text style={styles.heading}>Book a Table {restaurantId} </Text>
       
       <View style={styles.selectionContainer}>
         <TouchableOpacity

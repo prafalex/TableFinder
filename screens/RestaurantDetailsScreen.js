@@ -1,11 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView} from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView,TouchableOpacity} from "react-native";
 import { getAllRestaurants } from "../util/http";
 import { Colours } from "../variables/colours.js";
+import {useNavigation} from '@react-navigation/native'
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 function RestaurantDetailsScreen({ route }) {
   const restaurantId = route.params.restaurantId;
   const [data, setData] = useState({});
+
+  const navigation = useNavigation();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +44,12 @@ function RestaurantDetailsScreen({ route }) {
             <Text key={item} style={styles.menuItem}>{item}</Text>
           ))}
       </View>
+      <TouchableOpacity onPress={() => navigation.navigate('BookingPage',{restaurantId:data.id})} style={styles.button}>
+        <View style={styles.iconContainer}>
+          <Icon name="cutlery" size={20} color="#FFF" />
+        </View>
+        <Text style={styles.text}>Book a Table</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -85,5 +97,21 @@ const styles = StyleSheet.create({
   menuContainer: {
     borderBottomWidth: 4,
     margin: 16
-  }
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#008CBA',
+    padding: 10,
+    borderRadius: 5,
+  },
+  text: {
+    color: '#FFF',
+    marginLeft: 8,
+    fontSize: 18,
+  },
+  iconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

@@ -71,6 +71,13 @@ function LoggedStack() {
           headerRight: renderHeaderRight as any,
         }}
       />
+      <Stack.Screen
+        name="BookingPage"
+        component={BookingPage}
+        options={{
+          headerRight: renderHeaderRight as any,
+        }}
+      />
     </Stack.Navigator>
   );
 }
