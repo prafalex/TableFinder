@@ -13,6 +13,8 @@ import MyButton from './components/utils/MyButton';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppLoading from 'expo-app-loading';
 import RestaurantsScreen from './screens/RestaurantsScreen';
+import BookingPage from './screens/BookingScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -46,7 +48,7 @@ function LoggedStack(){
         contentStyle: { backgroundColor: Colours.backgroundColor },
       }}
     >
-      <Stack.Screen name="Restaurants" component={RestaurantsScreen} options={{
+      <Stack.Screen name="BookingScreen" component={BookingPage} options={{
         headerRight: renderHeaderRight as any
       }}/>
     </Stack.Navigator>

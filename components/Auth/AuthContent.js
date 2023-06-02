@@ -71,11 +71,12 @@ function AuthContent({ isLogin, onAuthenticate, facebookLogin }) {
                   <Text style={styles.textButton}>{isLogin ? 'Create a new user' : 'Log in instead'}</Text>
                 </Pressable>
             </View>
-            <View style={styles.button}>
+            {isLogin && <View style={styles.button}>
                 <Pressable  onPress={facebookLogin}>
                   <Text style={styles.textButton}>Sign in with Facebook</Text>
                 </Pressable>
             </View>
+            }
           </View>
           
         </>

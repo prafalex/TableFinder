@@ -19,6 +19,7 @@ function LoginScreen(){
     const authContext = useContext(AuthContext);
     
     const auth = getAuth(app);
+
     const [request, response, promptAsync] = Facebook.useAuthRequest({
       clientId: "1290468008548474",
     });
@@ -36,7 +37,8 @@ function LoginScreen(){
     }
 
     const logInWithFacebook = async () => {
-
+        setIsSigning(true);
+        
         const result = await promptAsync();
         if (result.type !== "success") {
           alert("Uh oh, something went wrong");
@@ -44,7 +46,7 @@ function LoginScreen(){
         }
     
         const credential = FacebookAuthProvider.credential(result.authentication.accessToken);
-        setIsSigning(true);
+       
         try{
                 const token = await signInWithCredential(auth,credential);
                 authContext.authenticate(token._tokenResponse.idToken);
