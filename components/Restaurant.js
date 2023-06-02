@@ -1,38 +1,65 @@
-import { Pressable, View, Text, StyleSheet} from "react-native";
-import {Colours} from '../variables/colours.js';
-function Restaurant({name, img}) {
-    return <View style={styles.outerItem}>
-        <Pressable android_ripple={{color: '#ccc'}} style={styles.button}>
-            <View style={styles.innerItem}>
-                <Text style={styles.title}>{name}</Text>
-            </View>
-        </Pressable>
+import { Pressable, View, Text, StyleSheet, Image } from "react-native";
+import { Colours } from "../variables/colours.js";
+function Restaurant({ name, imgUrl, category, price, program, onPress }) {
+  return (
+    <View style={styles.outerContainer}>
+      <Pressable
+        android_ripple={{ color: "#ccc" }}
+        style={styles.button}
+        onPress={onPress}
+      >
+        <View style={styles.innerContainer}>
+          <Image source={{ uri: imgUrl }} style={styles.image}></Image>
+          <Text style={styles.name}>{name} ($$$)</Text>
+        </View>
+        <View style={styles.detailContainer}>
+          <Text style={styles.detail}>Category: {category}</Text>
+          <Text style={styles.detail}>Score</Text>
+        </View>
+      </Pressable>
     </View>
+  );
 }
 
 export default Restaurant;
 
 const styles = StyleSheet.create({
-    outerItem: {
-        flex: 1,
-        margin: 16,
-        height: 150,
-        borderRadius: 8,
-        elevation: 4,
-        backgroundColor: Colours.secondaryColor,
-        overflow: 'hidden'
-    },
-    button: {
-        flex: 1
-    },
-    innerItem: {
-        flex: 1,
-        padding: 16,
-        justifyContent: 'center',
-        alignItems: 'center' 
-    },
-    title: {
-        fontWeight: 'bold',
-        fontSize: 18
-    }
+  outerContainer: {
+    flex: 1,
+    margin: 16,
+    height: 150,
+    borderRadius: 8,
+    elevation: 4,
+    backgroundColor: Colours.secondaryColor,
+    overflow: "hidden",
+  },
+  button: {
+    flex: 1,
+  },
+  innerContainer: {
+    flex: 1,
+    paddingBottom: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  name: {
+    fontWeight: "bold",
+    textAlign: "center",
+    flexDirection: "row",
+    fontSize: 16,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+  detailContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 8,
+  },
+  detail: {
+    marginHorizontal: 4,
+    fontSize: 12,
+  },
 });
