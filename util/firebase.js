@@ -1,13 +1,7 @@
 import { initializeApp } from 'firebase/app';
+import { getStorage } from "firebase/storage";
 
-// Optionally import the services that you want to use
-// import {...} from "firebase/auth";
-// import {...} from "firebase/database";
-// import {...} from "firebase/firestore";
-// import {...} from "firebase/functions";
-// import {...} from "firebase/storage";
 
-// Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAY9Y2wYuCXRC52CcxrQ5c7gWJX7XSqI68",
     authDomain: "tablefinder-c5b4a.firebaseapp.com",
@@ -20,4 +14,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-export default app;
+const storage = getStorage(app);
+
+export {app,storage};

@@ -13,7 +13,7 @@ function SignupScreen(){
         setIsSigning(true);
         try{
           const token = await UserCreate(email,password);
-          authContext.authenticate(token);
+          authContext.authenticate(token,email);
         }catch(error){
           Alert.alert('Signing up failed!','Error while creating a new user, possible errror: mail already in use!');
           setIsSigning(false);

@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "811902375241",
+    "firebase_url": "https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "tablefinder-c5b4a",
+    "storage_bucket": "tablefinder-c5b4a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:811902375241:android:162f85129b555d60e13698",
+        "android_client_info": {
+          "package_name": "com.alexpraf.TableFinde"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "811902375241-epij2qm84f4f3eb1dgucm5i7divtj7hu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexpraf.TableFinde",
+            "certificate_hash": "1735529f670e0abab7664dcc319874f2464259d6"
+          }
+        },
+        {
+          "client_id": "811902375241-p3tmg4alq0sht0pe644orqg84k7nmcd4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexpraf.TableFinde",
+            "certificate_hash": "7440c851815c9eb188a16bf6cc7f682cad1d3644"
+          }
+        },
+        {
+          "client_id": "811902375241-n0ktrfo367gs5f00c096ldjcvkflfkm2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnIlvDXsMd-8SEezD2dFwecNWKufi1sCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "811902375241-eb9gp4mg8t7hetrts8pbitbb5mfh3hn0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

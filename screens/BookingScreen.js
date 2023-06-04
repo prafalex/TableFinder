@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Button } from 'react-native';
+import React, { useState,useContext } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Button,Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Modal from 'react-native-modal';
+import { Colours } from "../variables/colours.js";
+import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
+import AuthContextProvider, { AuthContext } from "../context/auth-context";
 
-const BookingPage = ({route}) => {
+
+
+
+const BookingScreen = ({route}) => {
+  const navigation = useNavigation();
+  const authContext = useContext(AuthContext);
+
 
   const {restaurantId} = route.params;
 
@@ -69,9 +79,49 @@ const BookingPage = ({route}) => {
     setPeoplePickerModalVisible(false);
   };
 
+  const handleConfirmBooking = async  () => {
+    if (!selectedDate || !selectedTime || !selectedPeople) {
+
+      Alert.alert('Booking Error!', 'Please select a date, time, and number of people.', [{ text: 'OK' }]);
+      return;
+    }
+
+    const bookingInfo = {
+      restaurantId,
+      date: selectedDate,
+      time: selectedTime,
+      people: selectedPeople,
+      email: authContext.email,
+    };
+    try{
+      const response = await axios.get('https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app/bookings.json?orderBy="restaurantId"&equalTo="' + restaurantId + '"');
+
+      let existingReservations = response.data;
+      let reservationCount = 0;
+
+      for (let key in existingReservations) {
+        if (existingReservations[key].date === selectedDate && existingReservations[key].time === selectedTime) {
+          reservationCount++;
+        }
+      }
+      if (reservationCount >= 15) {
+        Alert.alert('Booking Error!', 'The restaurant is fully booked at this time. Please select another time.', [{ text: 'OK' }]);
+        return;
+      }
+
+      await axios.post('https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app/bookings.json',bookingInfo);
+      //console.log(response);
+      Alert.alert('Booking Confirmed!', 'Your table has been booked successfully.', [{ text: 'OK', onPress: () => navigation.replace('BookingConfirmation', {bookingInfo}) }]);
+
+    }catch(err){
+      console.log(err);
+      Alert.alert('Booking Error!', 'Your table has not been booked successfully.', [{ text: 'OK' }]);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Book a Table {restaurantId} </Text>
+      <Text style={styles.heading}>Book a Table </Text>
       
       <View style={styles.selectionContainer}>
         <TouchableOpacity
@@ -112,6 +162,8 @@ const BookingPage = ({route}) => {
         mode="date"
         onConfirm={handleDateConfirm}
         onCancel={() => setDatePickerVisible(false)}
+        minimumDate={new Date()}
+        display="inline"
       />
 
       <DateTimePickerModal
@@ -119,9 +171,11 @@ const BookingPage = ({route}) => {
         mode="time"
         onConfirm={handleTimeConfirm}
         onCancel={() => setTimePickerVisible(false)}
+        minimumDate={new Date()}
+        minuteInterval={30}
       />
 
-<Modal isVisible={isPeoplePickerModalVisible}>
+    <Modal isVisible={isPeoplePickerModalVisible}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Enter Number of People</Text>
           <TextInput
@@ -137,7 +191,16 @@ const BookingPage = ({route}) => {
           </View>
         </View>
       </Modal>
+
+    <TouchableOpacity
+      style={styles.confirmButton}
+      onPress={handleConfirmBooking}
+    >
+      <Ionicons name="checkmark-circle-outline" size={24} color="white" />
+      <Text style={styles.confirmButtonText}>Confirm Booking</Text>
+  </TouchableOpacity>
     </View>
+
   );
 };
 
@@ -211,6 +274,26 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
   },
+  confirmButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colours.secondaryColor,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginTop: 20,
+    elevation: 5, 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowColor: 'black',
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  confirmButtonText: {
+    color: 'white',
+    fontSize: 18,
+    marginLeft: 10,
+  },
 });
 
-export default BookingPage;
+export default BookingScreen;

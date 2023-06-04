@@ -11,9 +11,8 @@ async function authFunc(mode:string, email:string, password:string):Promise<stri
         password:password,
         returnSecureToken: true
     });
-
-    const token = response.data.idToken; 
     
+    const token = response.data.idToken;     
     return token; 
 }
 

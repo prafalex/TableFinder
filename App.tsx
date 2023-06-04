@@ -1,11 +1,10 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View,AppRegistry } from "react-native";
 import SignupScreen from "./screens/SignupScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen.js";
-import Restaurants from "./screens/Restaurants.js";
 import AuthContextProvider, { AuthContext } from "./context/auth-context";
 import { useContext, useEffect, useState } from "react";
 import { Colours } from "./variables/colours.js";
@@ -14,7 +13,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppLoading from 'expo-app-loading';
 import RestaurantsScreen from './screens/RestaurantsScreen';
 import RestaurantDetailsScreen from "./screens/RestaurantDetailsScreen";
-import BookingPage from './screens/BookingScreen';
+import BookingScreen from './screens/BookingScreen';
+import BookingConfirmationScreen from './screens/BookingConfirmationScreen';
+import VideoPresentationScreen from "./screens/VideoPresentationScreen";
+import { Provider } from 'react-redux';
+import {store} from './redux/storeRedux';
 
 
 const Stack = createNativeStackNavigator();
@@ -73,10 +76,20 @@ function LoggedStack() {
       />
       <Stack.Screen
         name="BookingPage"
-        component={BookingPage}
+        component={BookingScreen}
         options={{
           headerRight: renderHeaderRight as any,
         }}
+      />
+      <Stack.Screen
+        name="BookingConfirmation"
+        component={BookingConfirmationScreen}
+        options={{ title: 'Booking Confirmation',headerLeft: () => null }}
+      />
+      <Stack.Screen
+        name="VideoPresentation"
+        component={VideoPresentationScreen}
+        options={{ title: 'Video presentation' }}
       />
     </Stack.Navigator>
   );
@@ -86,10 +99,14 @@ function Nav() {
   const authContext = useContext(AuthContext);
 
   return (
+    <Provider store={store}> 
     <NavigationContainer>
       {!authContext.auth && <AuthStack />}
-      {authContext.auth && <LoggedStack />}
+      {authContext.auth && 
+      <LoggedStack />
+      }
     </NavigationContainer>
+    </Provider>
   );
 }
 
@@ -101,9 +118,9 @@ function Root() {
   useEffect(()=>{
     async function getToken(){
         const storedToken = await AsyncStorage.getItem('token');
-        //console.log("getting token: " + storedToken);
+        const storedEmail = await AsyncStorage.getItem('email');
         if(storedToken){
-            authContext.authenticate(storedToken);
+            authContext.authenticate(storedToken ?? '',storedEmail ?? '');
         }
         setIsLoading(false);
     }
@@ -118,6 +135,8 @@ function Root() {
 }
 
 export default function App() {
+  
+
   return (
     <>
       <StatusBar style="light" />

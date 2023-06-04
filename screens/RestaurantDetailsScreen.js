@@ -1,12 +1,37 @@
 import { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView,TouchableOpacity} from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView,TouchableOpacity,Dimensions} from "react-native";
 import { getAllRestaurants } from "../util/http";
 import { Colours } from "../variables/colours.js";
 import {useNavigation} from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useSelector,useDispatch } from "react-redux";
+import {addFavorite,removeFavorite} from '../redux/storeRedux'
+import  { AuthContext } from "../context/auth-context";
+import { Ionicons } from '@expo/vector-icons';
+
+
+
+
 
 
 function RestaurantDetailsScreen({ route }) {
+
+  const authContext = useContext(AuthContext);
+
+  const favoriteRestaurants = useSelector(state => state.favoriteRestaurants[authContext.email] || []);
+
+  const restaurantIsFavorite = favoriteRestaurants.includes(route.params.restaurantId);
+
+  const dispatch = useDispatch();
+
+  function favoriteToggler(){
+  if(restaurantIsFavorite){
+    dispatch(removeFavorite({email: authContext.email, restaurantId:route.params.restaurantId}));
+  }else{
+    dispatch(addFavorite({email: authContext.email, restaurantId:route.params.restaurantId}));
+  }
+  }
+
   const restaurantId = route.params.restaurantId;
   const [data, setData] = useState({});
 
@@ -44,11 +69,23 @@ function RestaurantDetailsScreen({ route }) {
             <Text key={item} style={styles.menuItem}>{item}</Text>
           ))}
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('BookingPage',{restaurantId:data.id})} style={styles.button}>
+      <TouchableOpacity onPress={() => navigation.navigate('BookingPage',{restaurantId:data.id})} style={styles.bookingButton}>
         <View style={styles.iconContainer}>
           <Icon name="cutlery" size={20} color="#FFF" />
         </View>
-        <Text style={styles.text}>Book a Table</Text>
+        <Text style={styles.bookingButtonText}>Book a Table</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => favoriteToggler()} style={styles.bookingButton}>
+        <View style={styles.iconContainer}>
+          <Icon name="star" size={20} color="#FFF" />
+        </View>
+        <Text style={styles.bookingButtonText}>{restaurantIsFavorite ?'Remove from favorites': 'Add to favorites'  }</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('VideoPresentation',{restaurantId:data.id})} style={styles.bookingButton}>
+        <View style={styles.iconContainer}>
+        <Ionicons name="videocam" size={24} color="#FFF" />
+        </View>
+        <Text style={styles.bookingButtonText}>Video presentation</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -98,13 +135,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 4,
     margin: 16
   },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#008CBA',
-    padding: 10,
-    borderRadius: 5,
-  },
   text: {
     color: '#FFF',
     marginLeft: 8,
@@ -113,5 +143,27 @@ const styles = StyleSheet.create({
   iconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  bookingButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colours.backgroundColor,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginTop: 20,
+    elevation: 5, 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowColor: 'black',
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    width: Dimensions.get('window').width * 0.6, 
+    alignSelf: 'center',
+  },
+  bookingButtonText: {
+    color: 'white',
+    fontSize: 18,
+    marginLeft: 10,
   },
 });

@@ -28,7 +28,7 @@ function LoginScreen(){
         setIsSigning(true);
         try{
             const token = await UserLogin(email,password);
-            authContext.authenticate(token);
+            authContext.authenticate(token,email);
         }catch(error){
             Alert.alert('Log in failed!','Could not authenticate you, maybe check your credentials!');
             console.log(error);
@@ -49,7 +49,7 @@ function LoginScreen(){
        
         try{
                 const token = await signInWithCredential(auth,credential);
-                authContext.authenticate(token._tokenResponse.idToken);
+                authContext.authenticate(token._tokenResponse.idToken,token._tokenResponse.email);
         }catch(error){
                     Alert.alert('Log in failed!','Could not authenticate you, maybe check your credentials!');
                     console.log(error);
