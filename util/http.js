@@ -10,12 +10,9 @@ export function addRestaurant(restaurantData) {
 //how to use see: fetching backend data: 8:49
 export async function getAllRestaurants() {
   const response = await axios.get(BACKEND_URL + "/restaurants.json");
-
-  //console.log(response);
-
   const restaurants = [];
 
-  //consorle.log(response.data);
+
 
   for (const key in response.data) {
     const restaurantObj = {
@@ -32,6 +29,5 @@ export async function getAllRestaurants() {
     };
     restaurants.push(restaurantObj);
   }
-  //console.log(restaurants);
   return restaurants;
 }

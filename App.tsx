@@ -1,26 +1,89 @@
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View,AppRegistry } from "react-native";
+import { StyleSheet, Text, View, AppRegistry } from "react-native";
 import SignupScreen from "./screens/SignupScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen.js";
 import AuthContextProvider, { AuthContext } from "./context/auth-context";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Colours } from "./variables/colours.js";
 import MyButton from "./components/utils/MyButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import AppLoading from 'expo-app-loading';
-import RestaurantsScreen from './screens/RestaurantsScreen';
+import AppLoading from "expo-app-loading";
+import RestaurantsScreen from "./screens/RestaurantsScreen";
 import RestaurantDetailsScreen from "./screens/RestaurantDetailsScreen";
-import BookingScreen from './screens/BookingScreen';
-import BookingConfirmationScreen from './screens/BookingConfirmationScreen';
+import BookingScreen from "./screens/BookingScreen";
+import BookingConfirmationScreen from "./screens/BookingConfirmationScreen";
 import VideoPresentationScreen from "./screens/VideoPresentationScreen";
-import { Provider } from 'react-redux';
-import {store} from './redux/storeRedux';
-
+import { Provider } from "react-redux";
+import { store } from "./redux/storeRedux";
+import {
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+  createDrawerNavigator,
+} from "@react-navigation/drawer";
+import UserBookingsScreen from "./screens/UserBookingsScreen";
+import FavoritesScreen from "./screens/FavoritesScreen";
+import { Icon } from "react-native-elements";
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+
+function DrawerNavigator() {
+  const authContext = useContext(AuthContext);
+  return (
+    <Drawer.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: Colours.primaryColor },
+        headerTintColor: "white",
+        sceneContainerStyle: { backgroundColor: Colours.backgroundColor },
+        drawerStyle: { backgroundColor: Colours.backgroundColor },
+        drawerInactiveTintColor: "white",
+        drawerActiveTintColor: Colours.primaryColor,
+        drawerActiveBackgroundColor: Colours.secondaryColor,
+      }}
+      drawerContent={(props) => {
+        return (
+          <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <DrawerItem
+              label=""
+              icon={() => <Icon name="logout" size={24} color="white" />}
+              onPress={authContext.logout}
+            />
+          </DrawerContentScrollView>
+        );
+      }}
+    >
+      <Drawer.Screen
+        name="Restaurants"
+        component={RestaurantsScreen}
+        options={{
+          title: "All restaurants",
+        }}
+      ></Drawer.Screen>
+
+      <Drawer.Screen
+        name="Bookings"
+        component={UserBookingsScreen}
+        options={{
+          title: "My bookings",
+        }}
+      ></Drawer.Screen>
+
+      <Drawer.Screen
+        name="Favorites"
+        component={FavoritesScreen}
+        options={{
+          title: "My favorites",
+        }}
+      ></Drawer.Screen>
+    </Drawer.Navigator>
+  );
+}
 
 function AuthStack() {
   return (
@@ -38,20 +101,6 @@ function AuthStack() {
 }
 
 function LoggedStack() {
-  const authContext = useContext(AuthContext);
-
-  const renderHeaderRight = ({
-    tintColor,
-  }: {
-    tintColor: string;
-  }): JSX.Element => (
-    <MyButton
-      icon="exit"
-      color={tintColor}
-      size={24}
-      onPress={authContext.logout}
-    />
-  );
   return (
     <Stack.Navigator
       screenOptions={{
@@ -61,35 +110,26 @@ function LoggedStack() {
       }}
     >
       <Stack.Screen
-        name="Restaurants"
-        component={RestaurantsScreen}
+        name="Drawer"
+        component={DrawerNavigator}
         options={{
-          headerRight: renderHeaderRight as any,
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="RestaurantDetailsScreen"
         component={RestaurantDetailsScreen}
-        options={{
-          headerRight: renderHeaderRight as any,
-        }}
       />
-      <Stack.Screen
-        name="BookingPage"
-        component={BookingScreen}
-        options={{
-          headerRight: renderHeaderRight as any,
-        }}
-      />
+      <Stack.Screen name="BookingPage" component={BookingScreen} />
       <Stack.Screen
         name="BookingConfirmation"
         component={BookingConfirmationScreen}
-        options={{ title: 'Booking Confirmation',headerLeft: () => null }}
+        options={{ title: "Booking Confirmation", headerLeft: () => null }}
       />
       <Stack.Screen
         name="VideoPresentation"
         component={VideoPresentationScreen}
-        options={{ title: 'Video presentation' }}
+        options={{ title: "Video presentation" }}
       />
     </Stack.Navigator>
   );
@@ -99,13 +139,11 @@ function Nav() {
   const authContext = useContext(AuthContext);
 
   return (
-    <Provider store={store}> 
-    <NavigationContainer>
-      {!authContext.auth && <AuthStack />}
-      {authContext.auth && 
-      <LoggedStack />
-      }
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        {!authContext.auth && <AuthStack />}
+        {authContext.auth && <LoggedStack />}
+      </NavigationContainer>
     </Provider>
   );
 }
@@ -115,14 +153,14 @@ function Root() {
 
   const authContext = useContext(AuthContext);
 
-  useEffect(()=>{
-    async function getToken(){
-        const storedToken = await AsyncStorage.getItem('token');
-        const storedEmail = await AsyncStorage.getItem('email');
-        if(storedToken){
-            authContext.authenticate(storedToken ?? '',storedEmail ?? '');
-        }
-        setIsLoading(false);
+  useEffect(() => {
+    async function getToken() {
+      const storedToken = await AsyncStorage.getItem("token");
+      const storedEmail = await AsyncStorage.getItem("email");
+      if (storedToken) {
+        authContext.authenticate(storedToken ?? "", storedEmail ?? "");
+      }
+      setIsLoading(false);
     }
     getToken();
   }, []);
@@ -135,8 +173,6 @@ function Root() {
 }
 
 export default function App() {
-  
-
   return (
     <>
       <StatusBar style="light" />

@@ -11,8 +11,7 @@ import AuthContextProvider, { AuthContext } from "../context/auth-context";
 
 
 
-const BookingScreen = ({route}) => {
-  const navigation = useNavigation();
+const BookingScreen = ({route, navigation}) => {
   const authContext = useContext(AuthContext);
 
 
