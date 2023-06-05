@@ -24,10 +24,12 @@ import {
   DrawerItemList,
   createDrawerNavigator,
 } from "@react-navigation/drawer";
-import UserBookingsScreen from "./screens/UserBookingsScreen";
+import BookingsScreen from "./screens/BookingsScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import { Icon } from "react-native-elements";
 import RestaurantContextProvider from "./context/restaurant-context";
+import BookingContextProvider from "./context/booking-context";
+
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -68,7 +70,7 @@ function DrawerNavigator() {
 
       <Drawer.Screen
         name="Bookings"
-        component={UserBookingsScreen}
+        component={BookingsScreen}
         options={{
           title: "My bookings",
         }}
@@ -140,12 +142,14 @@ function Nav() {
 
   return (
     <Provider store={store}>
-      <RestaurantContextProvider>
-        <NavigationContainer>
-          {!authContext.auth && <AuthStack />}
-          {authContext.auth && <LoggedStack />}
-        </NavigationContainer>
-      </RestaurantContextProvider>
+        <RestaurantContextProvider>
+          <BookingContextProvider>
+            <NavigationContainer>
+              {!authContext.auth && <AuthStack />}
+              {authContext.auth && <LoggedStack />}
+            </NavigationContainer>
+          </BookingContextProvider>
+        </RestaurantContextProvider>
     </Provider>
   );
 }

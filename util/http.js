@@ -31,3 +31,27 @@ export async function getAllRestaurants() {
   }
   return restaurants;
 }
+
+export async function addBooking(bookingData) {
+  const response = await axios.post(BACKEND_URL + "/bookings.json", bookingData);
+  const id = response.data.name;
+  return id;
+}
+
+export async function getAllBookings() {
+  const response = await axios.get(BACKEND_URL + "/bookings.json");
+  const bookings = [];
+
+  for (const key in response.data) {
+    const bookingObj = {
+      id: key,
+      restaurant_id: response.data[key].restaurantId,
+      people: response.data[key].people,
+      date: response.data[key].date,
+      time: response.data[key].time,
+      email: response.data[key].email,
+    };
+    bookings.push(bookingObj);
+  }
+  return bookings;
+}

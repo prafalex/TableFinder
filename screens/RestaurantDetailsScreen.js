@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { getAllRestaurants } from "../util/http";
 import { Colours } from "../variables/colours.js";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -92,7 +91,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
       </View>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("BookingPage", { restaurantId: data.id })
+          navigation.navigate("BookingPage", { restaurantId: selectedRestaurant.id })
         }
         style={styles.bookingButton}
       >
@@ -114,7 +113,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("VideoPresentation", { restaurantId: data.id })
+          navigation.navigate("VideoPresentation", { restaurantId: selectedRestaurant.id })
         }
         style={styles.bookingButton}
       >
