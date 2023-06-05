@@ -9,7 +9,6 @@ import HomeScreen from "./screens/HomeScreen.js";
 import AuthContextProvider, { AuthContext } from "./context/auth-context";
 import React, { useContext, useEffect, useState } from "react";
 import { Colours } from "./variables/colours.js";
-import MyButton from "./components/utils/MyButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppLoading from "expo-app-loading";
 import RestaurantsScreen from "./screens/RestaurantsScreen";
@@ -28,6 +27,7 @@ import {
 import UserBookingsScreen from "./screens/UserBookingsScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import { Icon } from "react-native-elements";
+import RestaurantContextProvider from "./context/restaurant-context";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -140,10 +140,12 @@ function Nav() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        {!authContext.auth && <AuthStack />}
-        {authContext.auth && <LoggedStack />}
-      </NavigationContainer>
+      <RestaurantContextProvider>
+        <NavigationContainer>
+          {!authContext.auth && <AuthStack />}
+          {authContext.auth && <LoggedStack />}
+        </NavigationContainer>
+      </RestaurantContextProvider>
     </Provider>
   );
 }

@@ -16,6 +16,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { addFavorite, removeFavorite } from "../redux/storeRedux";
 import { AuthContext } from "../context/auth-context";
 import { Ionicons } from "@expo/vector-icons";
+import { RestaurantContext } from "../context/restaurant-context";
+
 
 function RestaurantDetailsScreen({ route, navigation }) {
   const authContext = useContext(AuthContext);
@@ -49,41 +51,40 @@ function RestaurantDetailsScreen({ route, navigation }) {
   }
 
   const restaurantId = route.params.restaurantId;
-
-  const [data, setData] = useState({});
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const restaurants = await getAllRestaurants();
-      const selectedRestaurant = restaurants.find(
-        (restaurant) => restaurant.id === restaurantId
-      );
-      setData(selectedRestaurant);
-    };
-
-    fetchData();
-  }, []);
+  const restaurantContext = useContext(RestaurantContext);
+  const selectedRestaurant = restaurantContext.getRestaurant(restaurantId);
 
   useEffect(() => {
-    navigation.setOptions({ title: data.name });
-  }, [data, navigation]);
+    navigation.setOptions({ title: selectedRestaurant.name });
+  }, [selectedRestaurant, navigation]);
 
   return (
     <ScrollView style={styles.container}>
-      <Image source={{ uri: data.restaurant_img }} style={styles.image}></Image>
-      <Text style={styles.title}>{data.name} ($$$)</Text>
+      <Image
+        source={{ uri: selectedRestaurant.restaurant_img }}
+        style={styles.image}
+      ></Image>
+      <Text style={styles.title}>{selectedRestaurant.name} ($$$)</Text>
       <View>
-        <Text style={styles.description}>{data.description}</Text>
-        <Text style={styles.textItem}>Category: {data.category}</Text>
-        <Text style={styles.textItem}>Program: {data.program}</Text>
-        <Text style={styles.textItem}>Address: {data.address}</Text>
-        <Text style={styles.textItem}>PhoneNumber: {data.phone_number}</Text>
+        <Text style={styles.description}>{selectedRestaurant.description}</Text>
+        <Text style={styles.textItem}>
+          Category: {selectedRestaurant.category}
+        </Text>
+        <Text style={styles.textItem}>
+          Program: {selectedRestaurant.program}
+        </Text>
+        <Text style={styles.textItem}>
+          Address: {selectedRestaurant.address}
+        </Text>
+        <Text style={styles.textItem}>
+          PhoneNumber: {selectedRestaurant.phone_number}
+        </Text>
       </View>
       <View>
         <View style={styles.menuContainer}>
           <Text style={styles.title}>Menu</Text>
         </View>
-        {data.menu_items?.map((item) => (
+        {selectedRestaurant.menu_items?.map((item) => (
           <Text key={item} style={styles.menuItem}>
             {item}
           </Text>

@@ -3,16 +3,16 @@ import axios from "axios";
 const BACKEND_URL =
   "https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app";
 
-export function addRestaurant(restaurantData) {
-  axios.post(BACKEND_URL + "/restaurants.json", restaurantData);
+export async function addRestaurant(restaurantData) {
+  const response = await axios.post(BACKEND_URL + "/restaurants.json", restaurantData);
+  const id = response.data.name;
+  return id;
 }
 
 //how to use see: fetching backend data: 8:49
 export async function getAllRestaurants() {
   const response = await axios.get(BACKEND_URL + "/restaurants.json");
   const restaurants = [];
-
-
 
   for (const key in response.data) {
     const restaurantObj = {

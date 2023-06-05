@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import { getAllRestaurants } from "../util/http";
 import Restaurant from "../components/Restaurant";
+import { RestaurantContext } from "../context/restaurant-context";
 
 function RestaurantsScreen({ navigation }) {
   function renderRestaurant(itemData) {
@@ -15,28 +16,25 @@ function RestaurantsScreen({ navigation }) {
       name: item.name,
       imgUrl: item.restaurant_img,
       category: item.category,
-      price: item.price
-    }
-    return (
-      <Restaurant
-        {...restaurantProps}
-        onPress={pressHandler}
-      />
-    );
+      price: item.price,
+    };
+    return <Restaurant {...restaurantProps} onPress={pressHandler} />;
   }
-  const [data, setData] = useState([]);
+
+  const restaurantContext = useContext(RestaurantContext);
 
   useEffect(() => {
     const fetchData = async () => {
       const restaurants = await getAllRestaurants();
-      setData(restaurants);
+      restaurantContext.getRestaurants(restaurants);
     };
 
     fetchData();
   }, []);
+
   return (
     <FlatList
-      data={data}
+      data={restaurantContext.restaurants}
       keyExtractor={(item) => item.id}
       renderItem={renderRestaurant}
       numColumns={2}
