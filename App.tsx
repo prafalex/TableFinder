@@ -1,11 +1,10 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, AppRegistry } from "react-native";
+import { StyleSheet } from "react-native";
 import SignupScreen from "./screens/SignupScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
-import HomeScreen from "./screens/HomeScreen.js";
 import AuthContextProvider, { AuthContext } from "./context/auth-context";
 import React, { useContext, useEffect, useState } from "react";
 import { Colours } from "./variables/colours.js";
@@ -13,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppLoading from "expo-app-loading";
 import RestaurantsScreen from "./screens/RestaurantsScreen";
 import RestaurantDetailsScreen from "./screens/RestaurantDetailsScreen";
-import BookingScreen from "./screens/BookingScreen";
+import BookingScreen, { BookingScreenProps,BookingInfo } from "./screens/BookingScreen";
 import BookingConfirmationScreen from "./screens/BookingConfirmationScreen";
 import VideoPresentationScreen from "./screens/VideoPresentationScreen";
 import { Provider } from "react-redux";
@@ -30,9 +29,20 @@ import { Icon } from "react-native-elements";
 import RestaurantContextProvider from "./context/restaurant-context";
 import BookingContextProvider from "./context/booking-context";
 
+type RootStackParamList = {
+  Login: undefined;  
+  Signup: undefined; 
+  Drawer: undefined;
+  RestaurantDetailsScreen: { restaurantId: string };
+  BookingPage: {restaurantId: string };
+  BookingConfirmation: { bookingInfo?: BookingInfo};
+  VideoPresentation: undefined;
+};
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator();
+
+
 
 function DrawerNavigator() {
   const authContext = useContext(AuthContext);
@@ -122,7 +132,10 @@ function LoggedStack() {
         name="RestaurantDetailsScreen"
         component={RestaurantDetailsScreen}
       />
-      <Stack.Screen name="BookingPage" component={BookingScreen} />
+      <Stack.Screen
+        name="BookingPage"
+        component={BookingScreen as React.ComponentType<BookingScreenProps>}
+      />
       <Stack.Screen
         name="BookingConfirmation"
         component={BookingConfirmationScreen}
@@ -136,6 +149,7 @@ function LoggedStack() {
     </Stack.Navigator>
   );
 }
+
 
 function Nav() {
   const authContext = useContext(AuthContext);
@@ -177,7 +191,7 @@ function Root() {
 
   return <Nav />;
 }
-
+export {RootStackParamList};
 export default function App() {
   return (
     <>
@@ -187,7 +201,7 @@ export default function App() {
       </AuthContextProvider>
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Calendar from 'expo-calendar';
 import { Colours } from '../variables/colours.js';
 import { Video } from 'expo-av';
-import {app,storage} from '../util/firebase.js';
+import {app,storage} from '../util/firebase.tsx';
 import { getStorage,ref, getDownloadURL } from 'firebase/storage';
 
 
