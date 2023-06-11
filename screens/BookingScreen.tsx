@@ -13,11 +13,10 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Modal from 'react-native-modal';
 import { Colours } from '../variables/colours';
 import axios,{AxiosResponse} from 'axios';
-import { AuthContext } from '../context/auth-context';
+import { AuthContext,AuthContextType } from '../context/auth-context';
 import { RootStackParamList } from '../App'
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
 
 
 interface BookingScreenProps {
@@ -34,9 +33,9 @@ interface BookingInfo {
 }
 
 const BookingScreen: React.FC<BookingScreenProps> = ({ route, navigation }) => {
-  const authContext = useContext(AuthContext);
+  const authContext = useContext<AuthContextType>(AuthContext);
 
-  const { restaurantId } = route.params;
+  const { restaurantId } = route.params as { restaurantId: string };
 
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('');
@@ -65,7 +64,7 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route, navigation }) => {
   };
   
   const handleTimeConfirm: (time: Date) => void = (time) => {
-    const formattedTime = time.toLocaleTimeString([], {
+    const formattedTime : string = time.toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
     });
@@ -75,7 +74,7 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route, navigation }) => {
   
   const handleSelection: (value: string) => void = (value) => {
     if (value !== '') {
-      const parsedValue = parseInt(value);
+      const parsedValue : number = parseInt(value);
       if (!isNaN(parsedValue) && parsedValue >= 1) {
         setSelectedPeople(parsedValue);
       }
@@ -128,10 +127,14 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route, navigation }) => {
     `https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app/bookings.json?orderBy="restaurantId"&equalTo="${restaurantId}"`
   );
 
-  let existingReservations: Record<string, BookingInfo> = response.data;
+  let existingReservations: Record<string, BookingInfo> | null = response.data;
   let reservationCount: number = 0;
 
-  for (let key in existingReservations) {
+  if (!existingReservations) {
+    existingReservations = {};
+  }
+
+  for (let key  in existingReservations) {
     if (
       existingReservations[key].date === selectedDate &&
       existingReservations[key].time === selectedTime
