@@ -1,9 +1,16 @@
 import { createContext, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Auth } from "firebase/auth";
 
+interface AuthContextType {
+    token: string;
+    email: string;
+    auth: boolean;
+    authenticate: (token: string, email: string) => void;
+    logout: () => void;
+};
 
-
-export const AuthContext = createContext({
+export const AuthContext = createContext<AuthContextType>({
     token:'' as string,
     email:'' as string,
     auth:false as boolean,
@@ -43,4 +50,5 @@ function AuthContextProvider({children}:Props){
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
+export {AuthContextType};
 export default AuthContextProvider;

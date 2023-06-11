@@ -8,7 +8,7 @@ import React from 'react';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as WebBrowser from 'expo-web-browser';
 import {getAuth,FacebookAuthProvider,signInWithCredential} from 'firebase/auth';
-import app from '../util/firebase.js';
+import app from '../util/firebase.tsx';
 
 WebBrowser.maybeCompleteAuthSession();
 

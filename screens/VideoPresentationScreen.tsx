@@ -1,51 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Share } from 'react-native';
-import { getAllRestaurants } from '../util/http';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import * as Calendar from 'expo-calendar';
+import { View, Text, StyleSheet,Alert } from 'react-native';
 import { Colours } from '../variables/colours.js';
-import { Video } from 'expo-av';
-import {app,storage} from '../util/firebase.js';
-import { getStorage,ref, getDownloadURL } from 'firebase/storage';
+import { Video,  } from 'expo-av';
+import {storage} from '../util/firebase';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../App';
+import { ref, getDownloadURL,StorageReference } from 'firebase/storage';
 
+type VideoPresentationScreenRouteProp = RouteProp<RootStackParamList, 'VideoPresentation'>;
 
+const VideoPresentationScreen = ({ route }: { route: VideoPresentationScreenRouteProp }): JSX.Element => {
 
-const VideoPresentationScreen = ({ route }) => {
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
-  const [videoUrl, setVideoUrl] = useState(null);
-
-  const videoRef = ref(storage, '/restaurant_1.mp4');
+  const videoRef: StorageReference = ref(storage, '/restaurant_1.mp4');
 
   useEffect(() => {
-    // Replace 'videos/myVideo.mp4' with the path to your video in Firebase Storage
     getDownloadURL(videoRef)
-      .then((url) => {
-        // You now have the download URL for your video
+      .then((url : string) => {
         setVideoUrl(url);
       })
-      .catch((error) => {
-        // Handle any errors
+      .catch((error: any) => {
         console.error(error);
+        Alert.alert('Error', 'Could not load video presentation');
       });
   }, []);
 
-  const {restaurantId} = route.params;
+  const { restaurantId } = route.params ?? { restaurantId: '' };
 
 return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
         <Text style={styles.text}>Video presentation for {restaurantId}</Text>
-        <Video
+        {videoUrl && (<Video
         source={{ uri: videoUrl }}
         rate={1.0}
         volume={1.0}
         isMuted={false}
-        resizeMode="cover"
         shouldPlay
         useNativeControls
         style={{ width: 300, height: 300 }}
-      />
+      />)}
       </View>
     </View>
   );
