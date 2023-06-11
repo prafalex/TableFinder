@@ -16,6 +16,8 @@ import RestaurantDetailsScreen from "./screens/RestaurantDetailsScreen";
 import BookingScreen from "./screens/BookingScreen";
 import BookingConfirmationScreen from "./screens/BookingConfirmationScreen";
 import VideoPresentationScreen from "./screens/VideoPresentationScreen";
+import UpsertReviewScreen from "./screens/UpsertReviewScreen";
+import ReviewsScreen from "./screens/ReviewsScreen";
 import { Provider } from "react-redux";
 import { store } from "./redux/storeRedux";
 import {
@@ -29,7 +31,7 @@ import FavoritesScreen from "./screens/FavoritesScreen";
 import { Icon } from "react-native-elements";
 import RestaurantContextProvider from "./context/restaurant-context";
 import BookingContextProvider from "./context/booking-context";
-
+import ReviewContextProvider from "./context/review-context";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -73,6 +75,14 @@ function DrawerNavigator() {
         component={BookingsScreen}
         options={{
           title: "My bookings",
+        }}
+      ></Drawer.Screen>
+
+      <Drawer.Screen
+        name="Reviews"
+        component={ReviewsScreen}
+        options={{
+          title: "My reviews",
         }}
       ></Drawer.Screen>
 
@@ -133,6 +143,18 @@ function LoggedStack() {
         component={VideoPresentationScreen}
         options={{ title: "Video presentation" }}
       />
+
+      <Stack.Screen
+        name="UpsertReviewScreen"
+        component={UpsertReviewScreen}
+        options={{ title: "UpsertReview" }}
+      />
+
+      <Stack.Screen
+        name="Reviews"
+        component={ReviewsScreen}
+        options={{ title: "Reviews" }}
+      />
     </Stack.Navigator>
   );
 }
@@ -142,6 +164,7 @@ function Nav() {
 
   return (
     <Provider store={store}>
+      <ReviewContextProvider>
         <RestaurantContextProvider>
           <BookingContextProvider>
             <NavigationContainer>
@@ -150,6 +173,7 @@ function Nav() {
             </NavigationContainer>
           </BookingContextProvider>
         </RestaurantContextProvider>
+      </ReviewContextProvider>
     </Provider>
   );
 }

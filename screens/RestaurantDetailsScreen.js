@@ -17,7 +17,6 @@ import { AuthContext } from "../context/auth-context";
 import { Ionicons } from "@expo/vector-icons";
 import { RestaurantContext } from "../context/restaurant-context";
 
-
 function RestaurantDetailsScreen({ route, navigation }) {
   const authContext = useContext(AuthContext);
 
@@ -91,7 +90,9 @@ function RestaurantDetailsScreen({ route, navigation }) {
       </View>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("BookingPage", { restaurantId: selectedRestaurant.id })
+          navigation.navigate("BookingPage", {
+            restaurantId: selectedRestaurant.id,
+          })
         }
         style={styles.bookingButton}
       >
@@ -113,7 +114,9 @@ function RestaurantDetailsScreen({ route, navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("VideoPresentation", { restaurantId: selectedRestaurant.id })
+          navigation.navigate("VideoPresentation", {
+            restaurantId: selectedRestaurant.id,
+          })
         }
         style={styles.bookingButton}
       >
@@ -121,6 +124,32 @@ function RestaurantDetailsScreen({ route, navigation }) {
           <Ionicons name="videocam" size={24} color="#FFF" />
         </View>
         <Text style={styles.bookingButtonText}>Video presentation</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("UpsertReviewScreen", {
+            restaurantId: selectedRestaurant.id,
+          })
+        }
+        style={styles.bookingButton}
+      >
+        <View style={styles.iconContainer}>
+          <Ionicons name="pencil-outline" size={24} color="#FFF" />
+        </View>
+        <Text style={styles.bookingButtonText}>Write a review</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Reviews", {
+            restaurantId: selectedRestaurant.id,
+          })
+        }
+        style={styles.bookingButton}
+      >
+        <View style={styles.iconContainer}>
+          <Ionicons name="pencil-outline" size={24} color="#FFF" />
+        </View>
+        <Text style={styles.bookingButtonText}>All reviews</Text>
       </TouchableOpacity>
     </ScrollView>
   );
