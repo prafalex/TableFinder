@@ -32,6 +32,14 @@ interface Booking {
   email: string;
 }
 
+interface Review {
+  id: string;
+  restaurantId: string;
+  email: string;
+  title: string;
+  content: string;
+  score: number;
+}
 
 export async function getAllRestaurants() {
   const response: AxiosResponse = await axios.get(
@@ -63,7 +71,6 @@ export async function addBooking(bookingData: Omit<Booking, 'id'>): Promise<stri
   return id;
 }
 
-
 export async function getAllBookings(): Promise<Booking[]> {
   const response = await axios.get(BACKEND_URL + '/bookings.json');
   const bookings: Booking[] = [];
@@ -81,4 +88,39 @@ export async function getAllBookings(): Promise<Booking[]> {
   }
 
   return bookings;
+}
+
+export async function addReview(reviewData: Omit<Booking, 'id'>) {
+  const response = await axios.post(BACKEND_URL + "/reviews.json", reviewData);
+  const id = response.data.name;
+  return id;
+}
+
+export async function updateReview(id: string, reviewData: Omit<Booking, 'id'>) {
+  const response = await axios.put(
+    BACKEND_URL + `/reviews/${id}.json`,
+    reviewData
+  );
+}
+
+export async function deleteReview(id:string) {
+  const response = await axios.delete(BACKEND_URL + `/reviews/${id}.json`);
+}
+
+export async function getAllReviews() {
+  const response = await axios.get(BACKEND_URL + "/reviews.json");
+  const reviews = [];
+
+  for (const key in response.data) {
+    const reviewObj = {
+      id: key,
+      restaurantId: response.data[key].restaurantId,
+      email: response.data[key].email,
+      title: response.data[key].title,
+      content: response.data[key].content,
+      score: response.data[key].score,
+    };
+    reviews.push(reviewObj);
+  }
+  return reviews;
 }
