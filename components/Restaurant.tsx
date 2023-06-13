@@ -1,6 +1,24 @@
 import { Pressable, View, Text, StyleSheet, Image } from "react-native";
 import { Colours } from "../variables/colours.js";
-function Restaurant({ name, imgUrl, category, price, program, onPress }) {
+
+
+interface RestaurantProps {
+  name: string;
+  imgUrl: string;
+  category: string;
+  price: string;
+  program: string;
+  onPress: () => void;
+}
+
+const Restaurant: React.FC<RestaurantProps> = ({
+  name,
+  imgUrl,
+  category,
+  price,
+  program,
+  onPress,
+}) => {
   return (
     <View style={styles.outerContainer}>
       <Pressable
@@ -9,7 +27,7 @@ function Restaurant({ name, imgUrl, category, price, program, onPress }) {
         onPress={onPress}
       >
         <View style={styles.innerContainer}>
-          <Image source={{ uri: imgUrl }} style={styles.image}></Image>
+          <Image source={{ uri: imgUrl }} style={styles.image} />
           <Text style={styles.name}>{name} ($$$)</Text>
         </View>
         <View style={styles.detailContainer}>
@@ -19,7 +37,7 @@ function Restaurant({ name, imgUrl, category, price, program, onPress }) {
       </Pressable>
     </View>
   );
-}
+};
 
 export default Restaurant;
 
