@@ -41,6 +41,7 @@
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-add-calendar-event": "^4.2.0",
+    "react-native-appearance": "^0.3.4",
     "react-native-elements": "^3.4.3",
     "react-native-fbsdk": "^3.0.0",
     "react-native-fbsdk-next": "^11.2.1",

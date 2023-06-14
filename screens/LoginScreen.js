@@ -9,6 +9,7 @@ import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as WebBrowser from 'expo-web-browser';
 import {getAuth,FacebookAuthProvider,signInWithCredential} from 'firebase/auth';
 import app from '../util/firebase.tsx';
+import { useRoute } from '@react-navigation/native'; // Import useRoute
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -17,7 +18,10 @@ function LoginScreen(){
     const [isSigning,setIsSigning] = useState(false);
 
     const authContext = useContext(AuthContext);
-    
+
+    const route = useRoute();
+    const previousEmail = route.params?.email;
+
     const auth = getAuth(app);
 
     const [request, response, promptAsync] = Facebook.useAuthRequest({

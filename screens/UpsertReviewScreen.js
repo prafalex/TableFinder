@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Text, View, StyleSheet, TextInput, ScrollView } from "react-native";
 import { Colours } from "../variables/colours.js";
 import { AuthContext } from "../context/auth-context.tsx";
-import { RestaurantContext } from "../context/restaurant-context.js";
+import { RestaurantContext } from "../context/restaurant-context.tsx";
 import { ReviewContext } from "../context/review-context.js";
 import ReviewForm from "../components/ReviewForm.js";
 import { addReview, updateReview, deleteReview } from "../util/http.js";

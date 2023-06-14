@@ -31,8 +31,10 @@ import { Icon } from "react-native-elements";
 import RestaurantContextProvider from "./context/restaurant-context";
 import BookingContextProvider from "./context/booking-context";
 import ReviewContextProvider from "./context/review-context";
+import UserDetailsScreen from "./screens/UserDetailsScreen";
 
 type RootStackParamList = {
+  Restaurants: undefined;
   Login: undefined;  
   Signup: undefined; 
   Drawer: undefined;
@@ -105,6 +107,13 @@ function DrawerNavigator() {
           title: "My favorites",
         }}
       ></Drawer.Screen>
+
+      <Drawer.Screen
+        name="UserDetails"
+        component={UserDetailsScreen}
+        options={{
+          title: "My Details",
+        }}></Drawer.Screen>
     </Drawer.Navigator>
   );
 }
@@ -126,7 +135,7 @@ function AuthStack() {
 
 function LoggedStack() {
   return (
-    <Stack.Navigator
+    <Stack.Navigator initialRouteName="Restaurants"
       screenOptions={{
         headerStyle: { backgroundColor: Colours.primaryColor },
         headerTintColor: "white",
@@ -232,7 +241,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#202030",
     alignItems: "center",
     justifyContent: "center",
   },
