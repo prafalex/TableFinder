@@ -3,10 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
-  TouchableOpacity,
-  Alert,
-  Share,
 } from "react-native";
 import { Colours } from "../variables/colours.js";
 import { useContext, useEffect, useState } from "react";
@@ -24,11 +20,13 @@ function Review({ restaurantId, email, title, content, score, onPress }) {
         onPress={onPress}
       >
         <View style={styles.infoContainer}>
-          <Text style={styles.text}>{restaurant.name}</Text>
-          <Text style={styles.text}>Email: {email}</Text>
-          <Text style={styles.text}>Title: {title}</Text>
-          <Text style={styles.text}>Content: {content}</Text>
-          <Text style={styles.text}>Score: {score}</Text>
+          <Text style={styles.text}>Review for {restaurant.name}</Text>
+          <Text style={styles.text}>From: {email}</Text>
+          <View style={styles.contentContainer}>
+            <Text style={styles.text}>Title: {title}</Text>
+            <Text style={styles.text}>{content}</Text>
+            <Text style={styles.text}>Score: {score}</Text>
+          </View>
         </View>
       </Pressable>
     </View>
@@ -40,8 +38,6 @@ export default Review;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     padding: 16,
   },
   heading: {
@@ -50,11 +46,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   infoContainer: {
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 1,
     borderColor: "#E0E0E0",
     borderRadius: 10,
     padding: 20,
-    backgroundColor: Colours.primaryColor,
+    backgroundColor: Colours.secondaryColor,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -64,18 +62,19 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  contentContainer: {
+    backgroundColor: 'white',
+    borderRadius: 4,
+    paddingVertical: 20,
+    width: '90%'
+  },
   text: {
     fontSize: 18,
-    textAlign: "center",
     marginBottom: 10,
-    color: "white",
-  },
-  button: {
-    flex: 1,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 18,
-    marginLeft: 10,
+    color: Colours.textColor,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    paddingHorizontal: 20
   },
 });

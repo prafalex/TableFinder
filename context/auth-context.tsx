@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { updateEmail, updatePassword } from '../util/firebaseAuth'; // import the new functions
 
-interface AuthContextType {
+export interface AuthContextType {
     token: string;
     email: string;
     auth: boolean;

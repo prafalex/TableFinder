@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, TextInput, Text, View } from 'react-native';
+import { StyleSheet, TextInput, Text, View } from 'react-native';
 import { Colours } from '../../variables/colours';
+import Button from '../utils/Button';
 
 interface CredentialsInvalid {
   email: boolean;
@@ -94,11 +95,9 @@ const UserForm: React.FC<UserFormProps> = ({
           </View>
         )}
 
-        <View style={styles.button}>
-          <Pressable onPress={submitHandler}>
-            <Text style={styles.textButton}>{isLogin ? 'Log In' : 'Sign Up'}</Text>
-          </Pressable>
-        </View>
+        <Button style={{'button': styles.button, 'buttonText': styles.buttonText}} onPress={submitHandler}>
+           {isLogin ? 'Log In' : 'Sign Up'}
+        </Button>
       </View>
     </View>
   );
@@ -121,29 +120,16 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   labelInvalid: {
-    color: Colours.errorSecondary,
+    color: Colours.errorMain,
   },
   inputContainer: {
     marginVertical: 8,
   },
   button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-    width: 200,
-    height: 50,
-    borderRadius: 7,
     backgroundColor: Colours.primaryColor,
   },
-  textButton: {
-    alignSelf: 'center',
-    paddingHorizontal: 70,
-    paddingVertical: 10,
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'white',
+  buttonText: {
+    color: Colours.textSecondaryColor,
   },
   form: {
     alignItems: 'center',

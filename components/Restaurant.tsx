@@ -28,7 +28,7 @@ const Restaurant: React.FC<RestaurantProps> = ({
       >
         <View style={styles.innerContainer}>
           <Image source={{ uri: imgUrl }} style={styles.image} />
-          <Text style={styles.name}>{name} ($$$)</Text>
+          <Text style={styles.name}>{name}</Text>
         </View>
         <View style={styles.detailContainer}>
           <Text style={styles.detail}>Category: {category}</Text>
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     flexDirection: "row",
     fontSize: 16,
+    color: Colours.textColor
   },
   image: {
     width: "100%",
@@ -79,5 +80,6 @@ const styles = StyleSheet.create({
   detail: {
     marginHorizontal: 4,
     fontSize: 12,
+    color: Colours.textColor
   },
 });

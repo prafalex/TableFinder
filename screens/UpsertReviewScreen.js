@@ -5,7 +5,7 @@ import { AuthContext } from "../context/auth-context.tsx";
 import { RestaurantContext } from "../context/restaurant-context.tsx";
 import { ReviewContext } from "../context/review-context.js";
 import ReviewForm from "../components/ReviewForm.js";
-import { addReview, updateReview, deleteReview } from "../util/http.js";
+import { addReview, updateReview, deleteReview } from "../util/http";
 
 function UpsertReviewScreen({ route, navigation }) {
   const authContext = useContext(AuthContext);
@@ -85,5 +85,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     margin: 20,
     fontSize: 24,
+    color: Colours.textColor
   },
 });

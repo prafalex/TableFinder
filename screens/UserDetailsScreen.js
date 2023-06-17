@@ -68,19 +68,19 @@ function UserDetailsScreen() {
           style={styles.button}
           onPress={() => setChangeEmailModalVisible(true)}
         >
-          <Ionicons name="mail-outline" size={24} color="#FFF" />
+          <Ionicons name="mail-outline" size={24} color={Colours.textSecondaryColor} />
           <Text style={styles.buttonText}>Change Email</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
           onPress={() => setChangePasswordModalVisible(true)}
         >
-          <Ionicons name="lock-closed-outline" size={24} color="#FFF" />
+          <Ionicons name="lock-closed-outline" size={24} color={Colours.textSecondaryColor} />
           <Text style={styles.buttonText}>Change Password</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={authContext.logout}>
           <View style={styles.iconContainer}>
-            <Ionicons name="log-out-outline" size={24} color="#FFF" />
+            <Ionicons name="log-out-outline" size={24} color={Colours.textSecondaryColor} />
           </View>
           <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     width: Dimensions.get("window").width * 0.9,
-    backgroundColor: Colours.primaryColor,
+    backgroundColor: Colours.secondaryColor,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -173,13 +173,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     marginBottom: 10,
-    color: "white",
+    color: Colours.textColor,
+    fontWeight: 'bold',
   },
   button: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Colours.backgroundColor,
+    backgroundColor: Colours.primaryColor,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   buttonText: {
-    color: "white",
+    color: Colours.textSecondaryColor,
     fontSize: 18,
     marginLeft: 10,
   },

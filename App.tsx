@@ -1,54 +1,56 @@
-import "react-native-gesture-handler";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
-import SignupScreen from "./screens/SignupScreen";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginScreen from "./screens/LoginScreen";
-import AuthContextProvider, { AuthContext } from "./context/auth-context";
-import React, { useContext, useEffect, useState } from "react";
-import { Colours } from "./variables/colours.js";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import AppLoading from "expo-app-loading";
-import RestaurantsScreen from "./screens/RestaurantsScreen";
-import RestaurantDetailsScreen from "./screens/RestaurantDetailsScreen";
-import BookingScreen, { BookingScreenProps,BookingInfo } from "./screens/BookingScreen";
-import BookingConfirmationScreen from "./screens/BookingConfirmationScreen";
-import VideoPresentationScreen from "./screens/VideoPresentationScreen";
-import UpsertReviewScreen from "./screens/UpsertReviewScreen";
-import ReviewsScreen from "./screens/ReviewsScreen";
-import { Provider } from "react-redux";
-import { store } from "./redux/storeRedux";
+import 'react-native-gesture-handler';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet } from 'react-native';
+import SignupScreen from './screens/SignupScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './screens/LoginScreen';
+import AuthContextProvider, { AuthContext } from './context/auth-context';
+import React, { useContext, useEffect, useState } from 'react';
+import { Colours } from './variables/colours.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppLoading from 'expo-app-loading';
+import RestaurantsScreen from './screens/RestaurantsScreen';
+import RestaurantDetailsScreen from './screens/RestaurantDetailsScreen';
+import BookingScreen, {
+  BookingScreenProps,
+  BookingInfo,
+} from './screens/BookingScreen';
+import BookingConfirmationScreen from './screens/BookingConfirmationScreen';
+import VideoPresentationScreen from './screens/VideoPresentationScreen';
+import UpsertReviewScreen from './screens/UpsertReviewScreen';
+import ReviewsScreen from './screens/ReviewsScreen';
+import { Provider } from 'react-redux';
+import { store } from './redux/storeRedux';
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
   createDrawerNavigator,
-} from "@react-navigation/drawer";
-import BookingsScreen from "./screens/BookingsScreen";
-import FavoritesScreen from "./screens/FavoritesScreen";
-import { Icon } from "react-native-elements";
-import RestaurantContextProvider from "./context/restaurant-context";
-import BookingContextProvider from "./context/booking-context";
-import ReviewContextProvider from "./context/review-context";
-import UserDetailsScreen from "./screens/UserDetailsScreen";
+} from '@react-navigation/drawer';
+import BookingsScreen from './screens/BookingsScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
+import { Icon } from 'react-native-elements';
+import RestaurantContextProvider from './context/restaurant-context';
+import BookingContextProvider from './context/booking-context';
+import ReviewContextProvider from './context/review-context';
+import UserDetailsScreen from './screens/UserDetailsScreen';
 
 type RootStackParamList = {
   Restaurants: undefined;
-  Login: undefined;  
-  Signup: undefined; 
+  Login: undefined;
+  Signup: undefined;
   Drawer: undefined;
   RestaurantDetailsScreen: { restaurantId: string };
-  BookingPage: {restaurantId: string };
-  BookingConfirmation: { bookingInfo?: BookingInfo};
+  BookingPage: { restaurantId: string };
+  BookingConfirmation: { bookingInfo?: BookingInfo };
   VideoPresentation: undefined;
+  Reviews: undefined;
+  UpsertReviewScreen: undefined;
 };
-
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator();
-
-
 
 function DrawerNavigator() {
   const authContext = useContext(AuthContext);
@@ -56,14 +58,14 @@ function DrawerNavigator() {
     <Drawer.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: Colours.primaryColor },
-        headerTintColor: "white",
+        headerTintColor: 'white',
         sceneContainerStyle: { backgroundColor: Colours.backgroundColor },
-        drawerStyle: { backgroundColor: Colours.backgroundColor },
-        drawerInactiveTintColor: "white",
+        drawerStyle: { backgroundColor: Colours.primaryColor },
+        drawerInactiveTintColor: 'white',
         drawerActiveTintColor: Colours.primaryColor,
         drawerActiveBackgroundColor: Colours.secondaryColor,
       }}
-      drawerContent={(props) => {
+      drawerContent={props => {
         return (
           <DrawerContentScrollView {...props}>
             <DrawerItemList {...props} />
@@ -80,7 +82,7 @@ function DrawerNavigator() {
         name="Restaurants"
         component={RestaurantsScreen}
         options={{
-          title: "All restaurants",
+          title: 'All restaurants',
         }}
       ></Drawer.Screen>
 
@@ -88,7 +90,7 @@ function DrawerNavigator() {
         name="Bookings"
         component={BookingsScreen}
         options={{
-          title: "My bookings",
+          title: 'My bookings',
         }}
       ></Drawer.Screen>
 
@@ -96,7 +98,7 @@ function DrawerNavigator() {
         name="Reviews"
         component={ReviewsScreen}
         options={{
-          title: "My reviews",
+          title: 'My reviews',
         }}
       ></Drawer.Screen>
 
@@ -104,7 +106,7 @@ function DrawerNavigator() {
         name="Favorites"
         component={FavoritesScreen}
         options={{
-          title: "My favorites",
+          title: 'My favorites',
         }}
       ></Drawer.Screen>
 
@@ -112,8 +114,9 @@ function DrawerNavigator() {
         name="UserDetails"
         component={UserDetailsScreen}
         options={{
-          title: "My Details",
-        }}></Drawer.Screen>
+          title: 'My Details',
+        }}
+      ></Drawer.Screen>
     </Drawer.Navigator>
   );
 }
@@ -123,7 +126,7 @@ function AuthStack() {
     <Stack.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: Colours.primaryColor },
-        headerTintColor: "white",
+        headerTintColor: 'white',
         contentStyle: { backgroundColor: Colours.backgroundColor },
       }}
     >
@@ -135,10 +138,11 @@ function AuthStack() {
 
 function LoggedStack() {
   return (
-    <Stack.Navigator initialRouteName="Restaurants"
+    <Stack.Navigator
+      initialRouteName="Restaurants"
       screenOptions={{
         headerStyle: { backgroundColor: Colours.primaryColor },
-        headerTintColor: "white",
+        headerTintColor: 'white',
         contentStyle: { backgroundColor: Colours.backgroundColor },
       }}
     >
@@ -160,29 +164,28 @@ function LoggedStack() {
       <Stack.Screen
         name="BookingConfirmation"
         component={BookingConfirmationScreen}
-        options={{ title: "Booking Confirmation", headerLeft: () => null }}
+        options={{ title: 'Booking Confirmation', headerLeft: () => null }}
       />
       <Stack.Screen
         name="VideoPresentation"
         component={VideoPresentationScreen}
-        options={{ title: "Video presentation" }}
+        options={{ title: 'Video presentation' }}
       />
 
       <Stack.Screen
         name="UpsertReviewScreen"
         component={UpsertReviewScreen}
-        options={{ title: "UpsertReview" }}
+        options={{ title: 'UpsertReview' }}
       />
 
       <Stack.Screen
         name="Reviews"
         component={ReviewsScreen}
-        options={{ title: "Reviews" }}
+        options={{ title: 'Reviews' }}
       />
     </Stack.Navigator>
   );
 }
-
 
 function Nav() {
   const authContext = useContext(AuthContext);
@@ -210,10 +213,10 @@ function Root() {
 
   useEffect(() => {
     async function getToken() {
-      const storedToken = await AsyncStorage.getItem("token");
-      const storedEmail = await AsyncStorage.getItem("email");
+      const storedToken = await AsyncStorage.getItem('token');
+      const storedEmail = await AsyncStorage.getItem('email');
       if (storedToken) {
-        authContext.authenticate(storedToken ?? "", storedEmail ?? "");
+        authContext.authenticate(storedToken ?? '', storedEmail ?? '');
       }
       setIsLoading(false);
     }
@@ -226,7 +229,7 @@ function Root() {
 
   return <Nav />;
 }
-export {RootStackParamList};
+export { RootStackParamList };
 export default function App() {
   return (
     <>
@@ -236,13 +239,13 @@ export default function App() {
       </AuthContextProvider>
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#202030",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#202030',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

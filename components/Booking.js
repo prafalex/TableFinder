@@ -82,7 +82,7 @@ function Booking({ restaurantId, people, date, time }) {
               : () => addEventToCalendar(restaurant.name, date, time)
           }
         >
-          <Ionicons name="calendar-outline" size={24} color="white" />
+          <Ionicons name="calendar-outline" size={24} color={Colours.textSecondaryColor} />
           <Text style={styles.buttonText}>
             {isAddedToCalendar
               ? "Booking added to Calendar"
@@ -90,7 +90,7 @@ function Booking({ restaurantId, people, date, time }) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={shareWithExpoSharing}>
-          <Ionicons name="share-outline" size={24} color="white" />
+          <Ionicons name="share-outline" size={24} color={Colours.textSecondaryColor} />
           <Text style={styles.buttonText}>Share</Text>
         </TouchableOpacity>
       </View>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     borderColor: "#E0E0E0",
     borderRadius: 10,
     padding: 20,
-    backgroundColor: Colours.primaryColor,
+    backgroundColor: Colours.secondaryColor,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -131,13 +131,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     marginBottom: 10,
-    color: "white",
+    color: Colours.textColor,
   },
   button: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Colours.secondaryColor,
+    backgroundColor: Colours.primaryColor,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   buttonText: {
-    color: "white",
+    color: Colours.textSecondaryColor,
     fontSize: 18,
     marginLeft: 10,
   },

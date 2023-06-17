@@ -5,6 +5,7 @@ import UserForm, { Credentials,CredentialsInvalid } from './UserForm';
 import { Colours } from '../../variables/colours.js';
 import { RootStackParamList } from '../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import Button from '../utils/Button';
 
 interface AuthContentProps {
   isLogin: boolean;
@@ -67,19 +68,13 @@ const AuthContent: React.FC<AuthContentProps> = ({
           onSubmit={submitHandler}
           credentialsInvalid={credentialsInvalid}
         />
-        <View style={styles.button}>
-          <Pressable onPress={switchAuthModeHandler}>
-            <Text style={styles.textButton}>
-              {isLogin ? 'Create a new user' : 'Log in instead'}
-            </Text>
-          </Pressable>
-        </View>
+        <Button style= {{'button': styles.button, 'buttonText': styles.buttonText}} onPress={switchAuthModeHandler}>
+          {isLogin ? 'Create a new user' : 'Log in instead'}
+        </Button>
         {isLogin && (
-          <View style={styles.button}>
-            <Pressable onPress={facebookLogin}>
-              <Text style={styles.textButton}>Sign in with Facebook</Text>
-            </Pressable>
-          </View>
+          <Button style= {{'button': styles.button, 'buttonText': styles.buttonText}} onPress={facebookLogin}>
+            Sign in with Facebook
+          </Button>
         )}
       </View>
     </View>
@@ -90,22 +85,10 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-    width: 200,
-    height: 50,
-    borderRadius: 7,
     backgroundColor: Colours.secondaryColor,
   },
-  textButton: {
-    alignSelf: 'center',
-    paddingVertical: 10,
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'white',
+  buttonText: {
+    color: Colours.textColor
   },
   form: {
     alignItems: 'center',

@@ -1,9 +1,10 @@
 
 export const Colours = {
-    primaryColor: '#202030',
-    secondaryColor: '#39304A',
-    textColor: '#610440',
-    backgroundColor: '#B0A990',
-    errorMain: '#fcdcbf',
-    errorSecondary: '#f37c13'
-}
+    primaryColor: '#8B5557',
+    secondaryColor: '#EACDAE',
+    buttonColor: '#5AB1BB', 
+    textColor: '#2C3A33',
+    textSecondaryColor: '#FEEFE5',
+    backgroundColor: '#F5EFED',
+    errorMain: '#d7263d'
+} 

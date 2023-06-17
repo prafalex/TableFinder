@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, TextInput, Alert } from "react-native";
 import { Colours } from "../variables/colours.js";
-import Button from "../components/Button.js";
+import Button from "./utils/Button.js";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -74,15 +74,15 @@ function ReviewForm({
         ></TextInput>
       </View>
       <View style={styles.buttonContainer}>
-        <Button style={styles.button} onPress={cancelHandler}>
+        <Button style={{'button': styles.button, 'buttonText': styles.buttonText}} onPress={cancelHandler}>
           Cancel
         </Button>
-        <Button style={styles.button} onPress={submitHandler}>
+        <Button style={{'button': styles.button, 'buttonText': styles.buttonText}} onPress={submitHandler}>
           {isNewReview ? "Add" : "Edit"}
         </Button>
         {!isNewReview && (
-          <Button style={styles.deleteButton} onPress={deleteHandler}>
-            <Ionicons name="trash" size={20} color={Colours.errorMain} />
+          <Button style={{'button': styles.deleteButton}} onPress={deleteHandler}>
+            <Ionicons name="trash" size={20} color={Colours.textSecondaryColor} />
           </Button>
         )}
       </View>
@@ -104,15 +104,15 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
     fontSize: 16,
-    color: Colours.primaryColor,
+    color: Colours.textColor,
     marginBottom: 4,
   },
   input: {
-    backgroundColor: Colours.backgroundColor,
+    backgroundColor: 'white',
     padding: 6,
-    borderRadius: 6,
+    borderRadius: 4,
     fontSize: 18,
-    color: Colours.primaryColor,
+    color: Colours.textColor,
   },
   contentInput: {
     minHeight: 150,
@@ -126,10 +126,16 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   button: {
-    minWidth: 120,
+    backgroundColor: Colours.primaryColor,
+    width: 120,
     marginHorizontal: 8,
+  },
+  buttonText: {
+    color: Colours.textSecondaryColor
   },
   deleteButton: {
+    width: 70,
+    backgroundColor: Colours.errorMain,
     marginHorizontal: 8,
-  },
+  }
 });
