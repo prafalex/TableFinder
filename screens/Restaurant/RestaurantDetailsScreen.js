@@ -1,24 +1,14 @@
-import { useContext, useEffect, useState, useLayoutEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-} from 'react-native';
+import { useContext, useEffect, useLayoutEffect } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { Colours } from '../../variables/colours';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 import { addFavorite, removeFavorite } from '../../redux/storeRedux';
 import { AuthContext } from '../../context/auth-context';
-import { Ionicons } from '@expo/vector-icons';
 import { RestaurantContext } from '../../context/restaurant-context';
 import IconButton from '../../components/utils/IconButton';
 import Button from '../../components/utils/Button';
-
 function RestaurantDetailsScreen({ route, navigation }) {
   const authContext = useContext(AuthContext);
-
   const favoriteRestaurants = useSelector(
     state => state.favoriteRestaurants[authContext.email] || []
   );
@@ -26,8 +16,12 @@ function RestaurantDetailsScreen({ route, navigation }) {
   const restaurantIsFavorite = favoriteRestaurants.includes(
     route.params.restaurantId
   );
-
   const dispatch = useDispatch();
+  
+  const scores = useSelector((state) => state.restaurantScore[route.params.restaurantId] || []);
+  const value = 0;
+  const restaurantScore = scores.reduce((acc, currentValue) => acc + currentValue, value) / scores.length;
+  
 
   function favoriteToggler() {
     if (restaurantIsFavorite) {
@@ -47,7 +41,6 @@ function RestaurantDetailsScreen({ route, navigation }) {
     }
   }
 
-  function calculateScore() {}
   const restaurantId = route.params.restaurantId;
   const restaurantContext = useContext(RestaurantContext);
   const selectedRestaurant = restaurantContext.getRestaurant(restaurantId);
@@ -95,7 +88,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
         <IconButton
           icon="star"
           color={Colours.favoriteColor}
-          text="Score"
+          text={restaurantScore}
           onPress={() =>
             navigation.navigate('Reviews', {
               restaurantId: selectedRestaurant.id,
@@ -124,7 +117,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
       </View>
       <View style={styles.buttonContainer}>
         <Button
-          icon='restaurant-outline'
+          icon="restaurant-outline"
           style={{ button: styles.button, buttonText: styles.buttonText }}
           onPress={() =>
             navigation.navigate('BookingPage', {
@@ -135,7 +128,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
           Book a Table
         </Button>
         <Button
-          icon='create-outline'
+          icon="create-outline"
           style={{ button: styles.button, buttonText: styles.buttonText }}
           onPress={() =>
             navigation.navigate('UpsertReviewScreen', {

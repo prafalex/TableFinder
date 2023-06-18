@@ -1,8 +1,10 @@
 import { Pressable, View, Text, StyleSheet, Image } from "react-native";
 import { Colours } from "../variables/colours.js";
-
+import { useSelector, useDispatch } from 'react-redux';
+import IconButton from "./utils/IconButton.js";
 
 interface RestaurantProps {
+  id: string,
   name: string;
   imgUrl: string;
   category: string;
@@ -12,13 +14,18 @@ interface RestaurantProps {
 }
 
 const Restaurant: React.FC<RestaurantProps> = ({
+  id,
   name,
   imgUrl,
   category,
-  price,
   program,
   onPress,
 }) => {
+
+  const scores = useSelector((state) => (state as any).restaurantScore[id] || []);
+  const value = 0;
+  const restaurantScore = scores.reduce((acc:number, currentValue:number) => acc + currentValue, value) / scores.length;
+
   return (
     <View style={styles.outerContainer}>
       <Pressable
@@ -32,7 +39,12 @@ const Restaurant: React.FC<RestaurantProps> = ({
         </View>
         <View style={styles.detailContainer}>
           <Text style={styles.detail}>Category: {category}</Text>
-          <Text style={styles.detail}>Score</Text>
+          <IconButton
+            icon="star"
+            color={Colours.favoriteColor}
+            text={restaurantScore}
+            onPress={()=> {}}
+        ></IconButton>
         </View>
       </Pressable>
     </View>
@@ -45,7 +57,7 @@ const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
     margin: 16,
-    height: 150,
+    height: 180,
     borderRadius: 8,
     elevation: 4,
     backgroundColor: Colours.secondaryColor,
@@ -56,7 +68,6 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     flex: 1,
-    paddingBottom: 8,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -75,7 +86,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    padding: 8,
+    margin: 8,
   },
   detail: {
     marginHorizontal: 4,

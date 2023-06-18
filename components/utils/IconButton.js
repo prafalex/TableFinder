@@ -5,7 +5,7 @@ function IconButton({icon, color, text, onPress}) {
     return(
     <TouchableOpacity onPress={onPress} style={styles.container}>
         <Ionicons name={icon} size={24} color={color}></Ionicons>
-        <Text style={styles.text}>{text}</Text>
+        <Text style={[styles.text, color={color}]}>{text}</Text>
     </TouchableOpacity>
     ); 
 }
@@ -19,6 +19,7 @@ const styles =StyleSheet.create({
     },
     text: {
         alignSelf: 'center',
+        fontWeight: "bold",
         margin: 2
     }
 });

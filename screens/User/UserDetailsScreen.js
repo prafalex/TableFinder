@@ -3,12 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   Dimensions,
-  TextInput,
   Alert,
-  Keyboard,
-  useColorScheme,
 } from 'react-native';
 import { Colours } from '../../variables/colours';
 import { useContext } from 'react';

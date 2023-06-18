@@ -9,6 +9,7 @@ import { Colours } from "../variables/colours.js";
 import { useContext, useEffect, useState } from "react";
 import * as Calendar from "expo-calendar";
 import { RestaurantContext } from "../context/restaurant-context";
+import Button from "./utils/Button.js";
 
 function Booking({ restaurantId, people, date, time }) {
   const restaurantContext = useContext(RestaurantContext);
@@ -131,23 +132,10 @@ const styles = StyleSheet.create({
     color: Colours.textColor,
   },
   button: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: Colours.primaryColor,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    marginTop: 20,
-    elevation: 5,
-    shadowOffset: { width: 0, height: 2 },
-    shadowColor: "black",
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
   },
   buttonText: {
     color: Colours.textSecondaryColor,
-    fontSize: 18,
-    marginLeft: 10,
+    marginHorizontal: 6,
   },
 });

@@ -1,15 +1,15 @@
-import { createContext } from "react";
-import { useContext, useEffect, useState } from "react";
+import { createContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 export const ReviewContext = createContext({
   reviews: [],
-  getReviews: (reviews) => {},
-  addReview: (review) => {},
+  getReviews: reviews => {},
+  addReview: review => {},
   updateReview: (id, review) => {},
-  deleteReview: (id) => {},
-  getReview: (id) => {},
-  getReviewsByRestaurant: (restaurantId) => {},
-  getReviewsByEmail: (email) => {},
+  deleteReview: id => {},
+  getReview: id => {},
+  getReviewsByRestaurant: restaurantId => {},
+  getReviewsByEmail: email => {},
 });
 
 function ReviewContextProvider({ children }) {
@@ -20,12 +20,12 @@ function ReviewContextProvider({ children }) {
   }
 
   function addReview(review) {
-    setReviews((currentReviews) => [...currentReviews, review]);
+    setReviews(currentReviews => [...currentReviews, review]);;
   }
 
   function updateReview(id, review) {
     const selectedReview = getReview(id);
-    const selectedReviewIndex = reviews.findIndex((review) => review.id == id);
+    const selectedReviewIndex = reviews.findIndex(review => review.id == id);
     const updatedReview = { ...selectedReview, ...review };
     const updatedReviews = [...reviews];
     updatedReviews[selectedReviewIndex] = updatedReview;
@@ -33,27 +33,28 @@ function ReviewContextProvider({ children }) {
   }
 
   function deleteReview(id) {
-    const filteredReviews = reviews.filter((review) => review.id != id);
+    const filteredReviews = reviews.filter(review => review.id != id);
     setReviews(filteredReviews);
   }
 
   function getReview(id) {
-    const selectedReview = reviews.find((review) => review.id === id);
+    const selectedReview = reviews.find(review => review.id === id);
     return selectedReview;
   }
 
   function getReviewsByRestaurant(restaurantId) {
     const filteredReviews = reviews.filter(
-      (review) => review.restaurantId == restaurantId
+      review => review.restaurantId == restaurantId
     );
 
     return filteredReviews;
   }
 
   function getReviewsByEmail(email) {
-    const filteredReviews = reviews.filter((review) => review.email == email);
+    const filteredReviews = reviews.filter(review => review.email == email);
     return filteredReviews;
   }
+
 
   const value = {
     reviews: reviews,

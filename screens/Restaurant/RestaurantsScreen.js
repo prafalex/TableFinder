@@ -13,6 +13,7 @@ function RestaurantsScreen({ navigation }) {
     }
     const item = itemData.item;
     const restaurantProps = {
+      id: item.id,
       name: item.name,
       imgUrl: item.restaurant_img,
       category: item.category,

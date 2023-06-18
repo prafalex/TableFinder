@@ -6,6 +6,8 @@ import { RestaurantContext } from "../../context/restaurant-context";
 import { ReviewContext } from "../../context/review-context";
 import ReviewForm from "../../components/ReviewForm";
 import { addReview, updateReview, deleteReview } from "../../util/http";
+import { useSelector, useDispatch } from 'react-redux';
+import {addScore, removeScore} from '../../redux/score';
 
 function UpsertReviewScreen({ route, navigation }) {
   const authContext = useContext(AuthContext);
@@ -19,16 +21,23 @@ function UpsertReviewScreen({ route, navigation }) {
 
   const selectedReview = reviewContext.getReview(reviewId);
   const restaurant = restaurantContext.getRestaurant(restaurantId);
-
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     navigation.setOptions({
       title: isNewReview ? "New review" : "Edit review",
     });
   }, [isNewReview, restaurant, navigation]);
 
-  async function deleteHandler() {
+  async function deleteHandler(reviewData) {
     await deleteReview(reviewId);
     reviewContext.deleteReview(reviewId);
+    dispatch(
+      removeScore({
+        restaurantId: restaurantId,
+        score: reviewData.score
+      })
+    );
     navigation.goBack();
   }
   function cancelHandler() {
@@ -44,10 +53,27 @@ function UpsertReviewScreen({ route, navigation }) {
         email,
         ...reviewData,
       });
+      dispatch(
+        addScore({
+          restaurantId: restaurantId,
+          score: reviewData.score
+        })
+      );
     } else {
       await updateReview(reviewId, { ...selectedReview, ...reviewData });
       reviewContext.updateReview(reviewId, reviewData);
+      dispatch(
+        removeScore({
+          restaurantId: restaurantId,
+          score: reviewData.score
+        }),
+        addScore({
+          restaurantId: restaurantId,
+          score: reviewData.score
+        })
+      );
     }
+    
     navigation.goBack();
   }
 

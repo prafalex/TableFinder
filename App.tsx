@@ -183,16 +183,16 @@ function Nav() {
 
   return (
     <Provider store={store}>
-      <ReviewContextProvider>
-        <RestaurantContextProvider>
-          <BookingContextProvider>
-            <NavigationContainer>
-              {!authContext.auth && <AuthStack />}
-              {authContext.auth && <LoggedStack />}
-            </NavigationContainer>
-          </BookingContextProvider>
-        </RestaurantContextProvider>
-      </ReviewContextProvider>
+        <ReviewContextProvider>
+          <RestaurantContextProvider>
+            <BookingContextProvider>
+              <NavigationContainer>
+                {!authContext.auth && <AuthStack />}
+                {authContext.auth && <LoggedStack />}
+              </NavigationContainer>
+            </BookingContextProvider>
+          </RestaurantContextProvider>
+        </ReviewContextProvider>
     </Provider>
   );
 }

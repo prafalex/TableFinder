@@ -17,7 +17,7 @@ interface Restaurant {
   description: string
   category: string
   phone_number: string
-  price: string
+  score: number
   program: string
   restaurant_img: string
   menu_items: string
@@ -55,7 +55,7 @@ export async function getAllRestaurants() {
       description: response.data[key].description,
       category: response.data[key].category,
       phone_number: response.data[key].phone_number,
-      price: response.data[key].price,
+      score: response.data[key].score,
       program: response.data[key].program,
       restaurant_img: response.data[key].restaurant_img,
       menu_items: response.data[key].menu_items,
