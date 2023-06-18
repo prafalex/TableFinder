@@ -1,25 +1,25 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
-import SignupScreen from './screens/SignupScreen';
+import { Text, StyleSheet } from 'react-native';
+import SignupScreen from './screens/User/SignupScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from './screens/LoginScreen';
+import LoginScreen from './screens/User/LoginScreen';
 import AuthContextProvider, { AuthContext } from './context/auth-context';
 import React, { useContext, useEffect, useState } from 'react';
 import { Colours } from './variables/colours.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
-import RestaurantsScreen from './screens/RestaurantsScreen';
-import RestaurantDetailsScreen from './screens/RestaurantDetailsScreen';
+import RestaurantsScreen from './screens/Restaurant/RestaurantsScreen';
+import RestaurantDetailsScreen from './screens/Restaurant/RestaurantDetailsScreen';
 import BookingScreen, {
   BookingScreenProps,
   BookingInfo,
-} from './screens/BookingScreen';
-import BookingConfirmationScreen from './screens/BookingConfirmationScreen';
-import VideoPresentationScreen from './screens/VideoPresentationScreen';
-import UpsertReviewScreen from './screens/UpsertReviewScreen';
-import ReviewsScreen from './screens/ReviewsScreen';
+} from './screens/Booking/BookingScreen';
+import BookingConfirmationScreen from './screens/Booking/BookingConfirmationScreen';
+import VideoPresentationScreen from './screens/Restaurant/VideoPresentationScreen';
+import UpsertReviewScreen from './screens/Review/UpsertReviewScreen';
+import ReviewsScreen from './screens/Review/ReviewsScreen';
 import { Provider } from 'react-redux';
 import { store } from './redux/storeRedux';
 import {
@@ -28,13 +28,12 @@ import {
   DrawerItemList,
   createDrawerNavigator,
 } from '@react-navigation/drawer';
-import BookingsScreen from './screens/BookingsScreen';
-import FavoritesScreen from './screens/FavoritesScreen';
+import BookingsScreen from './screens/Booking/BookingsScreen';
 import { Icon } from 'react-native-elements';
 import RestaurantContextProvider from './context/restaurant-context';
 import BookingContextProvider from './context/booking-context';
 import ReviewContextProvider from './context/review-context';
-import UserDetailsScreen from './screens/UserDetailsScreen';
+import UserDetailsScreen from './screens/User/UserDetailsScreen';
 
 type RootStackParamList = {
   Restaurants: undefined;
@@ -103,18 +102,10 @@ function DrawerNavigator() {
       ></Drawer.Screen>
 
       <Drawer.Screen
-        name="Favorites"
-        component={FavoritesScreen}
-        options={{
-          title: 'My favorites',
-        }}
-      ></Drawer.Screen>
-
-      <Drawer.Screen
         name="UserDetails"
         component={UserDetailsScreen}
         options={{
-          title: 'My Details',
+          title: 'My details',
         }}
       ></Drawer.Screen>
     </Drawer.Navigator>
@@ -126,7 +117,7 @@ function AuthStack() {
     <Stack.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: Colours.primaryColor },
-        headerTintColor: 'white',
+        headerTintColor: Colours.textSecondaryColor,
         contentStyle: { backgroundColor: Colours.backgroundColor },
       }}
     >
@@ -142,7 +133,7 @@ function LoggedStack() {
       initialRouteName="Restaurants"
       screenOptions={{
         headerStyle: { backgroundColor: Colours.primaryColor },
-        headerTintColor: 'white',
+        headerTintColor: Colours.textSecondaryColor,
         contentStyle: { backgroundColor: Colours.backgroundColor },
       }}
     >

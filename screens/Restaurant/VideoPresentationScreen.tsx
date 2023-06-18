@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet,Alert } from 'react-native';
-import { Colours } from '../variables/colours.js';
+import { Colours } from '../../variables/colours';
 import { Video,  } from 'expo-av';
-import {storage} from '../util/firebase';
+import {storage} from '../../util/firebase';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../../App';
 import { ref, getDownloadURL,StorageReference } from 'firebase/storage';
+import { RestaurantContext } from '../../context/restaurant-context';
 
 type VideoPresentationScreenRouteProp = RouteProp<RootStackParamList, 'VideoPresentation'>;
 
@@ -27,11 +28,12 @@ const VideoPresentationScreen = ({ route }: { route: VideoPresentationScreenRout
   }, []);
 
   const { restaurantId } = route.params ?? { restaurantId: '' };
-
+  const restaurantContext = useContext(RestaurantContext);
+  const restaurant = restaurantContext.getRestaurant(restaurantId);
 return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
-        <Text style={styles.text}>Video presentation for {restaurantId}</Text>
+        <Text style={styles.text}>Video presentation for {restaurant?.name}</Text>
         {videoUrl && (<Video
         source={{ uri: videoUrl }}
         rate={1.0}
@@ -49,7 +51,6 @@ return (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
   },
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
     borderRadius: 10,
     padding: 20,
-    backgroundColor: Colours.primaryColor,
+    backgroundColor: Colours.secondaryColor,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -77,28 +78,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     marginBottom: 10,
-    color: 'white',
-  },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colours.secondaryColor,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    marginTop: 20,
-    elevation: 5,
-    shadowOffset: { width: 0, height: 2 },
-    shadowColor: 'black',
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    marginLeft: 10,
-  },
+    color: Colours.textColor,
+  }
 });
 
 export default VideoPresentationScreen;

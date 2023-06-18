@@ -1,8 +1,8 @@
-import AuthContent from '../components/Auth/AuthContent';
-import {UserCreate} from '../util/firebaseAuth';
+import AuthContent from '../../components/Auth/AuthContent';
+import {UserCreate} from '../../util/firebaseAuth';
 import { StyleSheet, Text, View,ActivityIndicator,Alert } from 'react-native';
 import { useState,useContext } from 'react';
-import { AuthContext } from '../context/auth-context';
+import { AuthContext } from '../../context/auth-context';
 
 function SignupScreen(){
 

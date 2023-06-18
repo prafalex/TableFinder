@@ -7,12 +7,12 @@ import {
     Dimensions,
     TextInput
 } from "react-native";
-import { Colours } from "../variables/colours.js";
+import { Colours } from "../../variables/colours";
 import { useContext } from "react";
-import { AuthContext } from "../context/auth-context";
+import { AuthContext } from "../../context/auth-context";
 import { Ionicons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
-import {UserLogin} from "../util/firebaseAuth.tsx"
+import {UserLogin} from "../../util/firebaseAuth";
 
 function UserDetailsScreen() {
     const authContext = useContext(AuthContext);

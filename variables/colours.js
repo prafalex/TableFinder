@@ -6,5 +6,6 @@ export const Colours = {
     textColor: '#2C3A33',
     textSecondaryColor: '#FEEFE5',
     backgroundColor: '#F5EFED',
+    favoriteColor: "#AA9D0E",
     errorMain: '#d7263d'
 } 

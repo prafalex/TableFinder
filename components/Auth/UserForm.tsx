@@ -95,7 +95,7 @@ const UserForm: React.FC<UserFormProps> = ({
           </View>
         )}
 
-        <Button style={{'button': styles.button, 'buttonText': styles.buttonText}} onPress={submitHandler}>
+        <Button icon= '' style={{'button': styles.button, 'buttonText': styles.buttonText}} onPress={submitHandler}>
            {isLogin ? 'Log In' : 'Sign Up'}
         </Button>
       </View>

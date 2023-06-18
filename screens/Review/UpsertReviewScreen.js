@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Text, View, StyleSheet, TextInput, ScrollView } from "react-native";
-import { Colours } from "../variables/colours.js";
-import { AuthContext } from "../context/auth-context.tsx";
-import { RestaurantContext } from "../context/restaurant-context.tsx";
-import { ReviewContext } from "../context/review-context.js";
-import ReviewForm from "../components/ReviewForm.js";
-import { addReview, updateReview, deleteReview } from "../util/http";
+import { Colours } from "../../variables/colours";
+import { AuthContext } from "../../context/auth-context";
+import { RestaurantContext } from "../../context/restaurant-context";
+import { ReviewContext } from "../../context/review-context";
+import ReviewForm from "../../components/ReviewForm";
+import { addReview, updateReview, deleteReview } from "../../util/http";
 
 function UpsertReviewScreen({ route, navigation }) {
   const authContext = useContext(AuthContext);

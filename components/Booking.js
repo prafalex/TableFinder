@@ -1,16 +1,12 @@
 import {
-  Pressable,
   View,
   Text,
   StyleSheet,
-  Image,
-  TouchableOpacity,
   Alert,
   Share,
 } from "react-native";
 import { Colours } from "../variables/colours.js";
 import { useContext, useEffect, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import * as Calendar from "expo-calendar";
 import { RestaurantContext } from "../context/restaurant-context";
 
@@ -74,25 +70,26 @@ function Booking({ restaurantId, people, date, time }) {
         <Text style={styles.text}>Date: {date}</Text>
         <Text style={styles.text}>Time: {time}</Text>
         <Text style={styles.text}>Number of people: {people}</Text>
-        <TouchableOpacity
-          style={styles.button}
+        <Button
+          icon='calendar-outline'
+          style={{ button: styles.button, buttonText: styles.buttonText }}
           onPress={
             isAddedToCalendar
               ? null
               : () => addEventToCalendar(restaurant.name, date, time)
           }
         >
-          <Ionicons name="calendar-outline" size={24} color={Colours.textSecondaryColor} />
-          <Text style={styles.buttonText}>
-            {isAddedToCalendar
+          {isAddedToCalendar
               ? "Booking added to Calendar"
               : "Add to Calendar"}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={shareWithExpoSharing}>
-          <Ionicons name="share-outline" size={24} color={Colours.textSecondaryColor} />
-          <Text style={styles.buttonText}>Share</Text>
-        </TouchableOpacity>
+        </Button>
+        <Button
+          icon='share-outline'
+          style={{ button: styles.button, buttonText: styles.buttonText }}
+          onPress={shareWithExpoSharing}
+        >
+          Share
+        </Button>
       </View>
     </View>
   );

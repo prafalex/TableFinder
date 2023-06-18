@@ -5,19 +5,20 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
-  Button,
   Alert,
+  Button,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Modal from 'react-native-modal';
-import { Colours } from '../variables/colours';
+import { Colours } from '../../variables/colours';
 import axios,{AxiosResponse} from 'axios';
-import { AuthContext,AuthContextType } from '../context/auth-context';
-import { RootStackParamList } from '../App'
+import { AuthContext,AuthContextType } from '../../context/auth-context';
+import { RootStackParamList } from '../../App'
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
+import MyButton from '../../components/utils/Button';
+import IconButton from '../../components/utils/IconButton';
 
 interface BookingScreenProps {
   route: RouteProp<RootStackParamList, 'BookingPage'>;
@@ -254,14 +255,13 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route, navigation }) => {
           </View>
         </View>
       </Modal>
-
-      <TouchableOpacity
-        style={styles.confirmButton}
-        onPress={handleConfirmBooking}
-      >
-        <Ionicons name="checkmark-circle-outline" size={24} color="white" />
-        <Text style={styles.confirmButtonText}>Confirm Booking</Text>
-      </TouchableOpacity>
+      <MyButton
+          icon='checkmark-circle-outline'
+          style={{ button: styles.button, buttonText: styles.buttonText }}
+          onPress={handleConfirmBooking}
+        >
+          Confirm Booking
+      </MyButton>
     </View>
   );
 };
@@ -325,25 +325,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
   },
-  confirmButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colours.secondaryColor,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    marginTop: 20,
-    elevation: 5,
-    shadowOffset: { width: 0, height: 2 },
-    shadowColor: 'black',
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+  button: {
+    backgroundColor: Colours.primaryColor
   },
-  confirmButtonText: {
-    color: 'white',
-    fontSize: 18,
-    marginLeft: 10,
+  buttonText: {
+    color: Colours.textSecondaryColor,
+    marginHorizontal: 6,
   },
 });
 

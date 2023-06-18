@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Booking from "../components/Booking";
+import Booking from "../../components/Booking";
 
 const BookingConfirmationScreen = ({ route }) => {
   const bookingInfo = route.params.bookingInfo;

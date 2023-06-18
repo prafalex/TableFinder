@@ -1,14 +1,14 @@
 import { useState,useContext } from 'react';
-import AuthContent from '../components/Auth/AuthContent';
-import {UserLogin} from '../util/firebaseAuth';
+import AuthContent from '../../components/Auth/AuthContent';
+import {UserLogin} from '../../util/firebaseAuth';
 import { StyleSheet, Text, View,ActivityIndicator,Alert } from 'react-native';
-import { AuthContext } from '../context/auth-context';
+import { AuthContext } from '../../context/auth-context';
 import 'firebase/auth';
 import React from 'react';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as WebBrowser from 'expo-web-browser';
 import {getAuth,FacebookAuthProvider,signInWithCredential} from 'firebase/auth';
-import app from '../util/firebase.tsx';
+import app from '../../util/firebase';
 import { useRoute } from '@react-navigation/native'; // Import useRoute
 
 WebBrowser.maybeCompleteAuthSession();

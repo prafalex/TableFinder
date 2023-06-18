@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { FlatList } from "react-native";
-import { getAllRestaurants } from "../util/http";
-import Restaurant from "../components/Restaurant";
-import { RestaurantContext } from "../context/restaurant-context";
+import { getAllRestaurants } from "../../util/http";
+import Restaurant from "../../components/Restaurant";
+import { RestaurantContext } from "../../context/restaurant-context";
 
 function RestaurantsScreen({ navigation }) {
   function renderRestaurant(itemData) {

@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { getAllBookings } from '../util/http';
-import Booking from '../components/Booking';
-import { BookingContext } from '../context/booking-context';
-import { AuthContext } from '../context/auth-context';
+import { getAllBookings } from '../../util/http';
+import Booking from '../../components/Booking';
+import { BookingContext } from '../../context/booking-context';
+import { AuthContext } from '../../context/auth-context';
 
 function BookingsScreen({ navigation }) {
   function renderBooking(itemData) {

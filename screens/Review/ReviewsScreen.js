@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { getAllReviews } from "../util/http";
-import Review from "../components/Review";
-import { ReviewContext } from "../context/review-context";
-import { RestaurantContext } from "../context/restaurant-context";
-import { AuthContext } from "../context/auth-context.tsx";
+import { getAllReviews } from "../../util/http";
+import Review from "../../components/Review";
+import { ReviewContext } from "../../context/review-context";
+import { RestaurantContext } from "../../context/restaurant-context";
+import { AuthContext } from "../../context/auth-context";
 
 function ReviewsScreen({ route, navigation }) {
   const restaurantId = route.params?.restaurantId;
