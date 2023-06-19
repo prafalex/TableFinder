@@ -53,8 +53,8 @@ export async function updatePassword(token: string, newPassword: string) {
         });
         return response.data.idToken;
     } catch (error : any) {
-        console.error(error.response.data.error.message);
-        throw error;
+        //console.error(error);
+        throw error.response.data.error.message;
     }
 }
 

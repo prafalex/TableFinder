@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { updateEmail, updatePassword } from '../util/firebaseAuth'; // import the new functions
 
@@ -8,8 +8,8 @@ export interface AuthContextType {
     auth: boolean;
     authenticate: (token: string, email: string) => void;
     logout: () => void;
-    changeEmail: (email: string) => Promise<void>; // add the function type here
-    changePassword: (password: string) => Promise<void>; // add the function type here
+    changeEmail: (token:string,email: string) => Promise<void>; // add the function type here
+    changePassword: (token:string,password: string) => Promise<void>; // add the function type here
 };
 
 export const AuthContext = createContext<AuthContextType>({
@@ -18,8 +18,8 @@ export const AuthContext = createContext<AuthContextType>({
     auth: false as boolean,
     authenticate: (token: string, email: string) => {},
     logout: () => {},
-    changeEmail: async (email: string) => {}, // add the function here
-    changePassword: async (password: string) => {}, // add the function here
+    changeEmail: async (token:string,email: string) => {}, // add the function here
+    changePassword: async (token:string,password: string) => {}, // add the function here
 });
 
 interface Props {
@@ -45,12 +45,14 @@ function AuthContextProvider({children}:Props){
     }
 
 
-    async function changeEmail(newEmail: string): Promise<void> {
+    async function changeEmail(token:string,newEmail: string): Promise<void> {
         try {
             if (authToken) {
-                await updateEmail(authToken, newEmail);
+                await updateEmail(token, newEmail);
+                setAuthToken(token);
                 setAuthEmail(newEmail);
                 AsyncStorage.setItem('email', newEmail);
+                AsyncStorage.setItem('token', authToken);
             }
         } catch (error) {
             // Handle the error here (e.g., display an error message or log the error)
@@ -58,9 +60,18 @@ function AuthContextProvider({children}:Props){
         }
     }
 
-    async function changePassword(newPassword: string): Promise<void> {
-        if (authToken) {
-            await updatePassword(authToken, newPassword);
+
+
+    async function changePassword(token:string,newPassword: string): Promise<void> {
+        try {
+            if (authToken) {
+                await updatePassword(token, newPassword);
+                AsyncStorage.setItem('token', token);
+                setAuthToken(token);
+            }
+        } catch (error) {
+            // Handle the error here (e.g., display an error message or log the error)
+            throw error;
         }
     }
 
@@ -76,5 +87,6 @@ function AuthContextProvider({children}:Props){
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
+
 
 export default AuthContextProvider;

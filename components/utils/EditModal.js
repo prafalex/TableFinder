@@ -32,7 +32,7 @@ function EditModal({ navigation, isVisible, type, set, setNew, value, newValue, 
           style={colorScheme === 'dark' ? styles.inputDark : styles.inputLight}
           onChangeText={setNew}
           value={newValue}
-          secureTextEntry
+          secureTextEntry={type === 'Password' ? true : false}
         />
         <Text style={{ color: colorScheme === 'dark' ? 'white' : 'black' }}>
           Current Password:

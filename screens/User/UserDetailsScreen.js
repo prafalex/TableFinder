@@ -26,8 +26,9 @@ function UserDetailsScreen({ navigation }) {
 
   const handleChangeEmail = async () => {
     try {
-      await UserLogin(authContext.email, password);
-      await authContext.changeEmail(newEmail);
+      const token = await UserLogin(authContext.email, password);
+      await authContext.changeEmail(token,newEmail);
+      Alert.alert('Email changed successfully!');
     } catch (error) {
       Alert.alert(
         'Failed to change email, maybe check your current password or email already exists!'
@@ -42,8 +43,9 @@ function UserDetailsScreen({ navigation }) {
 
   const handleChangePassword = async () => {
     try {
-      await UserLogin(authContext.email, password);
-      await authContext.changePassword(newPassword);
+      const token= await UserLogin(authContext.email, password);
+      await authContext.changePassword(token,newPassword);
+      Alert.alert('Password changed successfully!');
     } catch (error) {
       Alert.alert(
         'Failed to change password, maybe check your current password!'
