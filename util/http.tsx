@@ -3,12 +3,6 @@ import axios, { AxiosResponse } from 'axios'
 const BACKEND_URL: string =
   'https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app'
 
-//not used at the moment
-// export async function addRestaurant(restaurantData) {
-//   const response = await axios.post(BACKEND_URL + "/restaurants.json", restaurantData);
-//   const id = response.data.name;
-//   return id;
-// }
 
 interface Restaurant {
   id: string
@@ -39,6 +33,12 @@ interface Review {
   title: string;
   content: string;
   score: number;
+}
+
+export async function addRestaurant(restaurantData: Omit<Restaurant, 'id'>) {
+  const response = await axios.post(BACKEND_URL + "/restaurants.json", restaurantData);
+  const id = response.data.name;
+  return id;
 }
 
 export async function getAllRestaurants() {

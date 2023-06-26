@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Text, View, StyleSheet, TextInput, ScrollView } from "react-native";
+import { Text, View, StyleSheet, TextInput, ScrollView, Alert} from "react-native";
 import { Colours } from "../../variables/colours";
 import { AuthContext } from "../../context/auth-context";
 import { RestaurantContext } from "../../context/restaurant-context";
@@ -29,17 +29,32 @@ function UpsertReviewScreen({ route, navigation }) {
     });
   }, [isNewReview, restaurant, navigation]);
 
-  async function deleteHandler(reviewData) {
-    await deleteReview(reviewId);
-    reviewContext.deleteReview(reviewId);
-    dispatch(
-      removeScore({
-        restaurantId: restaurantId,
-        score: reviewData.score
-      })
+  function deleteHandler(reviewData) {
+    return Alert.alert(
+      "Are your sure?",
+      "Are your sure you want to delete this review?",
+      [
+        {
+          text: "Yes",
+          onPress: async () => {
+            await deleteReview(reviewId);
+            reviewContext.deleteReview(reviewId);
+            dispatch(
+              removeScore({
+                restaurantId: restaurantId,
+                score: reviewData.score
+              })
+            );
+            navigation.goBack();
+          },
+        },
+        {
+          text: "No",
+        },
+      ]
     );
-    navigation.goBack();
   }
+
   function cancelHandler() {
     navigation.goBack();
   }
