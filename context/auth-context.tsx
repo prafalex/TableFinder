@@ -8,8 +8,8 @@ export interface AuthContextType {
     auth: boolean;
     authenticate: (token: string, email: string) => void;
     logout: () => void;
-    changeEmail: (token:string,email: string) => Promise<void>; // add the function type here
-    changePassword: (token:string,password: string) => Promise<void>; // add the function type here
+    changeEmail: (token:string,email: string) => Promise<void>; 
+    changePassword: (token:string,password: string) => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType>({
@@ -18,8 +18,8 @@ export const AuthContext = createContext<AuthContextType>({
     auth: false as boolean,
     authenticate: (token: string, email: string) => {},
     logout: () => {},
-    changeEmail: async (token:string,email: string) => {}, // add the function here
-    changePassword: async (token:string,password: string) => {}, // add the function here
+    changeEmail: async (token:string,email: string) => {}, 
+    changePassword: async (token:string,password: string) => {}, 
 });
 
 interface Props {
@@ -55,7 +55,6 @@ function AuthContextProvider({children}:Props){
                 AsyncStorage.setItem('token', authToken);
             }
         } catch (error) {
-            // Handle the error here (e.g., display an error message or log the error)
             throw error;
         }
     }

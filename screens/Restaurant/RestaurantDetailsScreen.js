@@ -2,7 +2,7 @@ import { useContext, useEffect, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { Colours } from '../../variables/colours';
 import { useSelector, useDispatch } from 'react-redux';
-import { addFavorite, removeFavorite } from '../../redux/storeRedux';
+import { addFavorite, removeFavorite } from '../../redux/favorite';
 import { AuthContext } from '../../context/auth-context';
 import { RestaurantContext } from '../../context/restaurant-context';
 import IconButton from '../../components/utils/IconButton';
