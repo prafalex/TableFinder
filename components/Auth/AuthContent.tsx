@@ -10,7 +10,7 @@ import Button from '../utils/Button';
 interface AuthContentProps {
   isLogin: boolean;
   onAuthenticate: (credentials: Credentials) => void;
-  facebookLogin: () => void;
+  facebookLogin?: () => Promise<void> | undefined;
 }
 
 const AuthContent: React.FC<AuthContentProps> = ({
@@ -71,10 +71,10 @@ const AuthContent: React.FC<AuthContentProps> = ({
         <Button style= {{'button': styles.button, 'buttonText': styles.buttonText}} onPress={switchAuthModeHandler}>
           {isLogin ? 'Create a new user' : 'Log in instead'}
         </Button>
-        {isLogin && (
-          <Button style= {{'button': styles.button, 'buttonText': styles.buttonText}} onPress={facebookLogin}>
-            Sign in with Facebook
-          </Button>
+        {isLogin && facebookLogin && (
+        <Button style={{ 'button': styles.button, 'buttonText': styles.buttonText }} onPress={facebookLogin}>
+          Sign in with Facebook
+        </Button>
         )}
       </View>
     </View>

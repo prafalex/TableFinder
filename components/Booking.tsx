@@ -5,34 +5,55 @@ import {
   Alert,
   Share,
 } from "react-native";
-import { Colours } from "../variables/colours.js";
-import { useContext, useEffect, useState } from "react";
+import { Colours } from "../variables/colours";
+import { useContext, useState } from "react";
 import * as Calendar from "expo-calendar";
 import { RestaurantContext } from "../context/restaurant-context";
-import Button from "./utils/Button.js";
+import Button from "./utils/Button";
 
-function Booking({ restaurantId, people, date, time }) {
+interface BookingProps {
+  restaurantId: string;
+  people: number;
+  date: string;
+  time: string;
+}
+
+interface Restaurant {
+  name: string;
+}
+
+interface CalendarEvent {
+  title: string;
+  startDate: Date;
+  endDate: Date;
+  timeZone: string;
+  location: string;
+  notes: string;
+  allDay: boolean;
+}
+
+const Booking: React.FC<BookingProps> = ({ restaurantId, people, date, time }) => {
   const restaurantContext = useContext(RestaurantContext);
-  const restaurant = restaurantContext.getRestaurant(restaurantId);
-  const [isAddedToCalendar, setIsAddedToCalendar] = useState(false);
+  const restaurant: Restaurant | undefined = restaurantContext.getRestaurant(restaurantId);
+  const [isAddedToCalendar, setIsAddedToCalendar] = useState<boolean>(false);
 
-  const addEventToCalendar = async (title, date, time) => {
-    const { status } = await Calendar.requestCalendarPermissionsAsync();
+  const addEventToCalendar = async (title: string, date: string, time: string) => {
+    const { status }: Calendar.PermissionResponse = await Calendar.requestCalendarPermissionsAsync();
 
     if (status === "granted") {
-      const calendars = await Calendar.getCalendarsAsync(
+      const calendars: Calendar.Calendar[] = await Calendar.getCalendarsAsync(
         Calendar.EntityTypes.EVENT
       );
-      const calendar = calendars.find((cal) => cal.isPrimary) || calendars[0];
+      const calendar: Calendar.Calendar = calendars.find((cal) => cal.isPrimary) || calendars[0];
 
-      const bookingDate = new Date(date);
-      const bookingTime = time.split(":").map((part) => parseInt(part));
-      const startDate = new Date(bookingDate);
+      const bookingDate: Date = new Date(date);
+      const bookingTime: number[] = time.split(":").map((part) => parseInt(part));
+      const startDate: Date = new Date(bookingDate);
       startDate.setHours(bookingTime[0], bookingTime[1], 0, 0);
-      const endDate = new Date(startDate);
+      const endDate: Date = new Date(startDate);
       endDate.setHours(startDate.getHours() + 2, startDate.getMinutes(), 0, 0);
 
-      const event = {
+      const event: CalendarEvent = {
         title,
         startDate,
         endDate,
@@ -55,9 +76,9 @@ function Booking({ restaurantId, people, date, time }) {
   const shareWithExpoSharing = async () => {
     try {
       await Share.share({
-        message: `I have booked a table at ${restaurant.name} on ${date} at ${time} for ${people} people.`,
+        message: `I have booked a table at ${restaurant?.name} on ${date} at ${time} for ${people} people.`,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
     }
   };
@@ -66,7 +87,7 @@ function Booking({ restaurantId, people, date, time }) {
     <View style={styles.container}>
       <View style={styles.infoContainer}>
         <Text style={styles.text}>
-          You have successfully booked a table at {restaurant.name}
+          You have successfully booked a table at {restaurant?.name}
         </Text>
         <Text style={styles.text}>Date: {date}</Text>
         <Text style={styles.text}>Time: {time}</Text>
@@ -76,8 +97,10 @@ function Booking({ restaurantId, people, date, time }) {
           style={{ button: styles.button, buttonText: styles.buttonText }}
           onPress={
             isAddedToCalendar
-              ? null
-              : () => addEventToCalendar(restaurant.name, date, time)
+              ? () => {}
+              : () => {
+                  addEventToCalendar(restaurant?.name || "", date, time);
+                }
           }
         >
           {isAddedToCalendar

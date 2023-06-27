@@ -8,15 +8,15 @@ import {
 } from 'react-native';
 import { Colours } from '../variables/colours.js';
 import { useSelector, useDispatch } from 'react-redux';
-import IconButton from './utils/IconButton.js';
+import IconButton from "./utils/IconButton";
 
 interface RestaurantProps {
   id: string;
   name: string;
   imgUrl: string;
   category: string;
-  price: string;
-  program: string;
+  price?: string;
+  program?: string;
   onPress: () => void;
 }
 
@@ -48,7 +48,7 @@ const Restaurant: React.FC<RestaurantProps> = ({
               <IconButton
                 icon="star"
                 color={Colours.favoriteColor}
-                text={restaurantScore || 'No reviews'}
+                text={restaurantScore.toString() || 'No reviews'}
                 onPress={() => {}}
               ></IconButton>
             </View>
@@ -57,6 +57,12 @@ const Restaurant: React.FC<RestaurantProps> = ({
         </View>
         <View style={styles.detailContainer}>
           <Text style={styles.detail}>Category: {category}</Text>
+          <IconButton
+            icon="star"
+            color={Colours.favoriteColor}
+            text={restaurantScore.toString() || 'No reviews'}
+            onPress={()=> {}}
+        ></IconButton>
         </View>
       </Pressable>
     </View>

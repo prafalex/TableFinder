@@ -17,9 +17,9 @@ interface Restaurant {
   menu_items: string
 }
 
-interface Booking {
+export interface Booking {
   id: string;
-  restaurant_id: string;
+  restaurantId: string;
   people: number;
   date: string;
   time: string;
@@ -78,7 +78,7 @@ export async function getAllBookings(): Promise<Booking[]> {
   for (const key in response.data) {
     const bookingObj: Booking = {
       id: key,
-      restaurant_id: response.data[key].restaurantId,
+      restaurantId: response.data[key].restaurantId,
       people: response.data[key].people,
       date: response.data[key].date,
       time: response.data[key].time,
