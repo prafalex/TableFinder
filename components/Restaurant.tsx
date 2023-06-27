@@ -48,7 +48,7 @@ const Restaurant: React.FC<RestaurantProps> = ({
               <IconButton
                 icon="star"
                 color={Colours.favoriteColor}
-                text={restaurantScore.toString() || 'No reviews'}
+                text={restaurantScore ? restaurantScore.toString() : 'No reviews'}
                 onPress={() => {}}
               ></IconButton>
             </View>
@@ -57,12 +57,6 @@ const Restaurant: React.FC<RestaurantProps> = ({
         </View>
         <View style={styles.detailContainer}>
           <Text style={styles.detail}>Category: {category}</Text>
-          <IconButton
-            icon="star"
-            color={Colours.favoriteColor}
-            text={restaurantScore.toString() || 'No reviews'}
-            onPress={()=> {}}
-        ></IconButton>
         </View>
       </Pressable>
     </View>
