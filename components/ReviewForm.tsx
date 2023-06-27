@@ -140,7 +140,6 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: Colours.primaryColor,
     width: 120,
-    marginHorizontal: 8,
   },
   buttonText: {
     color: Colours.textSecondaryColor
@@ -148,6 +147,5 @@ const styles = StyleSheet.create({
   deleteButton: {
     width: 70,
     backgroundColor: Colours.errorMain,
-    marginHorizontal: 8,
   }
 });

@@ -7,6 +7,8 @@ import { AuthContext } from '../../context/auth-context';
 import { RestaurantContext } from '../../context/restaurant-context';
 import IconButton from '../../components/utils/IconButton';
 import Button from '../../components/utils/Button';
+import { Ionicons } from '@expo/vector-icons';
+import call from 'react-native-phone-call';
 
 function RestaurantDetailsScreen({ route, navigation }) {
   const authContext = useContext(AuthContext);
@@ -18,23 +20,15 @@ function RestaurantDetailsScreen({ route, navigation }) {
     route.params.restaurantId
   );
   const dispatch = useDispatch();
-  
-  const scores = useSelector((state) => state.restaurantScore[route.params.restaurantId] || []);
+
+  const scores = useSelector(
+    state => state.restaurantScore[route.params.restaurantId] || []
+  );
   const value = 0;
-  const restaurantScore = scores.reduce((acc, currentValue) => acc + currentValue, value) / scores.length;
+  const restaurantScore =
+    scores.reduce((acc, currentValue) => acc + currentValue, value) /
+    scores.length;
 
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const dropDownAnimation = useRef(new Animated.Value(0)).current;
-
-  const toggleMenu = () => {
-    setIsCollapsed(!isCollapsed);
-    Animated.timing(dropDownAnimation, {
-      toValue: isCollapsed ? 1 : 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  };
-  
   function favoriteToggler() {
     if (restaurantIsFavorite) {
       dispatch(
@@ -56,6 +50,19 @@ function RestaurantDetailsScreen({ route, navigation }) {
   const restaurantId = route.params.restaurantId;
   const restaurantContext = useContext(RestaurantContext);
   const selectedRestaurant = restaurantContext.getRestaurant(restaurantId);
+
+  function triggerCall() {
+    if (selectedRestaurant.phone_number?.length != 10) {
+      alert('The number is incorect!');
+      return;
+    }
+
+    const args = {
+      number: selectedRestaurant.phone_number,
+      prompt: true,
+    };
+    call(args).catch(console.error);
+  }
 
   useEffect(() => {
     navigation.setOptions({ title: selectedRestaurant.name });
@@ -90,74 +97,93 @@ function RestaurantDetailsScreen({ route, navigation }) {
     });
   }, [navigation, favoriteToggler]);
   return (
-    <ScrollView style={styles.container}>
-      <Image
-        source={{ uri: selectedRestaurant.restaurant_img }}
-        style={styles.image}
-      ></Image>
-      <View style={styles.header}>
-        <Text style={styles.title}>{selectedRestaurant.name}</Text>
-        <IconButton
-          icon="star"
-          color={Colours.favoriteColor}
-          text={restaurantScore}
-          onPress={() =>
-            navigation.navigate('Reviews', {
-              restaurantId: selectedRestaurant.id,
-            })
-          }
-        ></IconButton>
-      </View>
-      <View>
-        <Text style={styles.description}>{selectedRestaurant.description}</Text>
-        <Text style={styles.text}>Category: {selectedRestaurant.category}</Text>
-        <Text style={styles.text}>Program: {selectedRestaurant.program}</Text>
-        <Text style={styles.text}>Address: {selectedRestaurant.address}</Text>
-        <Text style={styles.text}>
-          PhoneNumber: {selectedRestaurant.phone_number}
-        </Text>
-      </View>
-      <View>
-        <TouchableOpacity onPress={toggleMenu}>
-          <Text style={styles.title}>Menu</Text>
-        </TouchableOpacity>
-        <Animated.View style={{ maxHeight: dropDownAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 200], // Aici 200 este doar o valoare exemplu, trebuie sa o schimbi cu dimensiunea potrivita
-          }),
-        }}>
+    <View style={styles.container}>
+      <ScrollView style={styles.container}>
+        <Image
+          source={{ uri: selectedRestaurant.restaurant_img }}
+          style={styles.image}
+        ></Image>
+        <View style={styles.header}>
+          <Text style={styles.title}>{selectedRestaurant.name}</Text>
+          <IconButton
+            icon="star"
+            color={Colours.favoriteColor}
+            text={restaurantScore || 'No reviews'}
+            onPress={() =>
+              navigation.navigate('Reviews', {
+                restaurantId: selectedRestaurant.id,
+              })
+            }
+          ></IconButton>
+        </View>
+        <View>
+          <Text style={styles.description}>
+            {selectedRestaurant.description}
+          </Text>
+          <Text style={styles.text}>
+            Category: {selectedRestaurant.category}
+          </Text>
+          <Text style={styles.text}>Program: {selectedRestaurant.program}</Text>
+          <Text style={styles.text}>Address: {selectedRestaurant.address}</Text>
+        </View>
+        <View>
+          <View style={styles.menuContainer}>
+            <Text style={styles.title}>Menu</Text>
+          </View>
           {selectedRestaurant.menu_items?.map(item => (
             <Text key={item} style={styles.menuItem}>
               {item}
             </Text>
           ))}
-        </Animated.View>
-      </View>
-      <View style={styles.buttonContainer}>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            icon="restaurant-outline"
+            style={{ button: styles.button, buttonText: styles.buttonText }}
+            onPress={() =>
+              navigation.navigate('BookingPage', {
+                restaurantId: selectedRestaurant.id,
+              })
+            }
+          >
+            Book a Table
+          </Button>
+          <Button
+            icon="create-outline"
+            style={{ button: styles.button, buttonText: styles.buttonText }}
+            onPress={() =>
+              navigation.navigate('UpsertReviewScreen', {
+                restaurantId: selectedRestaurant.id,
+              })
+            }
+          >
+            Write a review
+          </Button>
+        </View>
+      </ScrollView>
+      <View style={styles.footer}>
         <Button
-          icon="restaurant-outline"
-          style={{ button: styles.button, buttonText: styles.buttonText }}
-          onPress={() =>
-            navigation.navigate('BookingPage', {
-              restaurantId: selectedRestaurant.id,
-            })
-          }
+          icon="call"
+          style={{
+            button: styles.footerButton,
+            buttonText: styles.phoneButtonText,
+          }}
+          onPress={triggerCall}
         >
-          Book a Table
+          {selectedRestaurant.phone_number}
         </Button>
         <Button
-          icon="create-outline"
-          style={{ button: styles.button, buttonText: styles.buttonText }}
-          onPress={() =>
-            navigation.navigate('UpsertReviewScreen', {
-              restaurantId: selectedRestaurant.id,
-            })
-          }
+          icon="location"
+          style={{
+            button: styles.footerButton,
+            buttonText: styles.addressButtonText,
+          }}
+          onPress={()=>{}}
         >
-          Write a review
+          {selectedRestaurant.address}
         </Button>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -178,6 +204,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 6,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    height: 50,
+    backgroundColor: 'rgba(139,85,97, 0.5)',
+    padding: 10,
+  },
+  footerButton: {
+    backgroundColor: 'transparent',
+    elevation: 0,
+    width: 150,
+  },
+  phoneButtonText: {
+    color: '#298E4E',
+  },
+  addressButtonText: {
+    color: '#4B6CBE',
   },
   title: {
     fontWeight: 'bold',
