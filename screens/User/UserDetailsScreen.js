@@ -9,7 +9,6 @@ import {
 import { Colours } from '../../variables/colours';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/auth-context';
-import Modal from 'react-native-modal';
 import { UserLogin } from '../../util/firebaseAuth';
 import Button from '../../components/utils/Button';
 import EditModal from '../../components/utils/EditModal';

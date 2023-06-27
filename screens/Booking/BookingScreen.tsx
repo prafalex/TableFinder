@@ -18,7 +18,6 @@ import { RootStackParamList } from '../../App'
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import MyButton from '../../components/utils/Button';
-import IconButton from '../../components/utils/IconButton';
 
 interface BookingScreenProps {
   route: RouteProp<RootStackParamList, 'BookingPage'>;

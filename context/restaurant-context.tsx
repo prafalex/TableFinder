@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 
 interface Restaurant {
   id: string;

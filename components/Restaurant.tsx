@@ -7,7 +7,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import { Colours } from '../variables/colours.js';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector} from 'react-redux';
 import IconButton from "./utils/IconButton";
 
 interface RestaurantProps {

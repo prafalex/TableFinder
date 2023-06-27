@@ -1,7 +1,6 @@
 import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import Booking from '../../components/Booking';
-import {BookingInfo} from './BookingScreen';
 import { LoggedStackParamList } from '../../util/StackParamList';
 
 

@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import {
   Text,
-  View,
   StyleSheet,
-  TextInput,
   ScrollView,
   Alert,
 } from 'react-native';
@@ -13,7 +11,7 @@ import { RestaurantContext } from '../../context/restaurant-context';
 import { ReviewContext } from '../../context/review-context';
 import ReviewForm from '../../components/ReviewForm';
 import { addReview, updateReview, deleteReview } from '../../util/http';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addScore, removeScore } from '../../redux/score';
 import ErrorOverlay from '../../components/utils/ErrorOverlay';
 
