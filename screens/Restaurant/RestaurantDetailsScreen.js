@@ -1,5 +1,19 @@
-import React, { useState, useRef,useContext,useEffect, useLayoutEffect } from 'react';
-import { Animated, TouchableOpacity, ScrollView, StyleSheet, Image, View, Text } from 'react-native';
+import React, {
+  useState,
+  useRef,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+} from 'react';
+import {
+  Animated,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  Image,
+  View,
+  Text,
+} from 'react-native';
 import { Colours } from '../../variables/colours';
 import { useSelector, useDispatch } from 'react-redux';
 import { addFavorite, removeFavorite } from '../../redux/favorite';
@@ -7,7 +21,6 @@ import { AuthContext } from '../../context/auth-context';
 import { RestaurantContext } from '../../context/restaurant-context';
 import IconButton from '../../components/utils/IconButton';
 import Button from '../../components/utils/Button';
-import { Ionicons } from '@expo/vector-icons';
 import call from 'react-native-phone-call';
 
 function RestaurantDetailsScreen({ route, navigation }) {
@@ -28,6 +41,17 @@ function RestaurantDetailsScreen({ route, navigation }) {
   const restaurantScore =
     scores.reduce((acc, currentValue) => acc + currentValue, value) /
     scores.length;
+
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const dropDownAnimation = useRef(new Animated.Value(0)).current;
+  function toggleMenu() {
+    setIsCollapsed(!isCollapsed);
+    Animated.timing(dropDownAnimation, {
+      toValue: isCollapsed ? 1 : 0,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  }
 
   function favoriteToggler() {
     if (restaurantIsFavorite) {
@@ -116,7 +140,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
             }
           ></IconButton>
         </View>
-        <View>
+        <View style={styles.detailsContainer}>
           <Text style={styles.description}>
             {selectedRestaurant.description}
           </Text>
@@ -124,17 +148,28 @@ function RestaurantDetailsScreen({ route, navigation }) {
             Category: {selectedRestaurant.category}
           </Text>
           <Text style={styles.text}>Program: {selectedRestaurant.program}</Text>
-          <Text style={styles.text}>Address: {selectedRestaurant.address}</Text>
         </View>
         <View>
-          <View style={styles.menuContainer}>
+          <TouchableOpacity onPress={toggleMenu}>
             <Text style={styles.title}>Menu</Text>
-          </View>
-          {selectedRestaurant.menu_items?.map(item => (
-            <Text key={item} style={styles.menuItem}>
-              {item}
-            </Text>
-          ))}
+          </TouchableOpacity>
+          <Animated.View
+            style={[
+              {
+                maxHeight: dropDownAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, 200],
+                }),
+              },
+              styles.menuContainer,
+            ]}
+          >
+            {selectedRestaurant.menu_items.map((item, index) => (
+              <View key={index} style={[styles.menuItemWrapper, isCollapsed && {backgroundColor: 'transparent',  elevation: 0} ]}>
+                <Text style={styles.menuItem}>{item}</Text>
+              </View>
+            ))}
+          </Animated.View>
         </View>
         <View style={styles.buttonContainer}>
           <Button
@@ -178,7 +213,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
             button: styles.footerButton,
             buttonText: styles.addressButtonText,
           }}
-          onPress={()=>{}}
+          onPress={() => {}}
         >
           {selectedRestaurant.address}
         </Button>
@@ -234,14 +269,29 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 8,
   },
-  menuItem: {
-    marginHorizontal: 16,
-    marginVertical: 6,
-    fontSize: 20,
+  detailsContainer: {
+    paddingHorizontal: 10,
+    marginBottom: 30,
   },
   menuContainer: {
-    borderBottomWidth: 4,
-    margin: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    paddingHorizontal: 16,
+  },
+  menuItemWrapper: {
+    width: '48%',
+    marginVertical: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    backgroundColor: '#F8F8F8',
+    borderRadius: 8,
+    elevation: 2,
+  },
+  menuItem: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: '#333333',
   },
   text: {
     color: Colours.textColor,
@@ -262,7 +312,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 8,
   },
 });
