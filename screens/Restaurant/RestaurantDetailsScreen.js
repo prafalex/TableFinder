@@ -1,5 +1,5 @@
-import { useContext, useEffect, useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import React, { useState, useRef,useContext,useEffect, useLayoutEffect } from 'react';
+import { Animated, TouchableOpacity, ScrollView, StyleSheet, Image, View, Text } from 'react-native';
 import { Colours } from '../../variables/colours';
 import { useSelector, useDispatch } from 'react-redux';
 import { addFavorite, removeFavorite } from '../../redux/favorite';
@@ -7,6 +7,7 @@ import { AuthContext } from '../../context/auth-context';
 import { RestaurantContext } from '../../context/restaurant-context';
 import IconButton from '../../components/utils/IconButton';
 import Button from '../../components/utils/Button';
+
 function RestaurantDetailsScreen({ route, navigation }) {
   const authContext = useContext(AuthContext);
   const favoriteRestaurants = useSelector(
@@ -21,8 +22,19 @@ function RestaurantDetailsScreen({ route, navigation }) {
   const scores = useSelector((state) => state.restaurantScore[route.params.restaurantId] || []);
   const value = 0;
   const restaurantScore = scores.reduce((acc, currentValue) => acc + currentValue, value) / scores.length;
-  
 
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const dropDownAnimation = useRef(new Animated.Value(0)).current;
+
+  const toggleMenu = () => {
+    setIsCollapsed(!isCollapsed);
+    Animated.timing(dropDownAnimation, {
+      toValue: isCollapsed ? 1 : 0,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  };
+  
   function favoriteToggler() {
     if (restaurantIsFavorite) {
       dispatch(
@@ -106,14 +118,20 @@ function RestaurantDetailsScreen({ route, navigation }) {
         </Text>
       </View>
       <View>
-        <View style={styles.menuContainer}>
+        <TouchableOpacity onPress={toggleMenu}>
           <Text style={styles.title}>Menu</Text>
-        </View>
-        {selectedRestaurant.menu_items?.map(item => (
-          <Text key={item} style={styles.menuItem}>
-            {item}
-          </Text>
-        ))}
+        </TouchableOpacity>
+        <Animated.View style={{ maxHeight: dropDownAnimation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 200], // Aici 200 este doar o valoare exemplu, trebuie sa o schimbi cu dimensiunea potrivita
+          }),
+        }}>
+          {selectedRestaurant.menu_items?.map(item => (
+            <Text key={item} style={styles.menuItem}>
+              {item}
+            </Text>
+          ))}
+        </Animated.View>
       </View>
       <View style={styles.buttonContainer}>
         <Button
