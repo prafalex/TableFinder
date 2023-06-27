@@ -1,15 +1,15 @@
 import { Pressable, View, Text, StyleSheet, Image } from "react-native";
 import { Colours } from "../variables/colours.js";
 import { useSelector, useDispatch } from 'react-redux';
-import IconButton from "./utils/IconButton.js";
+import IconButton from "./utils/IconButton";
 
 interface RestaurantProps {
   id: string,
   name: string;
   imgUrl: string;
   category: string;
-  price: string;
-  program: string;
+  price?: string;
+  program?: string;
   onPress: () => void;
 }
 
@@ -42,7 +42,7 @@ const Restaurant: React.FC<RestaurantProps> = ({
           <IconButton
             icon="star"
             color={Colours.favoriteColor}
-            text={restaurantScore}
+            text={restaurantScore.toString()}
             onPress={()=> {}}
         ></IconButton>
         </View>

@@ -3,12 +3,11 @@ import axios, { AxiosResponse } from 'axios'
 const BACKEND_URL: string =
   'https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app'
 
-//not used at the moment
-// export async function addRestaurant(restaurantData) {
-//   const response = await axios.post(BACKEND_URL + "/restaurants.json", restaurantData);
-//   const id = response.data.name;
-//   return id;
-// }
+export async function addRestaurant(restaurantData:Restaurant) {
+  const response = await axios.post(BACKEND_URL + "/restaurants.json", restaurantData);
+  const id = response.data.name;
+  return id;
+}
 
 interface Restaurant {
   id: string
@@ -23,9 +22,9 @@ interface Restaurant {
   menu_items: string
 }
 
-interface Booking {
+export interface Booking {
   id: string;
-  restaurant_id: string;
+  restaurantId: string;
   people: number;
   date: string;
   time: string;
@@ -78,7 +77,7 @@ export async function getAllBookings(): Promise<Booking[]> {
   for (const key in response.data) {
     const bookingObj: Booking = {
       id: key,
-      restaurant_id: response.data[key].restaurantId,
+      restaurantId: response.data[key].restaurantId,
       people: response.data[key].people,
       date: response.data[key].date,
       time: response.data[key].time,

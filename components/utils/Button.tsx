@@ -1,10 +1,23 @@
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-function Button({ children, onPress, icon, style }) {
+import React from 'react';
+
+interface ButtonProps {
+  children: React.ReactNode;
+  onPress: () => void;
+  icon?: string;
+  style: {
+    buttonContainer?: ViewStyle;
+    button?: ViewStyle;
+    buttonText: TextStyle;
+  }
+}
+
+const Button: React.FC<ButtonProps> = ({ children, onPress, icon, style }) => {
   return (
     <View style={[styles.buttonContainer, style.buttonContainer]}>
       <TouchableOpacity onPress={onPress} style={[styles.button, style.button]}>
-        {icon && <Ionicons name={icon} size={24} color={style.buttonText.color}></Ionicons>}
+        {icon && <Ionicons name={icon as any} size={24} color={style.buttonText.color} />}
         <Text style={[styles.buttonText, style.buttonText]}>{children}</Text>
       </TouchableOpacity>
     </View>

@@ -4,11 +4,20 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { Colours } from "../variables/colours.js";
-import { useContext, useEffect, useState } from "react";
+import { Colours } from "../variables/colours";
+import { useContext } from "react";
 import { RestaurantContext } from "../context/restaurant-context";
 
-function Review({ restaurantId, email, title, content, score, onPress }) {
+interface ReviewProps {
+  restaurantId: string,
+  email: string,
+  title: string,
+  content: string,
+  score: number,
+  onPress: () => void
+}
+
+const Review: React.FC<ReviewProps> = ({ restaurantId, email, title, content, score, onPress }) => {
   const restaurantContext = useContext(RestaurantContext);
   const restaurant = restaurantContext.getRestaurant(restaurantId);
 
@@ -16,11 +25,10 @@ function Review({ restaurantId, email, title, content, score, onPress }) {
     <View style={styles.container}>
       <Pressable
         android_ripple={{ color: "#ccc" }}
-        style={styles.button}
         onPress={onPress}
       >
         <View style={styles.infoContainer}>
-          <Text style={styles.text}>Review for {restaurant.name}</Text>
+          {restaurant && <Text style={styles.text}>Review for {restaurant.name}</Text>}
           <Text style={styles.text}>From: {email}</Text>
           <View style={styles.contentContainer}>
             <Text style={styles.text}>Title: {title}</Text>

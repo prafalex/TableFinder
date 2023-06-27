@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import {
   Text,
   View,
@@ -9,8 +9,31 @@ import {
 } from 'react-native';
 import { Colours } from '../../variables/colours';
 import Modal from 'react-native-modal';
-import Button from '../utils/Button';
-function EditModal({ navigation, isVisible, type, set, setNew, value, newValue, handleChange, setVisible}) {
+import Button from './Button';
+
+interface EditModalProps {
+  navigation: any; // to replace here!!!
+  isVisible: boolean;
+  type: string;
+  set: (value: string) => void;
+  setNew: (value: string) => void;
+  value: string;
+  newValue: string;
+  handleChange: () => void;
+  setVisible: (visible: boolean) => void;
+}
+
+const EditModal: FC<EditModalProps> = ({
+  navigation,
+  isVisible,
+  type,
+  set,
+  setNew,
+  value,
+  newValue,
+  handleChange,
+  setVisible,
+}) => {
   const colorScheme = useColorScheme();
 
   const getModalStyle = () => {
@@ -60,7 +83,7 @@ function EditModal({ navigation, isVisible, type, set, setNew, value, newValue, 
       </View>
     </Modal>
   );
-}
+};
 
 export default EditModal;
 
