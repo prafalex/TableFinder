@@ -76,8 +76,8 @@ function RestaurantDetailsScreen({ route, navigation }) {
   const selectedRestaurant = restaurantContext.getRestaurant(restaurantId);
 
   function triggerCall() {
-    if (selectedRestaurant.phone_number?.length != 10) {
-      alert('The number is incorect!');
+    if (selectedRestaurant.phone_number?.length !== 10) {
+      alert('The number is incorrect!');
       return;
     }
 
@@ -120,6 +120,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
       },
     });
   }, [navigation, favoriteToggler]);
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container}>
@@ -147,7 +148,9 @@ function RestaurantDetailsScreen({ route, navigation }) {
           <Text style={styles.text}>
             Category: {selectedRestaurant.category}
           </Text>
-          <Text style={styles.text}>Program: {selectedRestaurant.program}</Text>
+          <Text style={styles.text}>
+            Program: {selectedRestaurant.program}
+          </Text>
         </View>
         <View>
           <TouchableOpacity onPress={toggleMenu}>
@@ -164,8 +167,14 @@ function RestaurantDetailsScreen({ route, navigation }) {
               styles.menuContainer,
             ]}
           >
-            {selectedRestaurant.menu_items.map((item, index) => (
-              <View key={index} style={[styles.menuItemWrapper, isCollapsed && {backgroundColor: 'transparent',  elevation: 0} ]}>
+            {selectedRestaurant.menu_items && selectedRestaurant.menu_items.map((item, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.menuItemWrapper,
+                  isCollapsed && { backgroundColor: 'transparent', elevation: 0 },
+                ]}
+              >
                 <Text style={styles.menuItem}>{item}</Text>
               </View>
             ))}
