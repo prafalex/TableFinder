@@ -3,6 +3,7 @@ import { FlatList } from "react-native";
 import { getAllRestaurants } from "../../util/http";
 import Restaurant from "../../components/Restaurant";
 import { RestaurantContext } from "../../context/restaurant-context";
+import ErrorOverlay from "../../components/utils/ErrorOverlay";
 
 function RestaurantsScreen({ navigation }) {
   function renderRestaurant(itemData) {
@@ -23,15 +24,23 @@ function RestaurantsScreen({ navigation }) {
   }
 
   const restaurantContext = useContext(RestaurantContext);
+  const [error, setError] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
-      const restaurants = await getAllRestaurants();
-      restaurantContext.getRestaurants(restaurants);
+      try {
+        const restaurants = await getAllRestaurants();
+        restaurantContext.getRestaurants(restaurants);
+      } catch (error) {
+        setError('Could not get restaurants!');
+      }
     };
-
     fetchData();
   }, []);
+
+  if(error) {
+    return <ErrorOverlay message={error}/>
+  }
 
   return (
     <FlatList

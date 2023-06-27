@@ -164,7 +164,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
               styles.menuContainer,
             ]}
           >
-            {selectedRestaurant.menu_items.map((item, index) => (
+            {selectedRestaurant.menu_items?.map((item, index) => (
               <View key={index} style={[styles.menuItemWrapper, isCollapsed && {backgroundColor: 'transparent',  elevation: 0} ]}>
                 <Text style={styles.menuItem}>{item}</Text>
               </View>

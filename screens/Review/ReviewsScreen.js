@@ -5,6 +5,7 @@ import Review from "../../components/Review";
 import { ReviewContext } from "../../context/review-context";
 import { RestaurantContext } from "../../context/restaurant-context";
 import { AuthContext } from "../../context/auth-context";
+import ErrorOverlay from "../../components/utils/ErrorOverlay";
 
 function ReviewsScreen({ route, navigation }) {
   const restaurantId = route.params?.restaurantId;
@@ -36,16 +37,25 @@ function ReviewsScreen({ route, navigation }) {
   }
 
   const reviewContext = useContext(ReviewContext);
+  const [error, setError] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
-      const reviews = await getAllReviews();
-      reviewContext.getReviews(reviews);
+      try {
+        const reviews = await getAllReviews();
+        reviewContext.getReviews(reviews);
+      } catch(error) {
+        setError('Could not get reviews!');
+      }
     };
 
     fetchData();
   }, []);
 
+  if(error) {
+    return <ErrorOverlay message={error}/>
+  }
+  
   let filteredReviews;
   if (restaurantId) {
     filteredReviews = reviewContext.getReviewsByRestaurant(restaurantId);

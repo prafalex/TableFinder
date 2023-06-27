@@ -1,13 +1,21 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Text, View, StyleSheet, TextInput, ScrollView, Alert} from "react-native";
-import { Colours } from "../../variables/colours";
-import { AuthContext } from "../../context/auth-context";
-import { RestaurantContext } from "../../context/restaurant-context";
-import { ReviewContext } from "../../context/review-context";
-import ReviewForm from "../../components/ReviewForm";
-import { addReview, updateReview, deleteReview } from "../../util/http";
+import React, { useEffect, useState, useContext } from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  Alert,
+} from 'react-native';
+import { Colours } from '../../variables/colours';
+import { AuthContext } from '../../context/auth-context';
+import { RestaurantContext } from '../../context/restaurant-context';
+import { ReviewContext } from '../../context/review-context';
+import ReviewForm from '../../components/ReviewForm';
+import { addReview, updateReview, deleteReview } from '../../util/http';
 import { useSelector, useDispatch } from 'react-redux';
-import {addScore, removeScore} from '../../redux/score';
+import { addScore, removeScore } from '../../redux/score';
+import ErrorOverlay from '../../components/utils/ErrorOverlay';
 
 function UpsertReviewScreen({ route, navigation }) {
   const authContext = useContext(AuthContext);
@@ -22,34 +30,40 @@ function UpsertReviewScreen({ route, navigation }) {
   const selectedReview = reviewContext.getReview(reviewId);
   const restaurant = restaurantContext.getRestaurant(restaurantId);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     navigation.setOptions({
-      title: isNewReview ? "New review" : "Edit review",
+      title: isNewReview ? 'New review' : 'Edit review',
     });
   }, [isNewReview, restaurant, navigation]);
 
+  const [error, setError] = useState();
+
   function deleteHandler(reviewData) {
     return Alert.alert(
-      "Are your sure?",
-      "Are your sure you want to delete this review?",
+      'Are your sure?',
+      'Are your sure you want to delete this review?',
       [
         {
-          text: "Yes",
+          text: 'Yes',
           onPress: async () => {
-            await deleteReview(reviewId);
-            reviewContext.deleteReview(reviewId);
-            dispatch(
-              removeScore({
-                restaurantId: restaurantId,
-                score: reviewData.score
-              })
-            );
-            navigation.goBack();
+            try {
+              await deleteReview(reviewId);
+              reviewContext.deleteReview(reviewId);
+              dispatch(
+                removeScore({
+                  restaurantId: restaurantId,
+                  score: reviewData.score,
+                })
+              );
+              navigation.goBack();
+            } catch (error) {
+              setError('Could not delete the review!');
+            }
           },
         },
         {
-          text: "No",
+          text: 'No',
         },
       ]
     );
@@ -61,7 +75,8 @@ function UpsertReviewScreen({ route, navigation }) {
 
   async function upsertHandler(reviewData) {
     if (isNewReview) {
-      const id = await addReview({ restaurantId, email, ...reviewData });
+      try {
+        const id = await addReview({ restaurantId, email, ...reviewData });
       reviewContext.addReview({
         id,
         restaurantId,
@@ -71,32 +86,44 @@ function UpsertReviewScreen({ route, navigation }) {
       dispatch(
         addScore({
           restaurantId: restaurantId,
-          score: reviewData.score
+          score: reviewData.score,
         })
       );
+      } catch(error) {
+        setError('Could not add the review!')
+      }
+      
     } else {
-      await updateReview(reviewId, { ...selectedReview, ...reviewData });
+      try {
+        await updateReview(reviewId, { ...selectedReview, ...reviewData });
       reviewContext.updateReview(reviewId, reviewData);
       dispatch(
         removeScore({
           restaurantId: restaurantId,
-          score: reviewData.score
+          score: reviewData.score,
         }),
         addScore({
           restaurantId: restaurantId,
-          score: reviewData.score
+          score: reviewData.score,
         })
       );
+      } catch(error) {
+        setError('Could not update the review!');
+      }
     }
-    
+
     navigation.goBack();
+  }
+
+  if(error) {
+    return <ErrorOverlay message={error}/>
   }
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.heading}>
         {isNewReview
-          ? "Leave a review for " + restaurant.name + " !"
+          ? 'Leave a review for ' + restaurant.name + ' !'
           : selectedReview?.title}
       </Text>
       <ReviewForm
@@ -122,10 +149,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colours.secondaryColor,
   },
   heading: {
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     margin: 20,
     fontSize: 24,
-    color: Colours.textColor
+    color: Colours.textColor,
   },
 });
