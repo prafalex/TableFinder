@@ -52,10 +52,6 @@ function ReviewsScreen({ route, navigation }) {
     fetchData();
   }, []);
 
-  if(error) {
-    return <ErrorOverlay message={error}/>
-  }
-  
   let filteredReviews;
   if (restaurantId) {
     filteredReviews = reviewContext.getReviewsByRestaurant(restaurantId);
@@ -78,6 +74,9 @@ function ReviewsScreen({ route, navigation }) {
         renderItem={renderReview}
       />
     );
+  }
+  if(error) {
+    return <ErrorOverlay message={error}/>
   }
   return <View>{content}</View>;
 }

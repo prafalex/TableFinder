@@ -1,8 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState} from "react";
 import { FlatList } from "react-native";
 import { getAllRestaurants } from "../../util/http";
 import Restaurant from "../../components/Restaurant";
 import { RestaurantContext } from "../../context/restaurant-context";
+import ErrorOverlay from "../../components/utils/ErrorOverlay";
 import { LoggedStackParamList } from "../../util/StackParamList";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -25,16 +26,23 @@ interface RestaurantData {
 
 const RestaurantsScreen: React.FC<RestaurantsScreenProps> = ({ navigation }) => {
   const restaurantContext = useContext(RestaurantContext);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
-      const restaurants = await getAllRestaurants();
-      restaurantContext.getRestaurants(restaurants);
+      try {
+        const restaurants = await getAllRestaurants();
+        restaurantContext.getRestaurants(restaurants);
+      } catch (error) {
+        setError('Could not get restaurants!');
+      }
     };
-
     fetchData();
   }, []);
 
+  if(error) {
+    return <ErrorOverlay message={error}/>
+  }
   const renderRestaurant = ({ item }: { item: RestaurantData }) => {
     const pressHandler = () => {
       navigation.navigate("RestaurantDetailsScreen", {
