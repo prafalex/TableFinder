@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState } from "react";
 import { FlatList } from "react-native";
-import { getAllRestaurants } from "../../util/http";
+import { getAllRestaurants, getAllReviews } from "../../util/http";
 import Restaurant from "../../components/Restaurant";
 import { RestaurantContext } from "../../context/restaurant-context";
+import { ReviewContext } from "../../context/review-context";
 import ErrorOverlay from "../../components/utils/ErrorOverlay";
 import { LoggedStackParamList } from "../../util/StackParamList";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -26,6 +27,7 @@ interface RestaurantData {
 
 const RestaurantsScreen: React.FC<RestaurantsScreenProps> = ({ navigation }) => {
   const restaurantContext = useContext(RestaurantContext);
+  const reviewContext = useContext(ReviewContext);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -33,16 +35,20 @@ const RestaurantsScreen: React.FC<RestaurantsScreenProps> = ({ navigation }) => 
       try {
         const restaurants = await getAllRestaurants();
         restaurantContext.getRestaurants(restaurants);
+        
+        const reviews = await getAllReviews();
+        reviewContext.getReviews(reviews);
       } catch (error) {
-        setError('Could not get restaurants!');
+        setError('Could not get data!');
       }
     };
     fetchData();
   }, []);
 
-  if(error) {
-    return <ErrorOverlay message={error}/>
+  if (error) {
+    return <ErrorOverlay message={error} />;
   }
+
   const renderRestaurant = ({ item }: { item: RestaurantData }) => {
     const pressHandler = () => {
       navigation.navigate("RestaurantDetailsScreen", {

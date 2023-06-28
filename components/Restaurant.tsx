@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { ReviewContext } from '../context/review-context';
 import {
   Pressable,
   View,
@@ -7,7 +9,6 @@ import {
   ImageBackground,
 } from 'react-native';
 import { Colours } from '../variables/colours';
-import { useSelector} from 'react-redux';
 import IconButton from "./utils/IconButton";
 
 interface RestaurantProps {
@@ -28,13 +29,11 @@ const Restaurant: React.FC<RestaurantProps> = ({
   program,
   onPress,
 }) => {
-  const scores = useSelector(state => (state as any).restaurantScore[id] || []);
-  const value = 0;
-  const restaurantScore =
-    scores.reduce(
-      (acc: number, currentValue: number) => acc + currentValue,
-      value
-    ) / scores.length;
+  const { getReviewsByRestaurant } = useContext(ReviewContext);
+  const reviews = getReviewsByRestaurant(id);
+  const totalScore = reviews.reduce((acc, review) => acc + review.score, 0);
+  const averageScore = reviews.length > 0 ? (totalScore / reviews.length).toFixed(2) : 'No reviews';
+
   return (
     <View style={styles.outerContainer}>
       <Pressable
@@ -48,7 +47,7 @@ const Restaurant: React.FC<RestaurantProps> = ({
               <IconButton
                 icon="star"
                 color={Colours.favoriteColor}
-                text={restaurantScore ? restaurantScore.toString() : 'No reviews'}
+                text={averageScore}
                 onPress={() => {}}
               ></IconButton>
             </View>

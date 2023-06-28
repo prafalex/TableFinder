@@ -1,24 +1,11 @@
-import React, {
-  useState,
-  useRef,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-} from 'react';
-import {
-  Animated,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
-  Image,
-  View,
-  Text,
-} from 'react-native';
+import React, { useState, useRef, useContext, useEffect, useLayoutEffect } from 'react';
+import { Animated, TouchableOpacity, ScrollView, StyleSheet, Image, View, Text } from 'react-native';
 import { Colours } from '../../variables/colours';
 import { useSelector, useDispatch } from 'react-redux';
 import { addFavorite, removeFavorite } from '../../redux/favorite';
 import { AuthContext } from '../../context/auth-context';
 import { RestaurantContext } from '../../context/restaurant-context';
+import { ReviewContext } from '../../context/review-context';
 import IconButton from '../../components/utils/IconButton';
 import Button from '../../components/utils/Button';
 import call from 'react-native-phone-call';
@@ -28,22 +15,19 @@ function RestaurantDetailsScreen({ route, navigation }) {
   const favoriteRestaurants = useSelector(
     state => state.favoriteRestaurants[authContext.email] || []
   );
-
-  const restaurantIsFavorite = favoriteRestaurants.includes(
-    route.params.restaurantId
-  );
+  const restaurantIsFavorite = favoriteRestaurants.includes(route.params.restaurantId);
   const dispatch = useDispatch();
 
-  const scores = useSelector(
-    state => state.restaurantScore[route.params.restaurantId] || []
-  );
-  const value = 0;
-  const restaurantScore =
-    scores.reduce((acc, currentValue) => acc + currentValue, value) /
-    scores.length;
+  const reviewContext = useContext(ReviewContext);
+  const reviews = reviewContext.getReviewsByRestaurant(route.params.restaurantId);
+  const scores = reviews.map(review => review.score);
+  const restaurantScore = reviews.length > 0
+    ? scores.reduce((acc, currentValue) => acc + currentValue) / scores.length
+    : 0;
 
   const [isCollapsed, setIsCollapsed] = useState(true);
   const dropDownAnimation = useRef(new Animated.Value(0)).current;
+
   function toggleMenu() {
     setIsCollapsed(!isCollapsed);
     Animated.timing(dropDownAnimation, {
@@ -94,30 +78,28 @@ function RestaurantDetailsScreen({ route, navigation }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => {
-        return (
-          <View style={styles.buttonContainer}>
-            <IconButton
-              icon="videocam"
-              color={Colours.textSecondaryColor}
-              onPress={() =>
-                navigation.navigate('VideoPresentation', {
-                  restaurantId: selectedRestaurant.id,
-                })
-              }
-            ></IconButton>
-            <IconButton
-              icon="star"
-              color={
-                restaurantIsFavorite
-                  ? Colours.favoriteColor
-                  : Colours.textSecondaryColor
-              }
-              onPress={favoriteToggler}
-            ></IconButton>
-          </View>
-        );
-      },
+      headerRight: () => (
+        <View style={styles.buttonContainer}>
+          <IconButton
+            icon="videocam"
+            color={Colours.textSecondaryColor}
+            onPress={() =>
+              navigation.navigate('VideoPresentation', {
+                restaurantId: selectedRestaurant.id,
+              })
+            }
+          />
+          <IconButton
+            icon="star"
+            color={
+              restaurantIsFavorite
+                ? Colours.favoriteColor
+                : Colours.textSecondaryColor
+            }
+            onPress={favoriteToggler}
+          />
+        </View>
+      ),
     });
   }, [navigation, favoriteToggler]);
 
@@ -127,7 +109,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
         <Image
           source={{ uri: selectedRestaurant.restaurant_img }}
           style={styles.image}
-        ></Image>
+        />
         <View style={styles.header}>
           <Text style={styles.title}>{selectedRestaurant.name}</Text>
           <IconButton
@@ -139,7 +121,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
                 restaurantId: selectedRestaurant.id,
               })
             }
-          ></IconButton>
+          />
         </View>
         <View style={styles.detailsContainer}>
           <Text style={styles.description}>
@@ -167,17 +149,21 @@ function RestaurantDetailsScreen({ route, navigation }) {
               styles.menuContainer,
             ]}
           >
-            {selectedRestaurant.menu_items && selectedRestaurant.menu_items.map((item, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.menuItemWrapper,
-                  isCollapsed && { backgroundColor: 'transparent', elevation: 0 },
-                ]}
-              >
-                <Text style={styles.menuItem}>{item}</Text>
-              </View>
-            ))}
+            {selectedRestaurant.menu_items &&
+              selectedRestaurant.menu_items.map((item, index) => (
+                <View
+                  key={index}
+                  style={[
+                    styles.menuItemWrapper,
+                    isCollapsed && {
+                      backgroundColor: 'transparent',
+                      elevation: 0,
+                    },
+                  ]}
+                >
+                  <Text style={styles.menuItem}>{item}</Text>
+                </View>
+              ))}
           </Animated.View>
         </View>
         <View style={styles.buttonContainer}>
@@ -236,7 +222,7 @@ export default RestaurantDetailsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   image: {
     width: '92%',
