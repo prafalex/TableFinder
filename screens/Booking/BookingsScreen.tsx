@@ -31,7 +31,7 @@ const BookingsScreen: React.FC<BookingsScreenProps> = ({ navigation }) => {
     };
 
     fetchData();
-  }, []);
+  }, [bookingContext.bookings]);
 
   if(error) {
     return <ErrorOverlay message={error}/>
