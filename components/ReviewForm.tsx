@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, TextInput, Alert } from "react-native";
-import { Colours } from "../variables/colours.js";
+import { Colours } from "../variables/colours";
 import Button from "./utils/Button";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";

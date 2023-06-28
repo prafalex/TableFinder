@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/User/LoginScreen';
 import AuthContextProvider, { AuthContext } from './context/auth-context';
 import React, { useContext, useEffect, useState } from 'react';
-import { Colours } from './variables/colours.js';
+import { Colours } from './variables/colours';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import RestaurantsScreen from './screens/Restaurant/RestaurantsScreen';

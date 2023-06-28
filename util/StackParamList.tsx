@@ -8,4 +8,7 @@ export type LoggedStackParamList = {
   BookingConfirmation: { bookingInfo: BookingInfo };  // Replace BookingInfo with the actual type of your booking info object
   VideoPresentation: undefined;
   RestaurantsScreen:undefined;
+  UserDetailsScreen:undefined;
+  UpsertReviewScreen: { reviewId: string };
+  ReviewsScreen: { restaurantId: string };
 };

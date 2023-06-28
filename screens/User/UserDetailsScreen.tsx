@@ -12,21 +12,33 @@ import { AuthContext } from '../../context/auth-context';
 import { UserLogin } from '../../util/firebaseAuth';
 import Button from '../../components/utils/Button';
 import EditModal from '../../components/utils/EditModal';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { LoggedStackParamList } from '../../util/StackParamList';
 
-function UserDetailsScreen({ navigation }) {
+type UserDetailsScreenNavigationProp = StackNavigationProp<
+  LoggedStackParamList, 
+  'UserDetailsScreen'
+>;
+
+interface UserDetailsScreenProps {
+  navigation: UserDetailsScreenNavigationProp;
+}
+
+
+function UserDetailsScreen({ navigation }: UserDetailsScreenProps) {
   const authContext = useContext(AuthContext);
   const [isChangeEmailModalVisible, setChangeEmailModalVisible] =
-    useState(false);
+    useState<boolean>(false);
   const [isChangePasswordModalVisible, setChangePasswordModalVisible] =
-    useState(false);
-  const [newEmail, setNewEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [password, setPassword] = useState('');
+    useState<boolean>(false);
+  const [newEmail, setNewEmail] = useState<string>('');
+  const [newPassword, setNewPassword] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const handleChangeEmail = async () => {
     try {
       const token = await UserLogin(authContext.email, password);
-      await authContext.changeEmail(token,newEmail);
+      await authContext.changeEmail(token, newEmail);
       Alert.alert('Email changed successfully!');
     } catch (error) {
       Alert.alert(
@@ -42,8 +54,8 @@ function UserDetailsScreen({ navigation }) {
 
   const handleChangePassword = async () => {
     try {
-      const token= await UserLogin(authContext.email, password);
-      await authContext.changePassword(token,newPassword);
+      const token = await UserLogin(authContext.email, password);
+      await authContext.changePassword(token, newPassword);
       Alert.alert('Password changed successfully!');
     } catch (error) {
       Alert.alert(

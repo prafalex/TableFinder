@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Alert, StyleSheet, View, Text, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import UserForm, { Credentials,CredentialsInvalid } from './UserForm';
-import { Colours } from '../../variables/colours.js';
+import { Colours } from '../../variables/colours';
 import { RootStackParamList } from '../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Button from '../utils/Button';

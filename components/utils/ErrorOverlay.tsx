@@ -1,6 +1,11 @@
 import { Text, View, StyleSheet } from 'react-native';
 import { Colours } from '../../variables/colours';
-function ErrorOverlay({ message}) {
+
+interface ErrorOverlayProps {
+  message: string;
+}
+
+const ErrorOverlay: React.FC<ErrorOverlayProps> = ({ message }) => {
   return (
     <View style={styles.container}>
       <Text style={[styles.text, styles.title]}>An error occurred!</Text>

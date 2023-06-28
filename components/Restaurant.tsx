@@ -6,7 +6,7 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import { Colours } from '../variables/colours.js';
+import { Colours } from '../variables/colours';
 import { useSelector} from 'react-redux';
 import IconButton from "./utils/IconButton";
 
