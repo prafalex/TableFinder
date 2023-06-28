@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, useEffect, useLayoutEffect } from 'react';
-import { Animated, TouchableOpacity, ScrollView, StyleSheet, Image, View, Text } from 'react-native';
+import { Animated, TouchableOpacity, ScrollView, StyleSheet, Image, View, Text,Linking } from 'react-native';
 import { Colours } from '../../variables/colours';
 import { useSelector, useDispatch } from 'react-redux';
 import { addFavorite, removeFavorite } from '../../redux/favorite';
@@ -70,6 +70,21 @@ function RestaurantDetailsScreen({ route, navigation }) {
       prompt: true,
     };
     call(args).catch(console.error);
+  }
+
+  function openGoogleMaps(address) {
+    const encodedAddress = encodeURIComponent(address);
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`;
+
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (!supported) {
+          console.log("Can't handle url: " + url);
+        } else {
+          return Linking.openURL(url);
+        }
+      })
+      .catch((err) => console.error('An error occurred', err));
   }
 
   useEffect(() => {
@@ -208,7 +223,7 @@ function RestaurantDetailsScreen({ route, navigation }) {
             button: styles.footerButton,
             buttonText: styles.addressButtonText,
           }}
-          onPress={() => {}}
+          onPress={() => openGoogleMaps(selectedRestaurant.address)}
         >
           {selectedRestaurant.address}
         </Button>
