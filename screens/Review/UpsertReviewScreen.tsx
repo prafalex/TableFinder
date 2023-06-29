@@ -15,7 +15,20 @@ import { useDispatch } from 'react-redux';
 import { addScore, removeScore } from '../../redux/score';
 import ErrorOverlay from '../../components/utils/ErrorOverlay';
 
-function UpsertReviewScreen({ route, navigation }) {
+interface UpsertReviewScreenProps {
+  route: {
+    params: {
+      restaurantId: string;
+      reviewId: string;
+    };
+  };
+  navigation: any;
+}
+
+const UpsertReviewScreen: React.FC<UpsertReviewScreenProps> = ({
+  route,
+  navigation,
+}) => {
   const authContext = useContext(AuthContext);
   const restaurantContext = useContext(RestaurantContext);
   const reviewContext = useContext(ReviewContext);
@@ -35,9 +48,9 @@ function UpsertReviewScreen({ route, navigation }) {
     });
   }, [isNewReview, restaurant, navigation]);
 
-  const [error, setError] = useState();
+  const [error, setError] = useState<string | undefined>();
 
-  function deleteHandler(reviewData) {
+  async function deleteHandler() {
     return Alert.alert(
       'Are your sure?',
       'Are your sure you want to delete this review?',
@@ -51,7 +64,7 @@ function UpsertReviewScreen({ route, navigation }) {
               dispatch(
                 removeScore({
                   restaurantId: restaurantId,
-                  score: reviewData.score,
+                  score: selectedReview?.score || 0,
                 })
               );
               navigation.goBack();
@@ -71,41 +84,42 @@ function UpsertReviewScreen({ route, navigation }) {
     navigation.goBack();
   }
 
-  async function upsertHandler(reviewData) {
+  async function upsertHandler(reviewData: any) {
     if (isNewReview) {
       try {
         const id = await addReview({ restaurantId, email, ...reviewData });
-      reviewContext.addReview({
-        id,
-        restaurantId,
-        email,
-        ...reviewData,
-      });
-      dispatch(
-        addScore({
-          restaurantId: restaurantId,
-          score: reviewData.score,
-        })
-      );
-      } catch(error) {
-        setError('Could not add the review!')
+        reviewContext.addReview({
+          id,
+          restaurantId,
+          email,
+          ...reviewData,
+        });
+        dispatch(
+          addScore({
+            restaurantId: restaurantId,
+            score: reviewData.score,
+          })
+        );
+      } catch (error) {
+        setError('Could not add the review!');
       }
-      
     } else {
       try {
         await updateReview(reviewId, { ...selectedReview, ...reviewData });
-      reviewContext.updateReview(reviewId, reviewData);
-      dispatch(
-        removeScore({
-          restaurantId: restaurantId,
-          score: reviewData.score,
-        }),
-        addScore({
-          restaurantId: restaurantId,
-          score: reviewData.score,
-        })
-      );
-      } catch(error) {
+        reviewContext.updateReview(reviewId, reviewData);
+        dispatch(
+          removeScore({
+            restaurantId: restaurantId,
+            score: reviewData.score,
+          })
+        );
+        dispatch(
+          addScore({
+            restaurantId: restaurantId,
+            score: reviewData.score,
+          })
+        );
+      } catch (error) {
         setError('Could not update the review!');
       }
     }
@@ -113,15 +127,15 @@ function UpsertReviewScreen({ route, navigation }) {
     navigation.goBack();
   }
 
-  if(error) {
-    return <ErrorOverlay message={error}/>
+  if (error) {
+    return <ErrorOverlay message={error} />;
   }
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.heading}>
         {isNewReview
-          ? 'Leave a review for ' + restaurant.name + ' !'
+          ? `Leave a review for ${restaurant?.name || ''}!`
           : selectedReview?.title}
       </Text>
       <ReviewForm
@@ -133,7 +147,7 @@ function UpsertReviewScreen({ route, navigation }) {
       ></ReviewForm>
     </ScrollView>
   );
-}
+};
 
 export default UpsertReviewScreen;
 
