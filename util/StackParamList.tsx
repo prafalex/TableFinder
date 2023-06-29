@@ -5,7 +5,7 @@ export type LoggedStackParamList = {
   RestaurantDetailsScreen: { restaurantId: string };
   BookingPage: { bookingId: string };
   BookingsScreen: undefined;
-  BookingConfirmation: { bookingInfo: BookingInfo };  // Replace BookingInfo with the actual type of your booking info object
+  BookingConfirmation: { bookingInfo: BookingInfo }; 
   VideoPresentation: undefined;
   RestaurantsScreen:undefined;
   UserDetailsScreen:undefined;

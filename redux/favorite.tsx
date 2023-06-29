@@ -13,19 +13,19 @@ const favoriteSlice = createSlice({
   name: 'favorite' as string,
   initialState: {} as FavoriteState,
   reducers: {
-    addFavorite: (state : FavoriteState, action: PayloadAction<FavoritePayload>) : void => {
-      const { email, restaurantId } : FavoritePayload = action.payload;
+    addFavorite: (state: FavoriteState, action: PayloadAction<FavoritePayload>): void => {
+      const { email, restaurantId }: FavoritePayload = action.payload;
       if (!state[email]) {
         state[email] = [];
       }
       state[email].push(restaurantId);
     },
-    removeFavorite: (state : FavoriteState, action: PayloadAction<FavoritePayload>) : void => {
-      const { email, restaurantId } : FavoritePayload = action.payload;
+    removeFavorite: (state: FavoriteState, action: PayloadAction<FavoritePayload>): void => {
+      const { email, restaurantId }: FavoritePayload = action.payload;
       if (!state[email]) {
         return;
       }
-      const index : number = state[email].indexOf(restaurantId);
+      const index: number = state[email].indexOf(restaurantId);
       if (index !== -1) {
         state[email].splice(index, 1);
       }
@@ -33,10 +33,9 @@ const favoriteSlice = createSlice({
   },
 });
 
-export const addFavorite: (
-    payload: FavoritePayload ) => PayloadAction<FavoritePayload> = favoriteSlice.actions.addFavorite;
-  
-  export const removeFavorite: (
-    payload: FavoritePayload ) => PayloadAction<FavoritePayload> = favoriteSlice.actions.removeFavorite;
-  
+export const { addFavorite, removeFavorite } = favoriteSlice.actions;
+
 export default favoriteSlice.reducer;
+
+// Define the  state type
+export type RootState = ReturnType<typeof favoriteSlice.reducer>;
