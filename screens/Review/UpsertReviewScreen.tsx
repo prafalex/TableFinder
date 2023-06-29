@@ -1,10 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import {
-  Text,
-  StyleSheet,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import { Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Colours } from '../../variables/colours';
 import { AuthContext } from '../../context/auth-context';
 import { RestaurantContext } from '../../context/restaurant-context';
@@ -14,15 +9,23 @@ import { addReview, updateReview, deleteReview } from '../../util/http';
 import { useDispatch } from 'react-redux';
 import { addScore, removeScore } from '../../redux/score';
 import ErrorOverlay from '../../components/utils/ErrorOverlay';
+import { RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AllStackParamList } from '../../util/StackParamList';
+
+type UpsertReviewScreenRouteProp = RouteProp<
+  AllStackParamList,
+  'UpsertReviewScreen'
+>;
+
+type UpsertReviewScreenNavigationProp = NativeStackNavigationProp<
+  AllStackParamList,
+  'UpsertReviewScreen'
+>;
 
 interface UpsertReviewScreenProps {
-  route: {
-    params: {
-      restaurantId: string;
-      reviewId: string;
-    };
-  };
-  navigation: any;
+  route: UpsertReviewScreenRouteProp;
+  navigation: UpsertReviewScreenNavigationProp;
 }
 
 const UpsertReviewScreen: React.FC<UpsertReviewScreenProps> = ({
@@ -33,7 +36,8 @@ const UpsertReviewScreen: React.FC<UpsertReviewScreenProps> = ({
   const restaurantContext = useContext(RestaurantContext);
   const reviewContext = useContext(ReviewContext);
 
-  const { restaurantId, reviewId } = route.params;
+  const { reviewId } = route.params;
+  const restaurantId = route.params?.restaurantId || ''; 
 
   const isNewReview = !reviewId;
   const email = authContext.email;
@@ -52,8 +56,8 @@ const UpsertReviewScreen: React.FC<UpsertReviewScreenProps> = ({
 
   async function deleteHandler() {
     return Alert.alert(
-      'Are your sure?',
-      'Are your sure you want to delete this review?',
+      'Are you sure?',
+      'Are you sure you want to delete this review?',
       [
         {
           text: 'Yes',
@@ -144,7 +148,7 @@ const UpsertReviewScreen: React.FC<UpsertReviewScreenProps> = ({
         upsertHandler={upsertHandler}
         isNewReview={isNewReview}
         defaultValues={selectedReview}
-      ></ReviewForm>
+      />
     </ScrollView>
   );
 };

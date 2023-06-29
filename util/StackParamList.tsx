@@ -1,6 +1,8 @@
 import { BookingInfo } from '../screens/Booking/BookingScreen';
 
-export type LoggedStackParamList = {
+export type AllStackParamList = {
+  Login: undefined;
+  Signup: undefined;
   Drawer: undefined;
   RestaurantDetailsScreen: { restaurantId: string };
   BookingPage: { restaurantId: string };
@@ -9,12 +11,8 @@ export type LoggedStackParamList = {
   VideoPresentation: { restaurantId?: string};
   RestaurantsScreen: undefined;
   UserDetailsScreen: undefined;
-  UpsertReviewScreen: { reviewId: string };
-  ReviewsScreen: { restaurantId: string };
+  UpsertReviewScreen: { reviewId: string,restaurantId?: string };
+  ReviewsScreen: { restaurantId?: string };
   ReviewDetailsScreen: { reviewId: string };
 };
 
-export type UnloggedStackParamList = {
-  Login: undefined;
-  Signup: undefined;
-}

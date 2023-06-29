@@ -6,9 +6,10 @@ import { ReviewContext } from '../../context/review-context';
 import { RestaurantContext } from '../../context/restaurant-context';
 import { AuthContext } from '../../context/auth-context';
 import ErrorOverlay from '../../components/utils/ErrorOverlay';
-import { RouteProp } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { AllStackParamList } from '../../util/StackParamList';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { LoggedStackParamList } from '../../util/StackParamList';
+import { RouteProp } from '@react-navigation/native';
 
 interface ReviewItem {
   id: string;
@@ -19,13 +20,11 @@ interface ReviewItem {
   restaurantId: string;
 }
 
-interface ReviewsScreenProps {
-  route: RouteProp<LoggedStackParamList, 'ReviewsScreen'>;
-  navigation: NativeStackNavigationProp<LoggedStackParamList, 'ReviewsScreen'>;
-}
-
-const ReviewsScreen: React.FC<ReviewsScreenProps> = ({ route, navigation }) => {
-  const restaurantId = route.params?.restaurantId;
+const ReviewsScreen: React.FC = () => {
+  const route = useRoute<RouteProp<AllStackParamList, 'ReviewsScreen'>>();
+  const navigation = useNavigation<NativeStackNavigationProp<AllStackParamList, 'ReviewsScreen'>>();
+  
+  const { restaurantId = '' } = route.params ?? {};
   const restaurantContext = useContext(RestaurantContext);
   const restaurant = restaurantContext.getRestaurant(restaurantId);
 

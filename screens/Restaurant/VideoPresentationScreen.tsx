@@ -4,12 +4,12 @@ import { Colours } from '../../variables/colours';
 import { Video } from 'expo-av';
 import { storage } from '../../util/firebase';
 import { RouteProp } from '@react-navigation/native';
-import { LoggedStackParamList } from '../../util/StackParamList';
+import { AllStackParamList } from '../../util/StackParamList';
 import { ref, getDownloadURL, StorageReference } from 'firebase/storage';
 import { RestaurantContext } from '../../context/restaurant-context';
 
 type VideoPresentationScreenRouteProp = RouteProp<
-  LoggedStackParamList,
+  AllStackParamList,
   'VideoPresentation'
 >;
 

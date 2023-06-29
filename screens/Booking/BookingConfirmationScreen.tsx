@@ -1,10 +1,10 @@
 import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import Booking from '../../components/Booking';
-import { LoggedStackParamList } from '../../util/StackParamList';
+import { AllStackParamList } from '../../util/StackParamList';
 
 type BookingConfirmationScreenRouteProp = RouteProp<
-  LoggedStackParamList,
+AllStackParamList,
   'BookingConfirmation'
 >;
 

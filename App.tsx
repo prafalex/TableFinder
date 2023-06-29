@@ -34,21 +34,10 @@ import RestaurantContextProvider from './context/restaurant-context';
 import BookingContextProvider from './context/booking-context';
 import ReviewContextProvider from './context/review-context';
 import UserDetailsScreen from './screens/User/UserDetailsScreen';
+import { AllStackParamList } from './util/StackParamList';
 
-type RootStackParamList = {
-  Restaurants: undefined;
-  Login: undefined;
-  Signup: undefined;
-  Drawer: undefined;
-  RestaurantDetailsScreen: { restaurantId: string };
-  BookingPage: { restaurantId: string };
-  BookingConfirmation: { bookingInfo?: BookingInfo };
-  VideoPresentation: undefined;
-  Reviews: undefined;
-  UpsertReviewScreen: undefined;
-};
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<AllStackParamList>();
 const Drawer = createDrawerNavigator();
 
 function DrawerNavigator() {
@@ -130,7 +119,7 @@ function AuthStack() {
 function LoggedStack() {
   return (
     <Stack.Navigator
-      initialRouteName="Restaurants"
+      initialRouteName="RestaurantsScreen"
       screenOptions={{
         headerStyle: { backgroundColor: Colours.primaryColor },
         headerTintColor: Colours.textSecondaryColor,
@@ -170,7 +159,7 @@ function LoggedStack() {
       />
 
       <Stack.Screen
-        name="Reviews"
+        name="ReviewsScreen"
         component={ReviewsScreen}
         options={{ title: 'Reviews' }}
       />
@@ -220,7 +209,6 @@ function Root() {
 
   return <Nav />;
 }
-export { RootStackParamList };
 export default function App() {
   return (
     <>

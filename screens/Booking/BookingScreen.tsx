@@ -14,14 +14,14 @@ import Modal from 'react-native-modal';
 import { Colours } from '../../variables/colours';
 import axios, { AxiosResponse } from 'axios';
 import { AuthContext, AuthContextType } from '../../context/auth-context';
-import { LoggedStackParamList } from '../../util/StackParamList';
+import { AllStackParamList } from '../../util/StackParamList';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import MyButton from '../../components/utils/Button';
 
 interface BookingScreenProps {
-  route: RouteProp<LoggedStackParamList, 'BookingPage'>;
-  navigation: NativeStackNavigationProp<LoggedStackParamList, 'BookingPage'>;
+  route: RouteProp<AllStackParamList, 'BookingPage'>;
+  navigation: NativeStackNavigationProp<AllStackParamList, 'BookingPage'>;
 }
 
 interface BookingInfo {
