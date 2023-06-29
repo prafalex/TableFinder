@@ -7,7 +7,7 @@ import { AuthContext } from '../../context/auth-context';
 import ErrorOverlay from '../../components/utils/ErrorOverlay';
 import { LoggedStackParamList } from '../../util/StackParamList';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Booking as BookingInterface } from '../../util/http'; // Import the BookingInfo interface
+import { Booking as BookingInterface } from '../../util/http'; 
 
 type BookingsScreenNavigationProp = StackNavigationProp<
   LoggedStackParamList,

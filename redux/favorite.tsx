@@ -37,4 +37,4 @@ export const { addFavorite, removeFavorite } = favoriteSlice.actions;
 
 export default favoriteSlice.reducer;
 
-export type RootState = ReturnType<typeof favoriteSlice.reducer>;
+type RootState = ReturnType<typeof favoriteSlice.reducer>;

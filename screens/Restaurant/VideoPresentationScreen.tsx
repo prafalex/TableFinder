@@ -4,12 +4,12 @@ import { Colours } from '../../variables/colours';
 import { Video } from 'expo-av';
 import { storage } from '../../util/firebase';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../App';
+import { LoggedStackParamList } from '../../util/StackParamList';
 import { ref, getDownloadURL, StorageReference } from 'firebase/storage';
 import { RestaurantContext } from '../../context/restaurant-context';
 
 type VideoPresentationScreenRouteProp = RouteProp<
-  RootStackParamList,
+  LoggedStackParamList,
   'VideoPresentation'
 >;
 
@@ -33,7 +33,7 @@ const VideoPresentationScreen = ({
       });
   }, []);
 
-  const { restaurantId } = route.params ?? { restaurantId: '' };
+  const { restaurantId = '' } = route.params ?? {};
   const restaurantContext = useContext(RestaurantContext);
   const restaurant = restaurantContext.getRestaurant(restaurantId);
   return (

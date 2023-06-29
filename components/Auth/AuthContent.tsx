@@ -3,7 +3,7 @@ import { Alert, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import UserForm, { Credentials, CredentialsInvalid } from './UserForm';
 import { Colours } from '../../variables/colours';
-import { RootStackParamList } from '../../App';
+import { UnloggedStackParamList } from '../../util/StackParamList';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Button from '../utils/Button';
 
@@ -19,7 +19,7 @@ const AuthContent: React.FC<AuthContentProps> = ({
   facebookLogin,
 }) => {
   const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    useNavigation<NativeStackNavigationProp<UnloggedStackParamList>>();
 
   const [credentialsInvalid, setCredentialsInvalid] =
     useState<CredentialsInvalid>({
