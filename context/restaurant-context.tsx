@@ -1,5 +1,5 @@
-import { createContext } from "react";
-import { useState } from "react";
+import { createContext } from 'react';
+import { useState } from 'react';
 
 interface Restaurant {
   id: string;
@@ -19,27 +19,31 @@ interface RestaurantContextValue {
 
 export const RestaurantContext = createContext<RestaurantContextValue>({
   restaurants: [],
-  getRestaurants: (restaurants) => {},
-  getRestaurant: (id) => undefined,
-  addRestaurant: (restaurant) => {},
+  getRestaurants: restaurants => {},
+  getRestaurant: id => undefined,
+  addRestaurant: restaurant => {},
 });
 
-function RestaurantContextProvider({ children }: { children: React.ReactNode }) {
+function RestaurantContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
-  function getRestaurants(restaurants: Restaurant[]) : void {
+  function getRestaurants(restaurants: Restaurant[]): void {
     setRestaurants(restaurants);
   }
 
-  function getRestaurant(id: string) : Restaurant | undefined {
-    const selectedRestaurant  = restaurants.find(
-      (restaurant) => restaurant.id === id
+  function getRestaurant(id: string): Restaurant | undefined {
+    const selectedRestaurant = restaurants.find(
+      restaurant => restaurant.id === id
     );
     return selectedRestaurant;
   }
 
-  function addRestaurant(restaurant: Restaurant) : void {
-    setRestaurants((currentRestaurants) => [...currentRestaurants, restaurant]);
+  function addRestaurant(restaurant: Restaurant): void {
+    setRestaurants(currentRestaurants => [...currentRestaurants, restaurant]);
   }
 
   const value: RestaurantContextValue = {

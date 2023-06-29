@@ -1,14 +1,14 @@
-import { BookingInfo } from "../screens/Booking/BookingScreen";
+import { BookingInfo } from '../screens/Booking/BookingScreen';
 
 export type LoggedStackParamList = {
   Drawer: undefined;
   RestaurantDetailsScreen: { restaurantId: string };
   BookingPage: { bookingId: string };
   BookingsScreen: undefined;
-  BookingConfirmation: { bookingInfo: BookingInfo }; 
+  BookingConfirmation: { bookingInfo: BookingInfo };
   VideoPresentation: undefined;
-  RestaurantsScreen:undefined;
-  UserDetailsScreen:undefined;
+  RestaurantsScreen: undefined;
+  UserDetailsScreen: undefined;
   UpsertReviewScreen: { reviewId: string };
   ReviewsScreen: { restaurantId: string };
 };

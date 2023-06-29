@@ -26,6 +26,7 @@ const favoriteSlice = createSlice({
         return;
       }
       const index: number = state[email].indexOf(restaurantId);
+      const index: number = state[email].indexOf(restaurantId);
       if (index !== -1) {
         state[email].splice(index, 1);
       }
@@ -37,5 +38,4 @@ export const { addFavorite, removeFavorite } = favoriteSlice.actions;
 
 export default favoriteSlice.reducer;
 
-// Define the  state type
 export type RootState = ReturnType<typeof favoriteSlice.reducer>;

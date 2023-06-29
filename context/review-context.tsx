@@ -49,7 +49,7 @@ function ReviewContextProvider({ children }: ReviewContextProviderProps) {
   function updateReview(id: string, review: Review) {
     const selectedReview = getReview(id);
     const selectedReviewIndex = reviews.findIndex(review => review.id === id);
-    if(selectedReview && selectedReviewIndex >= 0){
+    if (selectedReview && selectedReviewIndex >= 0) {
       const updatedReview = { ...selectedReview, ...review };
       const updatedReviews = [...reviews];
       updatedReviews[selectedReviewIndex] = updatedReview;

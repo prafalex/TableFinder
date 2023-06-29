@@ -18,7 +18,7 @@ interface UserFormProps {
 interface Credentials {
   email: string;
   password: string;
-  confirmPassword ?: string;
+  confirmPassword?: string;
 }
 
 const UserForm: React.FC<UserFormProps> = ({
@@ -26,16 +26,17 @@ const UserForm: React.FC<UserFormProps> = ({
   onSubmit,
   credentialsInvalid,
 }) => {
- const [inputEmail, setEmail] = useState<string>('');
- const [inputPassword, setPassword] = useState<string>('');
- const [inputConfirmPassword, setConfirmPassword] = useState<string>('');
-    
+  const [inputEmail, setEmail] = useState<string>('');
+  const [inputPassword, setPassword] = useState<string>('');
+  const [inputConfirmPassword, setConfirmPassword] = useState<string>('');
 
- const { email: emailIsInvalid,
+  const {
+    email: emailIsInvalid,
     password: passwordIsInvalid,
-    confirmPassword: passwordsDontMatch } : CredentialsInvalid = credentialsInvalid;
+    confirmPassword: passwordsDontMatch,
+  }: CredentialsInvalid = credentialsInvalid;
 
- const UpdateInputHandler = (type: string, value: string) : void => {
+  const UpdateInputHandler = (type: string, value: string): void => {
     switch (type) {
       case 'email':
         setEmail(value);
@@ -49,11 +50,11 @@ const UserForm: React.FC<UserFormProps> = ({
     }
   };
 
-  const submitHandler = () : void => {
+  const submitHandler = (): void => {
     const credentials: Credentials = {
-        email: inputEmail,
-        password: inputPassword,
-        confirmPassword: inputConfirmPassword,
+      email: inputEmail,
+      password: inputPassword,
+      confirmPassword: inputConfirmPassword,
     };
     onSubmit(credentials);
   };
@@ -62,7 +63,9 @@ const UserForm: React.FC<UserFormProps> = ({
     <View>
       <View style={styles.form}>
         <View style={styles.inputContainer}>
-          <Text style={[styles.label, emailIsInvalid && styles.labelInvalid]}>Email</Text>
+          <Text style={[styles.label, emailIsInvalid && styles.labelInvalid]}>
+            Email
+          </Text>
           <TextInput
             style={[styles.input, emailIsInvalid && styles.inputInvalid]}
             onChangeText={UpdateInputHandler.bind(this, 'email')}
@@ -72,7 +75,11 @@ const UserForm: React.FC<UserFormProps> = ({
         </View>
 
         <View>
-          <Text style={[styles.label, passwordIsInvalid && styles.labelInvalid]}>Password</Text>
+          <Text
+            style={[styles.label, passwordIsInvalid && styles.labelInvalid]}
+          >
+            Password
+          </Text>
           <TextInput
             secureTextEntry
             style={[styles.input, passwordIsInvalid && styles.inputInvalid]}
@@ -83,7 +90,9 @@ const UserForm: React.FC<UserFormProps> = ({
 
         {!isLogin && (
           <View>
-            <Text style={[styles.label, passwordsDontMatch && styles.labelInvalid]}>
+            <Text
+              style={[styles.label, passwordsDontMatch && styles.labelInvalid]}
+            >
               Retype password
             </Text>
             <TextInput
@@ -95,8 +104,12 @@ const UserForm: React.FC<UserFormProps> = ({
           </View>
         )}
 
-        <Button icon= '' style={{'button': styles.button, 'buttonText': styles.buttonText}} onPress={submitHandler}>
-           {isLogin ? 'Log In' : 'Sign Up'}
+        <Button
+          icon=""
+          style={{ button: styles.button, buttonText: styles.buttonText }}
+          onPress={submitHandler}
+        >
+          {isLogin ? 'Log In' : 'Sign Up'}
         </Button>
       </View>
     </View>
@@ -136,5 +149,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-export {CredentialsInvalid,Credentials};
+export { CredentialsInvalid, Credentials };
 export default UserForm;

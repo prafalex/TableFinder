@@ -1,8 +1,8 @@
-import { Text, View, StyleSheet, TextInput, Alert } from "react-native";
-import { Colours } from "../variables/colours";
-import Button from "./utils/Button";
-import { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Text, View, StyleSheet, TextInput, Alert } from 'react-native';
+import { Colours } from '../variables/colours';
+import Button from './utils/Button';
+import { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 
 interface DefaultValues {
   title: string;
@@ -26,13 +26,13 @@ function ReviewForm({
   defaultValues,
 }: ReviewFormProps) {
   const [inputValues, setInputValues] = useState({
-    title: defaultValues ? defaultValues.title : "",
-    content: defaultValues ? defaultValues.content : "",
-    score: defaultValues ? defaultValues.score.toString() : "",
+    title: defaultValues ? defaultValues.title : '',
+    content: defaultValues ? defaultValues.content : '',
+    score: defaultValues ? defaultValues.score.toString() : '',
   });
 
   function inputChangedHandler(inputId: string, value: string) {
-    setInputValues((currentInputValues) => {
+    setInputValues(currentInputValues => {
       return { ...currentInputValues, [inputId]: value };
     });
   }
@@ -48,7 +48,7 @@ function ReviewForm({
       !isNaN(reviewData.score) && reviewData.score > 0 && reviewData.score <= 5;
 
     if (!titleIsValid || !scoreIsValid) {
-      Alert.alert("Invalid values", "Please check the entered values!");
+      Alert.alert('Invalid values', 'Please check the entered values!');
       return;
     }
     upsertHandler(reviewData);
@@ -58,11 +58,11 @@ function ReviewForm({
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Title</Text>
         <TextInput
-            style={styles.input}
-            maxLength={64}
-            placeholder="Title"
-            onChangeText={(value) => inputChangedHandler("title", value)}
-            value={inputValues.title}
+          style={styles.input}
+          maxLength={64}
+          placeholder="Title"
+          onChangeText={value => inputChangedHandler('title', value)}
+          value={inputValues.title}
         ></TextInput>
 
         <Text style={styles.label}>Content</Text>
@@ -71,7 +71,7 @@ function ReviewForm({
           multiline={true}
           maxLength={256}
           placeholder="Content"
-          onChangeText={(value) => inputChangedHandler("content", value)}
+          onChangeText={value => inputChangedHandler('content', value)}
           value={inputValues.content}
         ></TextInput>
 
@@ -80,21 +80,33 @@ function ReviewForm({
           style={[styles.input]}
           keyboardType="number-pad"
           placeholder="1-5"
-          onChangeText={(value) => inputChangedHandler("score", value)}
+          onChangeText={value => inputChangedHandler('score', value)}
           value={inputValues.score}
         ></TextInput>
-
       </View>
       <View style={styles.buttonContainer}>
-        <Button style={{'button': styles.button, 'buttonText': styles.buttonText}} onPress={cancelHandler}>
+        <Button
+          style={{ button: styles.button, buttonText: styles.buttonText }}
+          onPress={cancelHandler}
+        >
           Cancel
         </Button>
-        <Button style={{'button': styles.button, 'buttonText': styles.buttonText}} onPress={submitHandler}>
-          {isNewReview ? "Add" : "Edit"}
+        <Button
+          style={{ button: styles.button, buttonText: styles.buttonText }}
+          onPress={submitHandler}
+        >
+          {isNewReview ? 'Add' : 'Edit'}
         </Button>
         {!isNewReview && (
-          <Button style={{'button': styles.deleteButton,'buttonText':{}}}  onPress={deleteHandler}>
-            <Ionicons name="trash" size={20} color={Colours.textSecondaryColor} />
+          <Button
+            style={{ button: styles.deleteButton, buttonText: {} }}
+            onPress={deleteHandler}
+          >
+            <Ionicons
+              name="trash"
+              size={20}
+              color={Colours.textSecondaryColor}
+            />
           </Button>
         )}
       </View>
@@ -114,7 +126,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   label: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 16,
     color: Colours.textColor,
     marginBottom: 4,
@@ -128,12 +140,12 @@ const styles = StyleSheet.create({
   },
   contentInput: {
     minHeight: 150,
-    textAlignVertical: "top",
+    textAlignVertical: 'top',
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 8,
     paddingTop: 20,
   },
@@ -142,10 +154,10 @@ const styles = StyleSheet.create({
     width: 120,
   },
   buttonText: {
-    color: Colours.textSecondaryColor
+    color: Colours.textSecondaryColor,
   },
   deleteButton: {
     width: 70,
     backgroundColor: Colours.errorMain,
-  }
+  },
 });

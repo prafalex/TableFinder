@@ -1,28 +1,34 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet,Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { Colours } from '../../variables/colours';
-import { Video,  } from 'expo-av';
-import {storage} from '../../util/firebase';
+import { Video } from 'expo-av';
+import { storage } from '../../util/firebase';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../App';
-import { ref, getDownloadURL,StorageReference } from 'firebase/storage';
+import { ref, getDownloadURL, StorageReference } from 'firebase/storage';
 import { RestaurantContext } from '../../context/restaurant-context';
 
-type VideoPresentationScreenRouteProp = RouteProp<RootStackParamList, 'VideoPresentation'>;
+type VideoPresentationScreenRouteProp = RouteProp<
+  RootStackParamList,
+  'VideoPresentation'
+>;
 
-const VideoPresentationScreen = ({ route }: { route: VideoPresentationScreenRouteProp }): JSX.Element => {
-
+const VideoPresentationScreen = ({
+  route,
+}: {
+  route: VideoPresentationScreenRouteProp;
+}): JSX.Element => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   const videoRef: StorageReference = ref(storage, '/restaurant_1.mp4');
 
   useEffect(() => {
     getDownloadURL(videoRef)
-      .then((url : string) => {
+      .then((url: string) => {
         setVideoUrl(url);
       })
       .catch((error: any) => {
-        console.error(error);
+        //console.error(error);
         Alert.alert('Error', 'Could not load video presentation');
       });
   }, []);
@@ -30,19 +36,23 @@ const VideoPresentationScreen = ({ route }: { route: VideoPresentationScreenRout
   const { restaurantId } = route.params ?? { restaurantId: '' };
   const restaurantContext = useContext(RestaurantContext);
   const restaurant = restaurantContext.getRestaurant(restaurantId);
-return (
+  return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
-        <Text style={styles.text}>Video presentation for {restaurant?.name}</Text>
-        {videoUrl && (<Video
-        source={{ uri: videoUrl }}
-        rate={1.0}
-        volume={1.0}
-        isMuted={false}
-        shouldPlay
-        useNativeControls
-        style={{ width: 300, height: 300 }}
-      />)}
+        <Text style={styles.text}>
+          Video presentation for {restaurant?.name}
+        </Text>
+        {videoUrl && (
+          <Video
+            source={{ uri: videoUrl }}
+            rate={1.0}
+            volume={1.0}
+            isMuted={false}
+            shouldPlay
+            useNativeControls
+            style={{ width: 300, height: 300 }}
+          />
+        )}
       </View>
     </View>
   );
@@ -79,7 +89,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
     color: Colours.textColor,
-  }
+  },
 });
 
 export default VideoPresentationScreen;

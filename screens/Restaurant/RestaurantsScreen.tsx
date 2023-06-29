@@ -1,16 +1,16 @@
-import { useContext, useEffect, useState } from "react";
-import { FlatList } from "react-native";
-import { getAllRestaurants, getAllReviews } from "../../util/http";
-import Restaurant from "../../components/Restaurant";
-import { RestaurantContext } from "../../context/restaurant-context";
-import { ReviewContext } from "../../context/review-context";
-import ErrorOverlay from "../../components/utils/ErrorOverlay";
-import { LoggedStackParamList } from "../../util/StackParamList";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { useContext, useEffect, useState } from 'react';
+import { FlatList } from 'react-native';
+import { getAllRestaurants, getAllReviews } from '../../util/http';
+import Restaurant from '../../components/Restaurant';
+import { RestaurantContext } from '../../context/restaurant-context';
+import { ReviewContext } from '../../context/review-context';
+import ErrorOverlay from '../../components/utils/ErrorOverlay';
+import { LoggedStackParamList } from '../../util/StackParamList';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type RestaurantsScreenNavigationProp = StackNavigationProp<
   LoggedStackParamList,
-  "RestaurantsScreen"
+  'RestaurantsScreen'
 >;
 
 interface RestaurantsScreenProps {
@@ -25,7 +25,9 @@ interface RestaurantData {
   price?: string;
 }
 
-const RestaurantsScreen: React.FC<RestaurantsScreenProps> = ({ navigation }) => {
+const RestaurantsScreen: React.FC<RestaurantsScreenProps> = ({
+  navigation,
+}) => {
   const restaurantContext = useContext(RestaurantContext);
   const reviewContext = useContext(ReviewContext);
   const [error, setError] = useState('');
@@ -35,7 +37,7 @@ const RestaurantsScreen: React.FC<RestaurantsScreenProps> = ({ navigation }) => 
       try {
         const restaurants = await getAllRestaurants();
         restaurantContext.getRestaurants(restaurants);
-        
+
         const reviews = await getAllReviews();
         reviewContext.getReviews(reviews);
       } catch (error) {
@@ -51,7 +53,7 @@ const RestaurantsScreen: React.FC<RestaurantsScreenProps> = ({ navigation }) => 
 
   const renderRestaurant = ({ item }: { item: RestaurantData }) => {
     const pressHandler = () => {
-      navigation.navigate("RestaurantDetailsScreen", {
+      navigation.navigate('RestaurantDetailsScreen', {
         restaurantId: item.id,
       });
     };
@@ -71,7 +73,7 @@ const RestaurantsScreen: React.FC<RestaurantsScreenProps> = ({ navigation }) => 
   return (
     <FlatList
       data={restaurantContext.restaurants}
-      keyExtractor={(item) => item.id}
+      keyExtractor={item => item.id}
       renderItem={renderRestaurant}
       numColumns={2}
     />
