@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface FavoriteState {
-  [email: string]: string[]; // use email as the key and store an array of restaurantIds
+  [email: string]: string[]; 
 }
 
 interface FavoritePayload {
@@ -25,7 +25,6 @@ const favoriteSlice = createSlice({
       if (!state[email]) {
         return;
       }
-      const index: number = state[email].indexOf(restaurantId);
       const index: number = state[email].indexOf(restaurantId);
       if (index !== -1) {
         state[email].splice(index, 1);
