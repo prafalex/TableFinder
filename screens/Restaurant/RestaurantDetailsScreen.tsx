@@ -9,7 +9,7 @@ import { ReviewContext } from '../../context/review-context';
 import IconButton from '../../components/utils/IconButton';
 import Button from '../../components/utils/Button';
 import call from 'react-native-phone-call';
-import RootState from '../../redux/favorite';
+
 interface Restaurant {
   id: string;
   name: string;
@@ -27,18 +27,16 @@ interface FavoriteState {
   [email: string]: string[];
 }
 
-interface FavoritePayload {
-  email: string;
-  restaurantId: string;
-}
 
 const RestaurantDetailsScreen: React.FC<{ route: any; navigation: any }> = ({ route, navigation }) => {
   const authContext = useContext(AuthContext);
-  const favoriteRestaurants = useSelector((state: FavoriteState) => state[authContext.email] || []) as string[];
 
-
+  const favoriteRestaurants = useSelector(
+    state => state.favoriteRestaurants[authContext.email] || []
+  );
   const restaurantIsFavorite = favoriteRestaurants.includes(route.params.restaurantId);
   const dispatch = useDispatch();
+
 
   const reviewContext = useContext(ReviewContext);
   const reviews = reviewContext.getReviewsByRestaurant(route.params.restaurantId);
@@ -101,7 +99,7 @@ const RestaurantDetailsScreen: React.FC<{ route: any; navigation: any }> = ({ ro
     Linking.canOpenURL(url)
       .then((supported) => {
         if (!supported) {
-          console.log("Can't handle url: " + url);
+          console.log("error on url: " + url);
         } else {
           return Linking.openURL(url);
         }
@@ -135,7 +133,9 @@ const RestaurantDetailsScreen: React.FC<{ route: any; navigation: any }> = ({ ro
                 ? Colours.favoriteColor
                 : Colours.textSecondaryColor
             }
-            onPress={favoriteToggler}
+            onPress={() =>{
+              favoriteToggler();  
+            }}
           />
         </View>
       ),
