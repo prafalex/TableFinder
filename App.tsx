@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import SignupScreen from './screens/User/SignupScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -183,16 +183,16 @@ function Nav() {
 
   return (
     <Provider store={store}>
-        <ReviewContextProvider>
-          <RestaurantContextProvider>
-            <BookingContextProvider>
-              <NavigationContainer>
-                {!authContext.auth && <AuthStack />}
-                {authContext.auth && <LoggedStack />}
-              </NavigationContainer>
-            </BookingContextProvider>
-          </RestaurantContextProvider>
-        </ReviewContextProvider>
+      <ReviewContextProvider>
+        <RestaurantContextProvider>
+          <BookingContextProvider>
+            <NavigationContainer>
+              {!authContext.auth && <AuthStack />}
+              {authContext.auth && <LoggedStack />}
+            </NavigationContainer>
+          </BookingContextProvider>
+        </RestaurantContextProvider>
+      </ReviewContextProvider>
     </Provider>
   );
 }

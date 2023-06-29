@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import { getAllReviews } from "../../util/http";
-import Review from "../../components/Review";
-import { ReviewContext } from "../../context/review-context";
-import { RestaurantContext } from "../../context/restaurant-context";
-import { AuthContext } from "../../context/auth-context";
-import ErrorOverlay from "../../components/utils/ErrorOverlay";
+import React, { useContext, useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { getAllReviews } from '../../util/http';
+import Review from '../../components/Review';
+import { ReviewContext } from '../../context/review-context';
+import { RestaurantContext } from '../../context/restaurant-context';
+import { AuthContext } from '../../context/auth-context';
+import ErrorOverlay from '../../components/utils/ErrorOverlay';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { LoggedStackParamList } from '../../util/StackParamList';
@@ -32,11 +32,11 @@ const ReviewsScreen: React.FC<ReviewsScreenProps> = ({ route, navigation }) => {
   const authContext = useContext(AuthContext);
   const currentUserEmail = authContext.email;
 
-  function renderReview(itemData: {item: ReviewItem}) {
+  function renderReview(itemData: { item: ReviewItem }) {
     const item = itemData.item;
     function pressHandler() {
       if (!restaurantId) {
-        navigation.navigate("UpsertReviewScreen", {
+        navigation.navigate('UpsertReviewScreen', {
           reviewId: item.id,
         });
       }
@@ -61,7 +61,7 @@ const ReviewsScreen: React.FC<ReviewsScreenProps> = ({ route, navigation }) => {
       try {
         const reviews = await getAllReviews();
         reviewContext.getReviews(reviews);
-      } catch(error) {
+      } catch (error) {
         setError('Could not get reviews!');
       }
     };
@@ -78,7 +78,7 @@ const ReviewsScreen: React.FC<ReviewsScreenProps> = ({ route, navigation }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: restaurant ? "Reviews - " + restaurant.name : "My reviews",
+      title: restaurant ? 'Reviews - ' + restaurant.name : 'My reviews',
     });
   }, [restaurant, navigation]);
 
@@ -87,23 +87,23 @@ const ReviewsScreen: React.FC<ReviewsScreenProps> = ({ route, navigation }) => {
     content = (
       <FlatList
         data={filteredReviews}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={renderReview}
       />
     );
   }
-  if(error) {
-    return <ErrorOverlay message={error}/>
+  if (error) {
+    return <ErrorOverlay message={error} />;
   }
   return <View>{content}</View>;
-}
+};
 
 export default ReviewsScreen;
 
 const styles = StyleSheet.create({
   noReviewsText: {
     fontSize: 16,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 32,
   },
 });

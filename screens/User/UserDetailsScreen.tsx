@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Alert } from 'react-native';
 import { Colours } from '../../variables/colours';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/auth-context';
@@ -16,14 +10,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { LoggedStackParamList } from '../../util/StackParamList';
 
 type UserDetailsScreenNavigationProp = StackNavigationProp<
-  LoggedStackParamList, 
+  LoggedStackParamList,
   'UserDetailsScreen'
 >;
 
 interface UserDetailsScreenProps {
   navigation: UserDetailsScreenNavigationProp;
 }
-
 
 function UserDetailsScreen({ navigation }: UserDetailsScreenProps) {
   const authContext = useContext(AuthContext);
@@ -44,7 +37,7 @@ function UserDetailsScreen({ navigation }: UserDetailsScreenProps) {
       Alert.alert(
         'Failed to change email, maybe check your current password or email already exists!'
       );
-      console.log(error);
+      //console.log(error);
     }
     setNewEmail('');
     setPassword('');
@@ -61,7 +54,7 @@ function UserDetailsScreen({ navigation }: UserDetailsScreenProps) {
       Alert.alert(
         'Failed to change password, maybe check your current password!'
       );
-      console.log(error);
+      //console.log(error);
     }
     setPassword('');
     setNewPassword('');

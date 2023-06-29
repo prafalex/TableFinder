@@ -1,20 +1,19 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios';
 
 const BACKEND_URL: string =
-  'https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app'
-
+  'https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app';
 
 interface Restaurant {
-  id: string
-  name: string
-  address: string
-  description: string
-  category: string
-  phone_number: string
-  score: number
-  program: string
-  restaurant_img: string
-  menu_items: string
+  id: string;
+  name: string;
+  address: string;
+  description: string;
+  category: string;
+  phone_number: string;
+  score: number;
+  program: string;
+  restaurant_img: string;
+  menu_items: string;
 }
 
 export interface Booking {
@@ -36,7 +35,10 @@ interface Review {
 }
 
 export async function addRestaurant(restaurantData: Omit<Restaurant, 'id'>) {
-  const response = await axios.post(BACKEND_URL + "/restaurants.json", restaurantData);
+  const response = await axios.post(
+    BACKEND_URL + '/restaurants.json',
+    restaurantData
+  );
   const id = response.data.name;
   return id;
 }
@@ -44,8 +46,8 @@ export async function addRestaurant(restaurantData: Omit<Restaurant, 'id'>) {
 export async function getAllRestaurants() {
   const response: AxiosResponse = await axios.get(
     BACKEND_URL + '/restaurants.json'
-  )
-  const restaurants: Restaurant[] = []
+  );
+  const restaurants: Restaurant[] = [];
 
   for (const key in response.data) {
     const restaurantObj: Restaurant = {
@@ -59,14 +61,19 @@ export async function getAllRestaurants() {
       program: response.data[key].program,
       restaurant_img: response.data[key].restaurant_img,
       menu_items: response.data[key].menu_items,
-    }
-    restaurants.push(restaurantObj)
+    };
+    restaurants.push(restaurantObj);
   }
-  return restaurants
+  return restaurants;
 }
 
-export async function addBooking(bookingData: Omit<Booking, 'id'>): Promise<string> {
-  const response: AxiosResponse<any> = await axios.post(BACKEND_URL + '/bookings.json', bookingData);
+export async function addBooking(
+  bookingData: Omit<Booking, 'id'>
+): Promise<string> {
+  const response: AxiosResponse<any> = await axios.post(
+    BACKEND_URL + '/bookings.json',
+    bookingData
+  );
   const id: string = response.data.name;
   return id;
 }
@@ -91,24 +98,27 @@ export async function getAllBookings(): Promise<Booking[]> {
 }
 
 export async function addReview(reviewData: Omit<Booking, 'id'>) {
-  const response = await axios.post(BACKEND_URL + "/reviews.json", reviewData);
+  const response = await axios.post(BACKEND_URL + '/reviews.json', reviewData);
   const id = response.data.name;
   return id;
 }
 
-export async function updateReview(id: string, reviewData: Omit<Booking, 'id'>) {
+export async function updateReview(
+  id: string,
+  reviewData: Omit<Booking, 'id'>
+) {
   const response = await axios.put(
     BACKEND_URL + `/reviews/${id}.json`,
     reviewData
   );
 }
 
-export async function deleteReview(id:string) {
+export async function deleteReview(id: string) {
   const response = await axios.delete(BACKEND_URL + `/reviews/${id}.json`);
 }
 
 export async function getAllReviews() {
-  const response = await axios.get(BACKEND_URL + "/reviews.json");
+  const response = await axios.get(BACKEND_URL + '/reviews.json');
   const reviews = [];
 
   for (const key in response.data) {

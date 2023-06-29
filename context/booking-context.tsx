@@ -1,12 +1,12 @@
-import { createContext, useState } from "react";
+import { createContext, useState } from 'react';
 
 interface Booking {
   id: string;
-  date:string;
+  date: string;
   email: string;
-  people:number;
-  restaurantId:string;
-  time:string;
+  people: number;
+  restaurantId: string;
+  time: string;
 }
 
 interface BookingContextValue {
@@ -19,34 +19,34 @@ interface BookingContextValue {
 
 export const BookingContext = createContext<BookingContextValue>({
   bookings: [],
-  getBookings: (bookings) => {},
-  getBookingsByUser: (email) => [],
-  getBooking: (id) => undefined,
-  addBooking: (booking) => {},
+  getBookings: bookings => {},
+  getBookingsByUser: email => [],
+  getBooking: id => undefined,
+  addBooking: booking => {},
 });
 
 function BookingContextProvider({ children }: { children: React.ReactNode }) {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
-  function getBookings(bookings: Booking[]) : void {
+  function getBookings(bookings: Booking[]): void {
     setBookings(bookings);
   }
 
-  function getBookingsByUser(email: string) : Booking[] {
-    const filteredBookings : Booking[] = bookings.filter(
-      (booking) => booking.email === email
+  function getBookingsByUser(email: string): Booking[] {
+    const filteredBookings: Booking[] = bookings.filter(
+      booking => booking.email === email
     );
 
     return filteredBookings;
   }
 
-  function getBooking(id: string) : Booking | undefined {
-    const selectedBooking = bookings.find((booking) => booking.id === id);
+  function getBooking(id: string): Booking | undefined {
+    const selectedBooking = bookings.find(booking => booking.id === id);
     return selectedBooking;
   }
 
-  function addBooking(booking: Booking) : void {
-    setBookings((currentBookings) => [...currentBookings, booking]);
+  function addBooking(booking: Booking): void {
+    setBookings(currentBookings => [...currentBookings, booking]);
   }
 
   const value: BookingContextValue = {

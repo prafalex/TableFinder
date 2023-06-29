@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Alert, StyleSheet, View, Text, Pressable } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import UserForm, { Credentials,CredentialsInvalid } from './UserForm';
+import UserForm, { Credentials, CredentialsInvalid } from './UserForm';
 import { Colours } from '../../variables/colours';
 import { RootStackParamList } from '../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -18,13 +18,15 @@ const AuthContent: React.FC<AuthContentProps> = ({
   onAuthenticate,
   facebookLogin,
 }) => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const [credentialsInvalid, setCredentialsInvalid] = useState<CredentialsInvalid>({
-    email: false,
-    password: false,
-    confirmPassword: false,
-  });
+  const [credentialsInvalid, setCredentialsInvalid] =
+    useState<CredentialsInvalid>({
+      email: false,
+      password: false,
+      confirmPassword: false,
+    });
 
   const switchAuthModeHandler = (): void => {
     if (isLogin) {
@@ -35,20 +37,16 @@ const AuthContent: React.FC<AuthContentProps> = ({
   };
 
   const submitHandler = (credentials: Credentials): void => {
-    let { email, password, confirmPassword } : Credentials = credentials;
+    let { email, password, confirmPassword }: Credentials = credentials;
 
     email = email.trim();
     password = password.trim();
 
-    const emailIsValid : boolean = email.includes('@');
-    const passwordIsValid : boolean = password.length > 6;
-    const passwordsAreEqual : boolean = password === confirmPassword;
+    const emailIsValid: boolean = email.includes('@');
+    const passwordIsValid: boolean = password.length > 6;
+    const passwordsAreEqual: boolean = password === confirmPassword;
 
-    if (
-      !emailIsValid ||
-      !passwordIsValid ||
-      (!isLogin && !passwordsAreEqual)
-    ) {
+    if (!emailIsValid || !passwordIsValid || (!isLogin && !passwordsAreEqual)) {
       Alert.alert('Invalid input', 'Please check your entered credentials.');
       setCredentialsInvalid({
         email: !emailIsValid,
@@ -68,13 +66,19 @@ const AuthContent: React.FC<AuthContentProps> = ({
           onSubmit={submitHandler}
           credentialsInvalid={credentialsInvalid}
         />
-        <Button style= {{'button': styles.button, 'buttonText': styles.buttonText}} onPress={switchAuthModeHandler}>
+        <Button
+          style={{ button: styles.button, buttonText: styles.buttonText }}
+          onPress={switchAuthModeHandler}
+        >
           {isLogin ? 'Create a new user' : 'Log in instead'}
         </Button>
         {isLogin && facebookLogin && (
-        <Button style={{ 'button': styles.button, 'buttonText': styles.buttonText }} onPress={facebookLogin}>
-          Sign in with Facebook
-        </Button>
+          <Button
+            style={{ button: styles.button, buttonText: styles.buttonText }}
+            onPress={facebookLogin}
+          >
+            Sign in with Facebook
+          </Button>
         )}
       </View>
     </View>
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colours.secondaryColor,
   },
   buttonText: {
-    color: Colours.textColor
+    color: Colours.textColor,
   },
   form: {
     alignItems: 'center',

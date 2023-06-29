@@ -11,13 +11,22 @@ const SignupScreen: React.FC<SignupScreenProps> = ({}) => {
 
   const authContext = useContext(AuthContext);
 
-  async function signupFirebase({ email, password }: { email: string; password: string }) {
+  async function signupFirebase({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) {
     setIsSigning(true);
     try {
       const token = await UserCreate(email, password);
       authContext.authenticate(token, email);
     } catch (error) {
-      Alert.alert('Signing up failed!', 'Error while creating a new user, possible error: email already in use!');
+      Alert.alert(
+        'Signing up failed!',
+        'Error while creating a new user, possible error: email already in use!'
+      );
       setIsSigning(false);
     }
   }

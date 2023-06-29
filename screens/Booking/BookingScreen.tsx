@@ -12,9 +12,9 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Modal from 'react-native-modal';
 import { Colours } from '../../variables/colours';
-import axios,{AxiosResponse} from 'axios';
-import { AuthContext,AuthContextType } from '../../context/auth-context';
-import { RootStackParamList } from '../../App'
+import axios, { AxiosResponse } from 'axios';
+import { AuthContext, AuthContextType } from '../../context/auth-context';
+import { RootStackParamList } from '../../App';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import MyButton from '../../components/utils/Button';
@@ -39,70 +39,69 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route, navigation }) => {
 
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('');
-  const [selectedPeople, setSelectedPeople] = useState<number>(1); 
+  const [selectedPeople, setSelectedPeople] = useState<number>(1);
   const [isDatePickerVisible, setDatePickerVisible] = useState<boolean>(false);
   const [isTimePickerVisible, setTimePickerVisible] = useState<boolean>(false);
-  const [isPeoplePickerModalVisible, setPeoplePickerModalVisible] = useState<boolean>(false);
+  const [isPeoplePickerModalVisible, setPeoplePickerModalVisible] =
+    useState<boolean>(false);
   const [tempPeopleInput, setTempPeopleInput] = useState<string>('');
 
   const handlePeopleCancel: () => void = () => {
     setPeoplePickerModalVisible(false);
   };
 
-  const handleIconPress: (type: 'date' | 'time') => void = (type) => {
+  const handleIconPress: (type: 'date' | 'time') => void = type => {
     if (type === 'date') {
       setDatePickerVisible(true);
     } else if (type === 'time') {
       setTimePickerVisible(true);
     }
   };
-  
 
-  const handleDateConfirm: (date: Date) => void = (date) => {
+  const handleDateConfirm: (date: Date) => void = date => {
     setSelectedDate(date.toDateString());
     setDatePickerVisible(false);
   };
-  
-  const handleTimeConfirm: (time: Date) => void = (time) => {
-    const formattedTime : string = time.toLocaleTimeString([], {
+
+  const handleTimeConfirm: (time: Date) => void = time => {
+    const formattedTime: string = time.toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
     });
     setSelectedTime(formattedTime);
     setTimePickerVisible(false);
   };
-  
-  const handleSelection: (value: string) => void = (value) => {
+
+  const handleSelection: (value: string) => void = value => {
     if (value !== '') {
-      const parsedValue : number = parseInt(value);
+      const parsedValue: number = parseInt(value);
       if (!isNaN(parsedValue) && parsedValue >= 1) {
         setSelectedPeople(parsedValue);
       }
     }
   };
-  
+
   const incrementPeople: () => void = () => {
     setSelectedPeople(selectedPeople + 1);
   };
-  
+
   const decrementPeople: () => void = () => {
     if (selectedPeople > 1) {
       setSelectedPeople(selectedPeople - 1);
     }
   };
-  
+
   const handlePeopleIconPress: () => void = () => {
     setTempPeopleInput(selectedPeople.toString());
     setPeoplePickerModalVisible(true);
   };
-  
+
   const handlePeopleConfirm: () => void = () => {
     handleSelection(tempPeopleInput);
     setPeoplePickerModalVisible(false);
   };
-  
 
-  const handleConfirmBooking = async () : Promise<void> => {
+  const handleConfirmBooking = async (): Promise<void> => {
     if (!selectedDate || !selectedTime || !selectedPeople) {
       Alert.alert(
         'Booking Error!',
@@ -112,8 +111,6 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route, navigation }) => {
       return;
     }
 
-
-    
     const bookingInfo: BookingInfo = {
       restaurantId,
       date: selectedDate,
@@ -122,61 +119,62 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route, navigation }) => {
       email: authContext.email,
     };
 
-  try {
-  const response: AxiosResponse = await axios.get(
-    `https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app/bookings.json?orderBy="restaurantId"&equalTo="${restaurantId}"`
-  );
+    try {
+      const response: AxiosResponse = await axios.get(
+        `https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app/bookings.json?orderBy="restaurantId"&equalTo="${restaurantId}"`
+      );
 
-  let existingReservations: Record<string, BookingInfo> | null = response.data;
-  let reservationCount: number = 0;
+      let existingReservations: Record<string, BookingInfo> | null =
+        response.data;
+      let reservationCount: number = 0;
 
-  if (!existingReservations) {
-    existingReservations = {};
-  }
+      if (!existingReservations) {
+        existingReservations = {};
+      }
 
-  for (let key  in existingReservations) {
-    if (
-      existingReservations[key].date === selectedDate &&
-      existingReservations[key].time === selectedTime
-    ) {
-      reservationCount++;
+      for (let key in existingReservations) {
+        if (
+          existingReservations[key].date === selectedDate &&
+          existingReservations[key].time === selectedTime
+        ) {
+          reservationCount++;
+        }
+      }
+
+      if (reservationCount >= 15) {
+        Alert.alert(
+          'Booking Error!',
+          'The restaurant is fully booked at this time. Please select another time.',
+          [{ text: 'OK' }]
+        );
+        return;
+      }
+
+      await axios.post(
+        'https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app/bookings.json',
+        bookingInfo
+      );
+
+      Alert.alert(
+        'Booking Confirmed!',
+        'Your table has been booked successfully.',
+        [
+          {
+            text: 'OK',
+            onPress: () =>
+              navigation.replace('BookingConfirmation', { bookingInfo }),
+          },
+        ]
+      );
+    } catch (err: any) {
+      //console.log(err);
+      Alert.alert(
+        'Booking Error!',
+        'Your table has not been booked successfully.',
+        [{ text: 'OK' }]
+      );
     }
-  }
-
-  if (reservationCount >= 15) {
-    Alert.alert(
-      'Booking Error!',
-      'The restaurant is fully booked at this time. Please select another time.',
-      [{ text: 'OK' }]
-    );
-    return;
-  }
-
-  await axios.post(
-    'https://tablefinder-c5b4a-default-rtdb.europe-west1.firebasedatabase.app/bookings.json',
-    bookingInfo
-  );
-
-  Alert.alert(
-    'Booking Confirmed!',
-    'Your table has been booked successfully.',
-    [
-      {
-        text: 'OK',
-        onPress: () =>
-          navigation.replace('BookingConfirmation', { bookingInfo }),
-      },
-    ]
-  );
-} catch (err: any) {
-  console.log(err);
-  Alert.alert(
-    'Booking Error!',
-    'Your table has not been booked successfully.',
-    [{ text: 'OK' }]
-  );
-}
-};
+  };
 
   return (
     <View style={styles.container}>
@@ -255,11 +253,11 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ route, navigation }) => {
         </View>
       </Modal>
       <MyButton
-          icon='checkmark-circle-outline'
-          style={{ button: styles.button, buttonText: styles.buttonText }}
-          onPress={handleConfirmBooking}
-        >
-          Confirm Booking
+        icon="checkmark-circle-outline"
+        style={{ button: styles.button, buttonText: styles.buttonText }}
+        onPress={handleConfirmBooking}
+      >
+        Confirm Booking
       </MyButton>
     </View>
   );
@@ -325,7 +323,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    backgroundColor: Colours.primaryColor
+    backgroundColor: Colours.primaryColor,
   },
   buttonText: {
     color: Colours.textSecondaryColor,
@@ -333,5 +331,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export {BookingScreenProps, BookingInfo};
+export { BookingScreenProps, BookingInfo };
 export default BookingScreen;

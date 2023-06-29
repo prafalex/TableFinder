@@ -5,11 +5,10 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   ImageBackground,
 } from 'react-native';
 import { Colours } from '../variables/colours';
-import IconButton from "./utils/IconButton";
+import IconButton from './utils/IconButton';
 
 interface RestaurantProps {
   id: string;
@@ -32,7 +31,10 @@ const Restaurant: React.FC<RestaurantProps> = ({
   const { getReviewsByRestaurant } = useContext(ReviewContext);
   const reviews = getReviewsByRestaurant(id);
   const totalScore = reviews.reduce((acc, review) => acc + review.score, 0);
-  const averageScore = reviews.length > 0 ? (totalScore / reviews.length).toFixed(2) : 'No reviews';
+  const averageScore =
+    reviews.length > 0
+      ? (totalScore / reviews.length).toFixed(2)
+      : 'No reviews';
 
   return (
     <View style={styles.outerContainer}>
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
-    backgroundColor: 'rgba(255,255,255, 0.7)'
+    backgroundColor: 'rgba(255,255,255, 0.7)',
   },
   name: {
     fontWeight: 'bold',

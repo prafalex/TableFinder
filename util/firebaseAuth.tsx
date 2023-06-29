@@ -9,7 +9,11 @@ interface AuthResponse {
   idToken: string;
 }
 
-async function authFunc(mode: string, email: string, password: string): Promise<string> {
+async function authFunc(
+  mode: string,
+  email: string,
+  password: string
+): Promise<string> {
   const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`;
 
   const response: AxiosResponse<AuthResponse> = await axios.post(url, {
@@ -30,32 +34,30 @@ export function UserLogin(email: string, password: string): Promise<string> {
 }
 
 export async function updateEmail(token: string, newEmail: string) {
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${API_KEY}`;
-    try {
-        const response: AxiosResponse<AuthResponse> = await axios.post(url, {
-            idToken: token,
-            email: newEmail,
-            returnSecureToken: true,
-        });
-        return response.data.idToken;
-    } catch (error : any) {
-        throw error.response.data.error.message;
-    }
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${API_KEY}`;
+  try {
+    const response: AxiosResponse<AuthResponse> = await axios.post(url, {
+      idToken: token,
+      email: newEmail,
+      returnSecureToken: true,
+    });
+    return response.data.idToken;
+  } catch (error: any) {
+    throw error.response.data.error.message;
+  }
 }
 
 export async function updatePassword(token: string, newPassword: string) {
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${API_KEY}`;
-    try {
-        const response: AxiosResponse<AuthResponse> = await axios.post(url, {
-            idToken: token,
-            password: newPassword,
-            returnSecureToken: true,
-        });
-        return response.data.idToken;
-    } catch (error : any) {
-        //console.error(error);
-        throw error.response.data.error.message;
-    }
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${API_KEY}`;
+  try {
+    const response: AxiosResponse<AuthResponse> = await axios.post(url, {
+      idToken: token,
+      password: newPassword,
+      returnSecureToken: true,
+    });
+    return response.data.idToken;
+  } catch (error: any) {
+    //console.error(error);
+    throw error.response.data.error.message;
+  }
 }
-
-
