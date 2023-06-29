@@ -24,16 +24,19 @@ interface Restaurant {
 }
 
 interface FavoriteState {
-  [email: string]: string[];
+  favoriteRestaurants: {
+    [email: string]: string[];
+  };
 }
+
 
 
 const RestaurantDetailsScreen: React.FC<{ route: any; navigation: any }> = ({ route, navigation }) => {
   const authContext = useContext(AuthContext);
 
   const favoriteRestaurants = useSelector(
-    state => state.favoriteRestaurants[authContext.email] || []
-  );
+    (state: FavoriteState) => state.favoriteRestaurants[authContext.email] || []
+  ) as string[];
   const restaurantIsFavorite = favoriteRestaurants.includes(route.params.restaurantId);
   const dispatch = useDispatch();
 
